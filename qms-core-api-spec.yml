@@ -1,0 +1,349 @@
+openapi: 3.0.2
+info:
+  title: QMS Core API
+  description: The API for the QMS Core functionality.
+  version: 1.0.0
+paths:
+  /api/v1/categories/:
+    get:
+      tags:
+        - categories
+      summary: Get Categories
+      description: |-
+        Gets a list of categories for the application in context
+
+        Args:
+            active (bool, optional): Flag to return only active records. Defaults to True.
+            offset (int, optional): The number of items to skip before collecting the result set. Defaults to 0.
+            limit (int, optional): The number of items to return. Defaults to 10.
+            application (str, optional): The application in context.
+
+        Returns:
+            models.CategoriesListResponse: The list of categories
+      operationId: getCategories
+      parameters:
+        - required: false
+          schema:
+            title: Active
+            type: boolean
+            default: true
+          name: active
+          in: query
+        - required: false
+          schema:
+            title: Offset
+            type: integer
+            default: 0
+          name: offset
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 10
+          name: limit
+          in: query
+        - required: true
+          schema:
+            title: Application
+            type: string
+          name: application
+          in: header
+        - required: true
+          schema:
+            title: Authorization
+            type: string
+          name: authorization
+          in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Categories Api V1 Categories  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/categories/{categoryId}/services:
+    get:
+      tags:
+        - categories
+      summary: Get Category Services
+      description: |-
+        Gets the list of services asociated to a category for an application in context
+
+        Args:
+            categoryId (int): ID of category of the services to return.
+            active (bool, optional): Flag to return only active records. Defaults to True.
+            offset (int, optional): The number of items to skip before collecting the result set. Defaults to 0.
+            limit (int, optional): The number of items to return. Defaults to 10.
+            application (str, optional): The application in context.
+
+        Returns:
+            models.CategoryServicesListResponse: The list of services for the category
+      operationId: getCategoryServices
+      parameters:
+        - required: true
+          schema:
+            title: Categoryid
+            type: integer
+          name: categoryId
+          in: path
+        - required: false
+          schema:
+            title: Active
+            type: boolean
+            default: true
+          name: active
+          in: query
+        - required: false
+          schema:
+            title: Offset
+            type: integer
+            default: 0
+          name: offset
+          in: query
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 10
+          name: limit
+          in: query
+        - required: true
+          schema:
+            title: Application
+            type: string
+          name: application
+          in: header
+        - required: true
+          schema:
+            title: Authorization
+            type: string
+          name: authorization
+          in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Category Services Api V1 Categories  Categoryid  Services Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryService'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/services/{serviceId}/serviceturns:
+    post:
+      tags:
+        - services
+      summary: Create Service Turn
+      description: |-
+        Creates a service turn for the given service
+
+        Args:
+            serviceId (int): ID of service to create a turn from
+            item (models.CreateServiceTurnPayload): The required payload
+            application (str, optional): The application in context.
+            
+        Returns:
+            models.CreateServiceTurnResponse: Basic information of the created service turn
+      operationId: createServiceTurn
+      parameters:
+        - required: true
+          schema:
+            title: Serviceid
+            type: integer
+          name: serviceId
+          in: path
+        - required: true
+          schema:
+            title: Application
+            type: string
+          name: application
+          in: header
+        - required: true
+          schema:
+            title: Authorization
+            type: string
+          name: authorization
+          in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateServiceTurnPayload'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateServiceTurnResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    Category:
+      title: Category
+      required:
+        - id
+        - name
+        - description
+        - iconUrl
+        - status
+        - isActive
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        iconUrl:
+          title: Iconurl
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+        isActive:
+          title: Isactive
+          type: boolean
+    CategoryService:
+      title: CategoryService
+      required:
+        - id
+        - name
+        - description
+        - prefix
+        - iconUrl
+        - status
+        - category
+        - isActive
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        prefix:
+          title: Prefix
+          type: string
+        iconUrl:
+          title: Iconurl
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+        category:
+          $ref: '#/components/schemas/Category'
+        isActive:
+          title: Isactive
+          type: boolean
+    CreateServiceTurnPayload:
+      title: CreateServiceTurnPayload
+      required:
+        - customerName
+      type: object
+      properties:
+        customerName:
+          title: Customername
+          type: string
+    CreateServiceTurnResponse:
+      title: CreateServiceTurnResponse
+      required:
+        - id
+        - customerName
+        - ticketNumber
+        - peopleInQueue
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        customerName:
+          title: Customername
+          type: string
+        ticketNumber:
+          title: Ticketnumber
+          type: string
+        peopleInQueue:
+          title: Peopleinqueue
+          type: integer
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    Status:
+      title: Status
+      required:
+        - id
+        - name
+        - description
+        - type
+        - isActive
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        type:
+          title: Type
+          type: string
+        isActive:
+          title: Isactive
+          type: boolean
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            type: string
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
