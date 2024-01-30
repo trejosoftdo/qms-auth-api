@@ -10,7 +10,7 @@ router = APIRouter()
 
 @router.get(
     "/",
-    dependencies=[Depends(helpers.validate_token(constants.READ_CATEGORIES_SCOPE))],
+    dependencies=[Depends(helpers.validate_api_access), Depends(helpers.validate_token(constants.READ_CATEGORIES_SCOPE))],
     tags = TAGS,
     operation_id = GET_CATEGORIES_OPERATION_ID,
     response_model = models.CategoriesListResponse
@@ -41,7 +41,7 @@ def get_categories(
 
 @router.get(
     "/{categoryId}/services",
-    dependencies=[Depends(helpers.validate_token(constants.READ_SERVICES_SCOPE))],
+    dependencies=[Depends(helpers.validate_api_access), Depends(helpers.validate_token(constants.READ_SERVICES_SCOPE))],
     tags = TAGS,
     operation_id = GET_CATEGORY_SERVICES_OPERATION_ID,
     response_model = models.CategoryServicesListResponse

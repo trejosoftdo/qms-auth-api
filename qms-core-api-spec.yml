@@ -51,6 +51,12 @@ paths:
           in: header
         - required: true
           schema:
+            title: Api Key
+            type: string
+          name: api_key
+          in: header
+        - required: true
+          schema:
             title: Authorization
             type: string
           name: authorization
@@ -125,6 +131,12 @@ paths:
           in: header
         - required: true
           schema:
+            title: Api Key
+            type: string
+          name: api_key
+          in: header
+        - required: true
+          schema:
             title: Authorization
             type: string
           name: authorization
@@ -173,6 +185,12 @@ paths:
             title: Application
             type: string
           name: application
+          in: header
+        - required: true
+          schema:
+            title: Api Key
+            type: string
+          name: api_key
           in: header
         - required: true
           schema:

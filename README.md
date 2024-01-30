@@ -86,6 +86,22 @@ Run the FastAPI application using Uvicorn:
 uvicorn main:app --reload
 ```
 
+### `AUTH_ALLOWED_API_KEYS`
+
+- **Description:** A list of allowed API keys
+- **Example:** 
+  ```plaintext
+  AUTH_ALLOWED_API_KEYS=api-key-1,api-key-w
+  ```
+
+### `AUTH_ALLOWED_IP_ADDRESSES`
+
+- **Description:** A list of allowed IP addresses
+- **Example:** 
+  ```plaintext
+  AUTH_ALLOWED_IP_ADDRESSES=127.0.0.1,10.0.12.13
+  ```
+
 The API will be accessible at http://localhost:5002.
 
 ## API Documentation
