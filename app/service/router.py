@@ -10,7 +10,7 @@ router = APIRouter()
 
 @router.post(
     "/{serviceId}/serviceturns",
-    dependencies = [Depends(helpers.validate_token(constants.WRITE_SERVICE_TURNS_SCOPE))],
+    dependencies = [Depends(helpers.validate_api_access), Depends(helpers.validate_token(constants.WRITE_SERVICE_TURNS_SCOPE))],
     tags = TAGS,
     operation_id = CREATE_SERVICE_TURN_OPERATION_ID,
     response_model = models.CreateServiceTurnResponse
