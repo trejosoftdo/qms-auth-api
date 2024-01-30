@@ -80,12 +80,6 @@ In order to run this project, you need to set up the following environment varia
   IAM_API_KEY=test-iam-api-key
   ```
 
-## Running the Application
-Run the FastAPI application using Uvicorn:
-```bash
-uvicorn main:app --reload
-```
-
 ### `AUTH_ALLOWED_API_KEYS`
 
 - **Description:** A list of allowed API keys
@@ -101,6 +95,12 @@ uvicorn main:app --reload
   ```plaintext
   AUTH_ALLOWED_IP_ADDRESSES=127.0.0.1,10.0.12.13
   ```
+
+## Running the Application
+Run the FastAPI application using Uvicorn:
+```bash
+uvicorn main:app --reload
+```
 
 The API will be accessible at http://localhost:5002.
 
