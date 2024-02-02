@@ -7,3 +7,6 @@ urllib3==1.26.2
 chardet==3.0.4
 certifi==2020.11.8
 pylint==3.0.3
+sqlalchemy==2.0.25
+sqlalchemyseed==2.0.0
+mysql-connector-python==8.3.0

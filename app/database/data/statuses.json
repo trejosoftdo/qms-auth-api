@@ -1,0 +1,13 @@
+[
+  {
+    "model": ".Status",
+    "data": [
+      {
+        "name": "Activo"
+      },
+      {
+        "name": "Inactivo"
+      }
+    ]
+  }
+]
