@@ -1,5 +1,7 @@
-from dotenv import load_dotenv
+"""Environment variables"""
+
 import os
+from dotenv import load_dotenv
 from . import constants
 
 load_dotenv()
@@ -10,5 +12,6 @@ app_client_id = os.getenv(constants.APP_CLIENT_ID_ENV_NAME)
 app_client_secret = os.getenv(constants.APP_CLIENT_SECRET_ENV_NAME)
 
 allowed_ip_adresses = os.getenv(constants.AUTH_ALLOWED_IP_ADDRESSES_ENV_NAME)
-allowed_api_keys = os.getenv(constants.AUTH_ALLOWED_API_KEYS_ENV_NAME, constants.EMPTY_VALUE)
-
+allowed_api_keys = os.getenv(
+    constants.AUTH_ALLOWED_API_KEYS_ENV_NAME, constants.EMPTY_VALUE
+)

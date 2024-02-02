@@ -1,3 +1,5 @@
+"""Service API router"""
+
 TAGS = ["services"]
 
 # Operation Ids
