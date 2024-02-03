@@ -16,6 +16,7 @@ from sqlalchemy.orm import mapped_column, relationship
 from . import setup
 
 # pylint: disable=R0903
+# pylint: disable=E1102
 
 class StatusType(enum.Enum):
     """Diferent types of statuses
