@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from sqlalchemy import select, func
+from .. import constants
 from ..database import models as db_models, main
 from . import models as api_models
 
@@ -90,14 +91,14 @@ def create_service_turn(
     """
     service = get_service_by_id(service_id)
     turns_count = get_total_turns_for_service_id(service_id)
-    status = get_status_by_code_and_type("PENDING", db_models.StatusType.TURN)
-    priority = get_priority_by_code("NORMAL_PRIORITY")
+    status = get_status_by_code_and_type(constants.DEFAULT_TURN_STATUS, db_models.StatusType.TURN)
+    priority = get_priority_by_code(constants.DEFAULT_TURN_PRIORITY)
     current_datetime = datetime.now()
     turn = db_models.ServiceTurn(
         customer_name=item.customerName,
         service_id=service.id,
         ticket_number=f"{service.prefix}-{turns_count + 1}",
-        created_by="SYSTEM",
+        created_by=constants.SYSTEM_CREATOR,
         last_modified=current_datetime,
         created=current_datetime,
         status_id=status.id,
