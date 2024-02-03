@@ -1,6 +1,8 @@
 """Service API handlers"""
 
 from . import models
+from . import mappers
+from . import service
 
 # pylint: disable=W0613
 
@@ -17,9 +19,9 @@ def create_service_turn(
     Returns:
         models.CreateServiceTurnResponse: Created service turn
     """
-    return models.CreateServiceTurnResponse(
-        id=4,
-        customerName=item.customerName,
-        ticketNumber="PS-NPA-00045",
-        peopleInQueue=12,
+    item = service.create_service_turn(
+        application,
+        service_id,
+        item,
     )
+    return mappers.map_service_turn_response(item)
