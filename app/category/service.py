@@ -1,28 +1,32 @@
-"""Category API handlers"""
+"""Category API service"""
 
-from . import mappers
-from . import models as api_models
-from . import service
+from typing import List
+from sqlalchemy import select
+from ..database import models as db_models, main
 
 # pylint: disable=W0613
 
-
 def get_categories(
     application: str, active: bool, offset: int, limit: int
-) -> api_models.CategoriesListResponse:
-    """Get list of categories
+) -> List[db_models.Category]:
+    """Get list of categories from database
 
     Args:
-        application (str): The application/realm in context
+        application (str): The application in context
         active (bool, optional): Flag to return only active records. Defaults to True.
         offset (int, optional): The items to skip before collecting the result set. Defaults to 0.
         limit (int, optional): The items to return. Defaults to 10.
 
     Returns:
-        api_models.CategoriesListResponse: List of categories
+        List[db_models.Category]: List of categories
     """
-    items = service.get_categories(application, active, offset, limit)
-    return list(map(mappers.map_category, items))
+    statement = (
+        select(db_models.Category)
+        .where(db_models.Category.is_active == active)
+        .limit(limit)
+        .offset(offset)
+    )
+    return main.session.scalars(statement)
 
 
 def get_category_services(
@@ -31,7 +35,7 @@ def get_category_services(
     active: bool,
     offset: int,
     limit: int,
-) -> api_models.CategoryServicesListResponse:
+) -> List[db_models.Service]:
     """Gets the list of services asociated to a category for an application in context
 
     Args:
@@ -42,13 +46,13 @@ def get_category_services(
         limit (int, optional): The number of items to return.
 
     Returns:
-        api_models.CategoryServicesListResponse: The list of services for the category
+        List[db_models.Service]: The list of services
     """
-    items = service.get_category_services(
-        application,
-        category_id,
-        active,
-        offset,
-        limit,
+    statement = (
+        select(db_models.Service)
+        .where(db_models.Service.is_active == active)
+        .where(db_models.Service.category_id == category_id)
+        .limit(limit)
+        .offset(offset)
     )
-    return list(map(mappers.map_category_service, items))
+    return main.session.scalars(statement)
