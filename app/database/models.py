@@ -10,8 +10,8 @@ from sqlalchemy import (
     Enum,
     Boolean,
     ForeignKey,
-    func,
 )
+from sqlalchemy.sql import func
 from sqlalchemy.orm import mapped_column, relationship
 from . import setup
 
