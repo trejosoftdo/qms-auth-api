@@ -13,18 +13,65 @@ SYSTEM_CREATOR = "SYSTEM"
 DEFAULT_TURN_STATUS = "PENDING"
 DEFAULT_TURN_PRIORITY = "NORMAL_PRIORITY"
 
-# Device Token Auth
-READ_CATEGORIES_SCOPE = "read_categories"
-READ_SERVICES_SCOPE = "read_services"
-READ_SERVICE_TURNS_SCOPE = "read_serviceturns"
-WRITE_SERVICE_TURNS_SCOPE = "write_serviceturns"
+# Scopes START
 
-DEVICE_TOKEN_SCOPES = (
-    READ_CATEGORIES_SCOPE,
-    READ_SERVICES_SCOPE,
-    READ_SERVICE_TURNS_SCOPE,
-    WRITE_SERVICE_TURNS_SCOPE,
-)
+# Read status information
+READ_STATUSES_SCOPE="read_statuses"
+# Create, modify and delete status information
+WRITE_STATUSES_SCOPE="write_statuses"
+# Administrate status information
+ADMIN_STATUSES_SCOPE="admin_statuses"
+
+# Read priority information
+READ_PRIORITIES_SCOPE="read_priorities"
+# Create, modify and delete priority information
+WRITE_PRIORITIES_SCOPE="write_priorities"
+# Administrate priority information
+ADMIN_PRIORITIES_SCOPE="admin_priorities"
+
+# Read category information
+READ_CATEGORIES_SCOPE = "read_categories"
+# Create, modify and delete category information
+WRITE_CATEGORIES_SCOPE = "write_categories"
+# Administrate category information
+ADMIN_CATEGORIES_SCOPE = "admin_categories"
+
+# Read service information
+READ_SERVICES_SCOPE = "read_services"
+# Create, modify and delete service information
+WRITE_SERVICES_SCOPE = "write_services"
+# Administrate service information
+ADMIN_SERVICES_SCOPE = "admin_services"
+
+# Read services turns information
+READ_SERVICE_TURNS_SCOPE = "read_serviceturns"
+# Create, modify and delete services turns information
+WRITE_SERVICE_TURNS_SCOPE = "write_serviceturns"
+# Administrate services turns information
+ADMIN_SERVICE_TURNS_SCOPE = "admin_serviceturns"
+
+# Read customer information
+READ_CUSTOMERS_SCOPE = "read_customers"
+# Create, modify and delete customer information
+WRITE_CUSTOMERS_SCOPE = "write_customers"
+# Administrate customer information
+ADMIN_CUSTOMERS_SCOPE = "admin_customers"
+
+# Read customers' appointments information
+READ_APPOINTMENTS_SCOPE = "read_appointments"
+# Create, modify and delete customers' appointments information
+WRITE_APPOINTMENTS_SCOPE = "write_appointments"
+# Administrate customers' appointments information
+ADMIN_APPOINTMENTS_SCOPE = "admin_appointments"
+
+# Read queue information
+READ_QUEUES_SCOPE = "read_queues"
+# Create, modify and delete queue information
+WRITE_QUEUES_SCOPE = "write_queues"
+# Administrate queue
+ADMIN_QUEUES_SCOPE = "admin_queues"
+
+# Scopes END
 
 # API Metadata
 API_TITLE = "QMS Core API"
@@ -35,6 +82,7 @@ API_VERSION = "1.0.0"
 # API routes prefixes
 CATEGORIES_ROUTE_PREFIX = "/api/v1/categories"
 SERVICES_ROUTE_PREFIX = "/api/v1/services"
+STATUSES_ROUTE_PREFIX = "/api/v1/statuses"
 
 # Environment names
 AUTH_API_BASE_URL_ENV_NAME = "AUTH_API_BASE_URL"
