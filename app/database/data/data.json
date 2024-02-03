@@ -1,0 +1,542 @@
+[
+  {
+    "model": "database.models.Status",
+    "data": [
+      {
+        "id": 1,
+        "name": "Activo",
+        "code": "ACTIVE",
+        "description": "El servicio está actualmente activo.",
+        "type": "SERVICE",
+        "is_active": true
+      },
+      {
+        "id": 2,
+        "name": "Inactivo",
+        "code": "INACTIVE",
+        "description": "Elservicio está actualmente inactivo.",
+        "type": "SERVICE",
+        "is_active": true
+      },
+      {
+        "id": 3,
+        "name": "Activo",
+        "code": "ACTIVE",
+        "description": "El categoría está actualmente activa.",
+        "type": "CATEGORY",
+        "is_active": true
+      },
+      {
+        "id": 4,
+        "name": "Inactivo",
+        "code": "INACTIVE",
+        "description": "La categoría está actualmente inactiva.",
+        "type": "CATEGORY",
+        "is_active": true
+      },
+      {
+        "id": 5,
+        "name": "Pendiente",
+        "code": "PENDING",
+        "description": "El turno está actualmente pendiente.",
+        "type": "TURN",
+        "is_active": true
+      },
+      {
+        "id": 6,
+        "name": "Suspendido",
+        "code": "SUSPENDED",
+        "description": "El turno está actualmente suspendido.",
+        "type": "TURN",
+        "is_active": true
+      },
+      {
+        "id": 7,
+        "name": "Atendido",
+        "code": "ATTENDED",
+        "description": "El turno está actualmente atendido.",
+        "type": "TURN",
+        "is_active": true
+      },
+      {
+        "id": 8,
+        "name": "Activo",
+        "code": "ACTIVE",
+        "description": "El cliente está actualmente activo.",
+        "type": "CUSTOMER",
+        "is_active": true
+      },
+      {
+        "id": 9,
+        "name": "Inactivo",
+        "code": "INACTIVE",
+        "description": "La cliente está actualmente inactivo.",
+        "type": "CUSTOMER",
+        "is_active": true
+      },
+      {
+        "id": 10,
+        "name": "Dado de Baja",
+        "code": "CANCELLED",
+        "description": "La cliente está actualmente dado de baja.",
+        "type": "CUSTOMER",
+        "is_active": true
+      },
+      {
+        "id": 11,
+        "name": "Abierta",
+        "code": "OPEN",
+        "description": "La cola está actualmente abierta.",
+        "type": "QUEUE",
+        "is_active": true
+      },
+      {
+        "id": 12,
+        "name": "Cerrada",
+        "code": "CLOSED",
+        "description": "La cola está actualmente cerrada.",
+        "type": "QUEUE",
+        "is_active": true
+      },
+      {
+        "id": 13,
+        "name": "Dada de baja",
+        "code": "CANCELLED",
+        "description": "La cola está actualmente dada de baja.",
+        "type": "QUEUE",
+        "is_active": true
+      }
+    ]
+  },
+  {
+    "model": "database.models.Priority",
+    "data": [
+      {
+        "id": 1,
+        "name": "Alta Prioridad",
+        "code": "HIGH_PRIORITY",
+        "description": "Tareas o problemas que requieren atención inmediata y deben ser abordados lo antes posible.",
+        "is_active": true
+      },
+      {
+        "id": 2,
+        "name": "Prioridad Media",
+        "code": "MEDIUM_PRIORITY",
+        "description": "Tareas o problemas que son importantes pero no tan urgentes como los elementos de alta prioridad. Deben ser abordados después de las tareas de alta prioridad.",
+        "is_active": true
+      },
+      {
+        "id": 3,
+        "name": "Baja Prioridad",
+        "code": "LOW_PRIORITY",
+        "description": "Tareas o problemas que son menos urgentes y pueden ser pospuestos o abordados después de los elementos de alta y media prioridad.",
+        "is_active": true
+      },
+      {
+        "id": 4,
+        "name": "Prioridad Crítica",
+        "code": "CRITICAL_PRIORITY",
+        "description": "Tareas o problemas que son de suma importancia y requieren acción inmediata para evitar consecuencias graves.",
+        "is_active": true
+      },
+      {
+        "id": 5,
+        "name": "Prioridad Normal",
+        "code": "NORMAL_PRIORITY",
+        "description": "Tareas o problemas que entran dentro del alcance regular de las operaciones y no son particularmente urgentes o críticos.",
+        "is_active": true
+      },
+      {
+        "id": 6,
+        "name": "Prioridad de Emergencia",
+        "code": "EMERGENCY_PRIORITY",
+        "description": "Tareas o problemas que son urgentes y requieren acción inmediata para evitar daños graves, lesiones o pérdidas.",
+        "is_active": true
+      },
+      {
+        "id": 7,
+        "name": "Prioridad Urgente",
+        "code": "URGENT_PRIORITY",
+        "description": "Tareas o problemas que deben ser abordados rápidamente pero que no necesariamente tienen implicaciones críticas si se retrasan ligeramente.",
+        "is_active": true
+      },
+      {
+        "id": 8,
+        "name": "Prioridad Rutinaria",
+        "code": "ROUTINE_PRIORITY",
+        "description": "Tareas o problemas que forman parte de las operaciones regulares y que típicamente se manejan en el curso normal de los negocios.",
+        "is_active": true
+      },
+      {
+        "id": 9,
+        "name": "Prioridad Diferida",
+        "code": "DEFERRED_PRIORITY",
+        "description": "Tareas o problemas que son postergados o aplazados intencionalmente hasta un momento posterior o hasta que se aborden otras prioridades.",
+        "is_active": true
+      }
+    ]
+  },
+  {
+    "model": "database.models.Category",
+    "data": [
+      {
+        "id": 1,
+        "name": "Servicios de Depósito",
+        "code": "DEPOSIT_SERVICES",
+        "icon_url": "app://web",
+        "description": "Servicios relacionados con cuentas de ahorro, cuentas corrientes, certificados de depósito (CD) y cuentas del mercado monetario.",
+        "is_active": true,
+        "status_id": 3
+      },
+      {
+        "id": 2,
+        "name": "Servicios de Préstamo",
+        "code": "LOAN_SERVICES",
+        "icon_url": "app://web",
+        "description": "Servicios relacionados con préstamos personales, hipotecas, préstamos para automóviles y préstamos comerciales.",
+        "is_active": true,
+        "status_id": 3
+      },
+      {
+        "id": 3,
+        "name": "Servicios de Inversión",
+        "code": "INVESTMENT_SERVICES",
+        "icon_url": "app://web",
+        "description": "Servicios relacionados con acciones y bonos, fondos mutuos, cuentas de jubilación (IRA, 401k) y planificación financiera.",
+        "is_active": true,
+        "status_id": 3
+      },
+      {
+        "id": 4,
+        "name": "Servicios Electrónicos",
+        "code": "ELECTRONIC_SERVICES",
+        "icon_url": "app://web",
+        "description": "Servicios que incluyen banca en línea, banca móvil, servicios de cajero automático y transferencias electrónicas.",
+        "is_active": true,
+        "status_id": 3
+      },
+      {
+        "id": 5,
+        "name": "Servicios de Seguros",
+        "code": "INSURANCE_SERVICES",
+        "icon_url": "app://web",
+        "description": "Servicios relacionados con seguros de vida, seguros de propiedad, seguros de salud y seguros de vehículos.",
+        "is_active": true,
+        "status_id": 3
+      },
+      {
+        "id": 6,
+        "name": "Otros Servicios",
+        "code": "OTHER_SERVICES",
+        "icon_url": "app://web",
+        "description": "Servicios adicionales que pueden incluir cajas de seguridad, cambio de moneda extranjera, servicios de notario y tarjetas de crédito.",
+        "is_active": true,
+        "status_id": 3
+      }
+    ]
+  },
+  {
+    "model": "database.models.Service",
+    "data": [
+      {
+        "id": 1,
+        "category_id": 1,
+        "name": "Cuenta de Ahorro",
+        "code": "SAVINGS_ACCOUNT",
+        "prefix": "DS-SA",
+        "description": "Una cuenta que permite a los clientes depositar fondos y ganar intereses sobre el saldo.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 2,
+        "category_id": 1,
+        "name": "Cuenta Corriente",
+        "code": "CHECKING_ACCOUNT",
+        "prefix": "DS-CA",
+        "description": "Una cuenta que permite a los clientes realizar transacciones frecuentes, como depósitos, retiros y pagos de cheques.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 3,
+        "category_id": 1,
+        "name": "Certificado de Depósito (CD)",
+        "code": "CERTIFICATE_OF_DEPOSIT",
+        "prefix": "DS-COD",
+        "description": "Un instrumento financiero que ofrece un interés fijo a cambio de que el cliente deposite una cantidad específica de dinero durante un período de tiempo determinado.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 4,
+        "category_id": 1,
+        "name": "Cuenta del Mercado Monetario",
+        "code": "MONEY_MARKET_ACCOUNT",
+        "prefix": "DS-MMA",
+        "description": "Una cuenta de ahorro que generalmente ofrece una tasa de interés más alta que una cuenta de ahorro estándar y puede incluir cheques limitados y retiros.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 5,
+        "category_id": 2,
+        "name": "Préstamos Personales",
+        "code": "PERSONAL_LOANS",
+        "prefix": "LS-PL",
+        "description": "Préstamos que los individuos pueden solicitar para gastos personales como consolidación de deudas, mejoras del hogar o gastos médicos.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 6,
+        "category_id": 2,
+        "name": "Préstamos Hipotecarios",
+        "code": "HOME_LOANS",
+        "prefix": "LS-HL",
+        "description": "Préstamos utilizados para financiar la compra de una vivienda.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 7,
+        "category_id": 2,
+        "name": "Préstamos para Automóviles",
+        "code": "AUTO_LOANS",
+        "prefix": "LS-AL",
+        "description": "Préstamos destinados a la compra de vehículos nuevos o usados.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 8,
+        "category_id": 2,
+        "name": "Préstamos Comerciales",
+        "code": "BUSINESS_LOANS",
+        "prefix": "LS-BL",
+        "description": "Préstamos destinados a financiar actividades comerciales, como expansión, inventario o capital de trabajo.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 9,
+        "category_id": 3,
+        "name": "Acciones y Bonos",
+        "code": "STOCKS_AND_BONDS",
+        "prefix": "IS-SAB",
+        "description": "Instrumentos financieros que representan la propiedad parcial de una empresa (acciones) o deuda (bonos).",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 10,
+        "category_id": 3,
+        "name": "Fondos Mutuos",
+        "code": "MUTUAL_FUNDS",
+        "prefix": "IS-MF",
+        "description": "Pools de dinero de múltiples inversionistas utilizados para comprar una cartera diversificada de valores.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 11,
+        "category_id": 3,
+        "name": "Cuentas de Jubilación (IRA, 401k)",
+        "code": "RETIREMENT_ACCOUNTS",
+        "prefix": "IS-RA",
+        "description": "Cuentas de ahorro diseñadas específicamente para la jubilación, con beneficios fiscales especiales.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 12,
+        "category_id": 3,
+        "name": "Planificación Financiera",
+        "code": "FINANCIAL_PLANNING",
+        "prefix": "IS-FP",
+        "description": "Servicios que ayudan a los individuos a gestionar sus finanzas y alcanzar sus metas financieras a largo plazo.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 13,
+        "category_id": 4,
+        "name": "Banca en Línea",
+        "code": "ONLINE_BANKING",
+        "prefix": "ES-OB",
+        "description": "Servicios bancarios que se realizan a través de Internet, permitiendo a los clientes realizar transacciones y administrar sus cuentas en línea.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 14,
+        "category_id": 4,
+        "name": "Banca Móvil",
+        "code": "MOBILE_BANKING",
+        "prefix": "ES-MB",
+        "description": "Servicios bancarios que se realizan a través de dispositivos móviles como teléfonos inteligentes o tabletas.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 15,
+        "category_id": 4,
+        "name": "Servicios de Cajero Automático",
+        "code": "ATM_SERVICES",
+        "prefix": "ES-AS",
+        "description": "Servicios que permiten a los clientes realizar transacciones bancarias, como retiros de efectivo y depósitos, en cajeros automáticos.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 16,
+        "category_id": 4,
+        "name": "Transferencias Electrónicas",
+        "code": "WIRE_TRANSFERS",
+        "prefix": "ES-WT",
+        "description": "Transferencias de fondos realizadas electrónicamente de una cuenta a otra, a menudo utilizadas para pagos o transferencias entre cuentas.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 17,
+        "category_id": 5,
+        "name": "Seguro de Vida",
+        "code": "LIFE_INSURANCE",
+        "prefix": "ISS-LI",
+        "description": "Un contrato que garantiza el pago de un beneficio a los beneficiarios designados en caso de fallecimiento del asegurado.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 18,
+        "category_id": 5,
+        "name": "Seguro de Propiedad",
+        "code": "PROPERTY_INSURANCE",
+        "prefix": "ISS-PI",
+        "description": "Un seguro que proporciona cobertura contra daños o pérdidas a la propiedad del asegurado.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 19,
+        "category_id": 5,
+        "name": "Seguro de Salud",
+        "code": "HEALTH_INSURANCE",
+        "prefix": "ISS-HI",
+        "description": "Un tipo de seguro que cubre los gastos médicos y quirúrgicos del asegurado.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 20,
+        "category_id": 5,
+        "name": "Seguro de Vehículos",
+        "code": "VEHICLE_INSURANCE",
+        "prefix": "ISS-VI",
+        "description": "Un seguro que proporciona protección contra daños a vehículos y responsabilidad por lesiones o daños a terceros.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 21,
+        "category_id": 6,
+        "name": "Cajas de Seguridad",
+        "code": "SAFE_DEPOSIT_BOXES",
+        "prefix": "OS-SDB",
+        "description": "Recipientes de almacenamiento seguros que se alquilan a los clientes para guardar objetos de valor y documentos importantes.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 22,
+        "category_id": 6,
+        "name": "Cambio de Moneda Extranjera",
+        "code": "FOREIGN_CURRENCY_EXCHANGE",
+        "prefix": "OS-FCE",
+        "description": "Servicio que permite a los clientes cambiar una moneda por otra.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 23,
+        "category_id": 6,
+        "name": "Servicios de Notario",
+        "code": "NOTARY_SERVICES",
+        "prefix": "OS-NS",
+        "description": "Servicios legales que incluyen la autenticación de documentos, la toma de declaraciones juradas y la certificación de firmas.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      },
+      {
+        "id": 24,
+        "category_id": 6,
+        "name": "Tarjetas de Crédito",
+        "code": "CREDIT_CARDS",
+        "prefix": "OS-CC",
+        "description": "Instrumentos de crédito que permiten a los titulares de tarjetas realizar compras y obtener crédito con pagos diferidos.",
+        "is_active": true,
+        "status_id": 1,
+        "icon_url": "app://web"
+      }
+    ]
+  },
+  {
+    "model": "database.models.ServiceTurn",
+    "data": [
+      {
+        "id": 1,
+        "ticket_number": "OS-CC-19",
+        "customer_name": "John Doe",
+        "service_id": 24,
+        "status_id": 5,
+        "priority_id": 1,
+        "created_by": "SYSTEM",
+        "last_modified_by": "SYSTEM",
+        "service_ending_expected": "2023-10-20 03:14:07",
+        "service_started": "2023-10-20 03:14:07",
+        "service_ended": "2023-10-20 03:14:07",
+        "created": "2023-10-20 03:14:07",
+        "last_modified": "2023-10-20 03:14:07"
+      },
+      {
+        "id": 2,
+        "ticket_number": "ISS-VI-22",
+        "customer_name": "Mary Jane",
+        "service_id": 20,
+        "status_id": 5,
+        "priority_id": 1,
+        "created_by": "SYSTEM",
+        "last_modified_by": "SYSTEM",
+        "service_ending_expected": "2023-10-20 03:14:07",
+        "service_started": "2023-10-20 03:14:07",
+        "service_ended": "2023-10-20 03:14:07",
+        "created": "2023-10-20 03:14:07",
+        "last_modified": "2023-10-20 03:14:07"
+      }
+    ]
+  }
+]

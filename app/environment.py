@@ -15,3 +15,5 @@ allowed_ip_adresses = os.getenv(constants.AUTH_ALLOWED_IP_ADDRESSES_ENV_NAME)
 allowed_api_keys = os.getenv(
     constants.AUTH_ALLOWED_API_KEYS_ENV_NAME, constants.EMPTY_VALUE
 )
+
+database_connection_string = os.getenv(constants.DB_CONNECTION_STRING_ENV_NAME)

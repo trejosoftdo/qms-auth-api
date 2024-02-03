@@ -100,6 +100,14 @@ In order to run this project, you need to set up the following environment varia
   AUTH_ALLOWED_IP_ADDRESSES=127.0.0.1,10.0.12.13
   ```
 
+### `DB_CONNECTION_STRING`
+
+- **Description:** Database connection string
+- **Example:** 
+  ```plaintext
+  DB_CONNECTION_STRING=mysql+mysqlconnector://user:pass@host/db
+  ```
+
 ## Running the Application
 Run the FastAPI application using Uvicorn:
 ```bash
