@@ -105,6 +105,61 @@
         "description": "La cola está actualmente dada de baja.",
         "type": "QUEUE",
         "is_active": true
+      },
+      {
+        "id": 14,
+        "name": "Pendiente",
+        "code": "PENDING",
+        "description": "El turno está actualmente pendiente.",
+        "type": "APPOINTMENT",
+        "is_active": true
+      },
+      {
+        "id": 15,
+        "name": "Suspendido",
+        "code": "SUSPENDED",
+        "description": "El turno está actualmente suspendido.",
+        "type": "APPOINTMENT",
+        "is_active": true
+      },
+      {
+        "id": 16,
+        "name": "Atendido",
+        "code": "ATTENDED",
+        "description": "El turno está actualmente atendido.",
+        "type": "APPOINTMENT",
+        "is_active": true
+      }
+    ]
+  },
+  {
+    "model": "database.models.Customer",
+    "data": [
+      {
+        "id": 1,
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john.doe@testqms.com",
+        "gender": "M",
+        "year_of_birth": 1983,
+        "status_id": 8,
+        "created": "2023-10-20 03:14:07",
+        "created_by": "SYSTEM",
+        "last_modified_by": "SYSTEM",
+        "last_modified": "2023-10-20 03:14:07"  
+      },
+      {
+        "id": 2,
+        "first_name": "Mary",
+        "last_name": "Jane",
+        "email": "mary.jane@testqms.com",
+        "gender": "F",
+        "year_of_birth": 1995,
+        "status_id": 8,
+        "created": "2023-10-20 03:14:07",
+        "created_by": "SYSTEM",
+        "last_modified_by": "SYSTEM",
+        "last_modified": "2023-10-20 03:14:07"  
       }
     ]
   },
@@ -529,6 +584,177 @@
         "service_id": 20,
         "status_id": 5,
         "priority_id": 1,
+        "created_by": "SYSTEM",
+        "last_modified_by": "SYSTEM",
+        "service_ending_expected": "2023-10-20 03:14:07",
+        "service_started": "2023-10-20 03:14:07",
+        "service_ended": "2023-10-20 03:14:07",
+        "created": "2023-10-20 03:14:07",
+        "last_modified": "2023-10-20 03:14:07"
+      }
+    ]
+  },
+  {
+    "model": "database.models.Queue",
+    "data": [
+      {
+        "id": 1,
+        "name": "Caja General",
+        "code": "GENERAL_COUNTER",
+        "description": "Atención general para transacciones bancarias y consultas de clientes.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 2,
+        "name": "Préstamos Hipotecarios",
+        "code": "MORTGAGE_LOANS",
+        "description": "Información y asistencia sobre préstamos para la compra o refinanciamiento de viviendas.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 3,
+        "name": "Atención al Cliente",
+        "code": "CUSTOMER_SERVICE",
+        "description": "Servicio de atención personalizada para resolver consultas y problemas de los clientes.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 4,
+        "name": "Cambio de Moneda",
+        "code": "CURRENCY_EXCHANGE",
+        "description": "Servicio para cambiar una moneda por otra según las tasas de cambio actuales.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 5,
+        "name": "Consultas de Cuentas",
+        "code": "ACCOUNT_INQUIRIES",
+        "description": "Consulta de saldos, movimientos y otros detalles relacionados con las cuentas bancarias.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 6,
+        "name": "Apertura de Cuentas",
+        "code": "ACCOUNT_OPENING",
+        "description": "Proceso para abrir nuevas cuentas bancarias, ya sean de ahorro, corrientes o de inversión.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 7,
+        "name": "Tarjetas de Crédito",
+        "code": "CREDIT_CARDS",
+        "description": "Información y solicitud de tarjetas de crédito para compras y transacciones financieras.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 8,
+        "name": "Servicios de Inversión",
+        "code": "INVESTMENT_SERVICES",
+        "description": "Asesoramiento y gestión de inversiones en acciones, bonos, fondos mutuos y otros instrumentos financieros.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 9,
+        "name": "Servicios de Seguros",
+        "code": "INSURANCE_SERVICES",
+        "description": "Oferta y gestión de seguros de vida, salud, hogar, automóvil y otros tipos de seguros.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 10,
+        "name": "Servicios Electrónicos",
+        "code": "ELECTRONIC_SERVICES",
+        "description": "Acceso y soporte para servicios bancarios en línea, banca móvil, transferencias electrónicas, entre otros.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 11,
+        "name": "Solicitud de Préstamos",
+        "code": "LOAN_APPLICATION",
+        "description": "Proceso para solicitar préstamos personales, hipotecarios, automotrices u otros tipos de préstamos.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 12,
+        "name": "Asesoramiento Financiero",
+        "code": "FINANCIAL_ADVICE",
+        "description": "Servicio de consultoría y asesoramiento financiero para planificar inversiones, ahorros y jubilación.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 13,
+        "name": "Caja Rápida",
+        "code": "EXPRESS_COUNTER",
+        "description": "Atención rápida para transacciones simples y rápidas, evitando largas esperas.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 14,
+        "name": "Transferencias Internacionales",
+        "code": "INTERNATIONAL_TRANSFERS",
+        "description": "Proceso para realizar transferencias de dinero hacia o desde el extranjero.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      },
+      {
+        "id": 15,
+        "name": "Servicios Notariales",
+        "code": "NOTARY_SERVICES",
+        "description": "Servicios legales que incluyen autenticación de documentos, firmas y otros trámites notariales.",
+        "is_active": true,
+        "status_id": 11,
+        "priority_id": 1
+      }
+    ]
+  },
+  {
+    "model": "database.models.Appointment",
+    "data": [
+      {
+        "id": 1,
+        "customer_id": 1,
+        "service_id": 24,
+        "status_id": 14,
+        "created_by": "SYSTEM",
+        "last_modified_by": "SYSTEM",
+        "service_ending_expected": "2023-10-20 03:14:07",
+        "service_started": "2023-10-20 03:14:07",
+        "service_ended": "2023-10-20 03:14:07",
+        "created": "2023-10-20 03:14:07",
+        "last_modified": "2023-10-20 03:14:07"
+      },
+      {
+        "id": 2,
+        "customer_id": 2,
+        "service_id": 12,
+        "status_id": 14,
         "created_by": "SYSTEM",
         "last_modified_by": "SYSTEM",
         "service_ending_expected": "2023-10-20 03:14:07",
