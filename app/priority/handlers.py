@@ -1,6 +1,7 @@
 """Priority API handlers"""
 
 from .. import base_api_models
+from .. import mocks
 from . import models as priority_api_models
 
 # pylint: disable=W0613
@@ -19,16 +20,7 @@ def get_priorities(
     Returns:
         PrioritiesListResponse: List of priorities
     """
-    return [
-        base_api_models.Priority(
-            id=1,
-            name="Baja",
-            code="LOW_PRIORITY",
-            description="Prioridad baja",
-            weight=3,
-            isActive=True,
-        )
-    ]
+    return [mocks.priority]
 
 
 def get_priority_by_id(priority_id: int) -> base_api_models.Priority:
@@ -40,14 +32,7 @@ def get_priority_by_id(priority_id: int) -> base_api_models.Priority:
     Returns:
         Priority: Priority for id
     """
-    return base_api_models.Priority(
-        id=priority_id,
-        name="Baja",
-        code="LOW_PRIORITY",
-        description="Prioridad baja",
-        weight=3,
-        isActive=True,
-    )
+    return mocks.priority
 
 
 def delete_priority_by_id(priority_id: int) -> base_api_models.APIResponse:

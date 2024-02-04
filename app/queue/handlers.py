@@ -1,27 +1,11 @@
 """Queue API handlers"""
 
 from .. import base_api_models
+from .. import mocks
 from . import models as queue_api_models
 
 # pylint: disable=W0613
 
-status = base_api_models.Status(
-    id=3,
-    name="Activo",
-    code="ACTIVE",
-    description="Estado activo.",
-    type="CUSTOMER",
-    isActive=True,
-)
-
-priority = base_api_models.Priority(
-    id=3,
-    name="Normal",
-    code="NORMAL_PRIORITY",
-    description="Prioridad normal",
-    weight=4,
-    isActive=True,
-)
 
 def get_queues(
     active: bool, offset: int, limit: int
@@ -36,17 +20,7 @@ def get_queues(
     Returns:
         QueuesListResponse: List of queues
     """
-    return [
-        base_api_models.Queue(
-            id=1,
-            name="Cola 1",
-            code="QUEUE_1",
-            description="Primera cola",
-            isActive=True,
-            status=status,
-            priority=priority
-        )
-    ]
+    return [mocks.queue]
 
 
 def get_queue_by_id(queue_id: int) -> base_api_models.Queue:
@@ -58,15 +32,7 @@ def get_queue_by_id(queue_id: int) -> base_api_models.Queue:
     Returns:
         Queue: Queue for id
     """
-    return base_api_models.Queue(
-        id=queue_id,
-        name="Cola 2",
-        code="QUEUE_2",
-        description="Segunda cola",
-        isActive=True,
-        status=status,
-        priority=priority,
-    )
+    return mocks.queue
 
 
 def delete_queue_by_id(queue_id: int) -> base_api_models.APIResponse:

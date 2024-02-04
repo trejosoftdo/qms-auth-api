@@ -45,3 +45,5 @@ class PatchCustomerPayload(base_api_models.CustomerBasicData):
 
 
 CustomersListResponse = List[base_api_models.Customer]
+CustomersServiceTurnsListResponse = List[base_api_models.ServiceTurn]
+CustomersAppointmentsListResponse = List[base_api_models.Appointment]

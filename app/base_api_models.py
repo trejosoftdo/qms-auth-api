@@ -1,7 +1,7 @@
 """Common API models"""
 
 from enum import Enum
-# from typing import List
+from typing import Optional
 from pydantic import BaseModel
 
 
@@ -91,6 +91,54 @@ class Queue(QueueBasicData):
     priority: Priority
 
 
+class CategoryBasicData(BaseModel):
+    """Category basic data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    id: int
+    name: str
+    description: str
+    iconUrl: str
+    isActive: bool
+
+class Category(CategoryBasicData):
+    """Category data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    status: Status
+
+
+class ServiceBasicData(BaseModel):
+    """Service basic data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    id: int
+    name: str
+    description: str
+    prefix: str
+    iconUrl: str
+    status: Status
+    isActive: bool
+
+class Service(ServiceBasicData):
+    """Service data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    category: Category
+
+
 class CustomerBasicData(BaseModel):
     """Customer basic data
 
@@ -118,3 +166,64 @@ class Customer(CustomerBasicData):
     lastModified: str
     lastModifiedBy: str
     status: Status
+
+
+class AppointmentBasicData(BaseModel):
+    """Appointment basic data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    id: int
+
+class Appointment(AppointmentBasicData):
+    """Appointment data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    created: str
+    createdBy: str
+    lastModified: str
+    lastModifiedBy: str
+    serviceStarted: Optional[str] = None
+    serviceEndingExpected: Optional[str] = None
+    serviceEnded: Optional[str] = None
+    customer: Customer
+    status: Status
+    service: Service
+
+
+class ServiceTurnBasicData(BaseModel):
+    """Service turn basic data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    id: int
+    ticketNumber: str
+    customerName: Optional[str] = None
+
+
+class ServiceTurn(ServiceTurnBasicData):
+    """Service turn data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    created: str
+    createdBy: str
+    lastModified: str
+    lastModifiedBy: str
+    serviceStarted: Optional[str] = None
+    serviceEndingExpected: Optional[str] = None
+    serviceEnded: Optional[str] = None
+    priority: Priority
+    status: Status
+    service: Service
+    appointment: Optional[Appointment] = None
+    customer: Optional[Customer] = None

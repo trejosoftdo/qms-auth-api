@@ -1,18 +1,10 @@
 """Customer API handlers"""
 
 from .. import base_api_models
+from .. import mocks
 from . import models as customer_api_models
 
 # pylint: disable=W0613
-
-status = base_api_models.Status(
-    id=4,
-    name="Activo",
-    code="ACTIVE",
-    description="Estado activo.",
-    type="CUSTOMER",
-    isActive=True,
-)
 
 
 def get_customers(
@@ -28,21 +20,7 @@ def get_customers(
     Returns:
         CustomersListResponse: List of customers
     """
-    return [
-        base_api_models.Customer(
-            id=1,
-            firstName="John",
-            lastName="Doe",
-            email="john.doe@test.com",
-            gender="M",
-            yearOfBirth=1987,
-            createdBy="SYSTEM",
-            lastModifiedBy="SYSTEM",
-            created="2023-10-20 03:14:07",
-            lastModified="2023-10-20 03:14:07",
-            status=status,
-        )
-    ]
+    return [mocks.customer]
 
 
 def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
@@ -54,19 +32,35 @@ def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
     Returns:
         Customer: Customer for id
     """
-    return base_api_models.Customer(
-        id=customer_id,
-        firstName="John",
-        lastName="Doe",
-        email="john.doe@test.com",
-        gender="M",
-        yearOfBirth=1987,
-        createdBy="SYSTEM",
-        lastModifiedBy="SYSTEM",
-        created="2023-10-20 03:14:07",
-        lastModified="2023-10-20 03:14:07",
-        status=status,
-    )
+    return mocks.customer
+
+
+def get_customer_serviceturns(
+    customer_id: int,
+) -> customer_api_models.CustomersServiceTurnsListResponse:
+    """Get list of turns an existing customer by customer Id
+
+    Args:
+        customer_id (int): id of the customer
+
+    Returns:
+        CustomersServiceTurnsListResponse: List of service turns associated to customer
+    """
+    return [mocks.turn]
+
+
+def get_customer_appointments(
+    customer_id: int,
+) -> customer_api_models.CustomersAppointmentsListResponse:
+    """Get list of appoinments of an existing customer by customer Id
+
+    Args:
+        customer_id (int): id of the customer
+
+    Returns:
+        CustomersAppointmentsListResponse: List of appoinments associated to customer
+    """
+    return [mocks.appointment]
 
 
 def delete_customer_by_id(customer_id: int) -> base_api_models.APIResponse:

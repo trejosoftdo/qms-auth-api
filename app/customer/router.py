@@ -10,6 +10,8 @@ from .constants import (
     DELETE_CUSTOMER_BY_ID_OPERATION_ID,
     GET_CUSTOMERS_OPERATION_ID,
     GET_CUSTOMER_BY_ID_OPERATION_ID,
+    GET_CUSTOMER_APPOINTMENTS_OPERATION_ID,
+    GET_CUSTOMER_SERVICE_TURNS_OPERATION_ID,
     PATCH_CUSTOMER_OPERATION_ID,
     UPDATE_CUSTOMER_OPERATION_ID,
 )
@@ -56,6 +58,39 @@ def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
     Get info of an existing customer by Id
     """
     return handlers.get_customer_by_id(customer_id)
+
+
+@router.get(
+    "/{customer_id}/appointments",
+    dependencies=[
+        Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.READ_CUSTOMERS_SCOPE)),
+    ],
+    tags=TAGS,
+    operation_id=GET_CUSTOMER_APPOINTMENTS_OPERATION_ID,
+    response_model=customer_api_models.CustomersAppointmentsListResponse,
+)
+def get_customer_appointments(customer_id: int) -> customer_api_models.CustomersAppointmentsListResponse:
+    """
+    Get list of appointments of an existing customer by customer Id
+    """
+    return handlers.get_customer_appointments(customer_id)
+
+@router.get(
+    "/{customer_id}/serviceturns",
+    dependencies=[
+        Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.READ_CUSTOMERS_SCOPE)),
+    ],
+    tags=TAGS,
+    operation_id=GET_CUSTOMER_SERVICE_TURNS_OPERATION_ID,
+    response_model=customer_api_models.CustomersServiceTurnsListResponse,
+)
+def get_customer_serviceturns(customer_id: int) -> customer_api_models.CustomersServiceTurnsListResponse:
+    """
+    Get list of turns an existing customer by customer Id
+    """
+    return handlers.get_customer_serviceturns(customer_id)
 
 
 @router.post(

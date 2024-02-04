@@ -1,6 +1,7 @@
 """Status API handlers"""
 
 from .. import base_api_models
+from .. import mocks
 from . import models as status_api_models
 
 # pylint: disable=W0613
@@ -19,16 +20,7 @@ def get_statuses(
     Returns:
         StatusesListResponse: List of statuses
     """
-    return [
-        base_api_models.Status(
-            id=1,
-            name="Activo",
-            code="ACTIVE",
-            description="Estado activo",
-            type="CUSTOMER",
-            isActive=True,
-        )
-    ]
+    return [mocks.status]
 
 
 def get_status_by_id(status_id: int) -> base_api_models.Status:
@@ -40,14 +32,7 @@ def get_status_by_id(status_id: int) -> base_api_models.Status:
     Returns:
         Status: Status for id
     """
-    return base_api_models.Status(
-        id=status_id,
-        name="Activo",
-        code="ACTIVE",
-        description="Estado activo",
-        type="CUSTOMER",
-        isActive=True,
-    )
+    return mocks.status
 
 
 def delete_status_by_id(status_id: int) -> base_api_models.APIResponse:
