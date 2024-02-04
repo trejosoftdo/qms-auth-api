@@ -73,6 +73,7 @@ class Priority(setup.Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     code = Column(String(50))
+    weight = Column(Integer)
     description = Column(String(500))
     is_active = Column(Boolean, default=True)
 

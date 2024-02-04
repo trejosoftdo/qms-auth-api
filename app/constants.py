@@ -83,6 +83,7 @@ API_VERSION = "1.0.0"
 CATEGORIES_ROUTE_PREFIX = "/api/v1/categories"
 SERVICES_ROUTE_PREFIX = "/api/v1/services"
 STATUSES_ROUTE_PREFIX = "/api/v1/statuses"
+PRIORITIES_ROUTE_PREFIX = "/api/v1/priorities"
 
 # Environment names
 AUTH_API_BASE_URL_ENV_NAME = "AUTH_API_BASE_URL"

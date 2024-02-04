@@ -23,6 +23,7 @@ def get_statuses(
         base_api_models.Status(
             id=1,
             name="Activo",
+            code="ACTIVE",
             description="Estado activo",
             type="CUSTOMER",
             isActive=True,
@@ -42,6 +43,7 @@ def get_status_by_id(status_id: int) -> base_api_models.Status:
     return base_api_models.Status(
         id=status_id,
         name="Activo",
+        code="ACTIVE",
         description="Estado activo",
         type="CUSTOMER",
         isActive=True,

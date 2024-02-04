@@ -38,6 +38,22 @@ class Status(BaseModel):
 
     id: int
     name: str
+    code: str
     description: str
     type: StatusType
+    isActive: bool
+
+
+class Priority(BaseModel):
+    """Priority data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    id: int
+    name: str
+    code: str
+    description: str
+    weight: int
     isActive: bool

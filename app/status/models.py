@@ -35,6 +35,7 @@ class PatchStatusPayload(base_api_models.Status):
 
     id: Optional[int] = None
     name: Optional[str] = None
+    code: Optional[str] = None
     description: Optional[str] = None
     type: Optional[str] = None
     isActive: Optional[bool] = None

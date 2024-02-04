@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from .category import router as category
 from .service import router as service
 from .status import router as status
+from .priority import router as priority
 from . import constants
 
 
@@ -15,5 +16,6 @@ app = FastAPI(
 )
 
 app.include_router(category.router, prefix=constants.CATEGORIES_ROUTE_PREFIX)
+app.include_router(priority.router, prefix=constants.PRIORITIES_ROUTE_PREFIX)
 app.include_router(service.router, prefix=constants.SERVICES_ROUTE_PREFIX)
 app.include_router(status.router, prefix=constants.STATUSES_ROUTE_PREFIX)
