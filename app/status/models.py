@@ -1,37 +1,12 @@
 """Status API models"""
 
-from enum import Enum
 from typing import List, Optional
-from pydantic import BaseModel
+
+# from pydantic import BaseModel
+from .. import base_api_models
 
 
-class StatusType(Enum):
-    """Diferent types of statuses
-    """
-
-    CATEGORY = "CATEGORY"
-    SERVICE = "SERVICE"
-    CUSTOMER = "CUSTOMER"
-    TURN = "TURN"
-    QUEUE = "QUEUE"
-    APPOINTMENT = "APPOINTMENT"
-
-
-class Status(BaseModel):
-    """Status data
-
-    Args:
-        BaseModel (class): Base model class
-    """
-
-    id: int
-    name: str
-    description: str
-    type: StatusType
-    isActive: bool
-
-
-class CreateStatusPayload(Status):
+class CreateStatusPayload(base_api_models.Status):
     """Payload to create an status
 
     Args:
@@ -41,7 +16,7 @@ class CreateStatusPayload(Status):
     id: Optional[int] = None
 
 
-class UpdateStatusPayload(Status):
+class UpdateStatusPayload(base_api_models.Status):
     """Payload to update an status
 
     Args:
@@ -51,7 +26,7 @@ class UpdateStatusPayload(Status):
     id: Optional[int] = None
 
 
-class PatchStatusPayload(Status):
+class PatchStatusPayload(base_api_models.Status):
     """Payload to patch an status
 
     Args:
@@ -65,16 +40,4 @@ class PatchStatusPayload(Status):
     isActive: Optional[bool] = None
 
 
-class APIResponse(BaseModel):
-    """API response
-
-    Args:
-        BaseModel (class): Base model class
-    """
-
-    code: str
-    type: str
-    message: str
-
-
-StatusesListResponse = List[Status]
+StatusesListResponse = List[base_api_models.Status]
