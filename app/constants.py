@@ -80,6 +80,7 @@ API_DESCRIPTION = "The API for the QMS Core functionality."
 API_VERSION = "1.0.0"
 
 # API routes prefixes
+APPOINTMENTS_ROUTE_PREFIX = "/api/v1/appointments"
 CATEGORIES_ROUTE_PREFIX = "/api/v1/categories"
 CUSTOMERS_ROUTE_PREFIX = "/api/v1/customers"
 PRIORITIES_ROUTE_PREFIX = "/api/v1/priorities"

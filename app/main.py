@@ -2,6 +2,7 @@
 
 from fastapi import FastAPI
 from . import constants
+from .appointment import router as appointment
 from .category import router as category
 from .customer import router as customer
 from .priority import router as priority
@@ -17,6 +18,7 @@ app = FastAPI(
     version=constants.API_VERSION,
 )
 
+app.include_router(appointment.router, prefix=constants.APPOINTMENTS_ROUTE_PREFIX)
 app.include_router(category.router, prefix=constants.CATEGORIES_ROUTE_PREFIX)
 app.include_router(customer.router, prefix=constants.CUSTOMERS_ROUTE_PREFIX)
 app.include_router(priority.router, prefix=constants.PRIORITIES_ROUTE_PREFIX)
