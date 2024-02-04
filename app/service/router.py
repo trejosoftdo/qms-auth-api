@@ -2,13 +2,133 @@
 
 from fastapi import APIRouter, Depends, Header
 from .. import constants
-from .constants import TAGS, CREATE_SERVICE_TURN_OPERATION_ID
+from .. import base_api_models
+from .constants import (
+    TAGS,
+    CREATE_SERVICE_TURN_OPERATION_ID,
+    GET_SERVICES_OPERATION_ID,
+    GET_SERVICE_BY_ID_OPERATION_ID,
+    DELETE_SERVICE_BY_ID_OPERATION_ID,
+    ADD_SERVICE_OPERATION_ID,
+    UPDATE_SERVICE_OPERATION_ID,
+    PATCH_SERVICE_OPERATION_ID,
+)
 from .. import helpers
 from . import handlers
-from . import models
+from . import models as service_api_models
 
 
 router = APIRouter()
+
+
+@router.get(
+    "/",
+    dependencies=[
+        Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.READ_SERVICES_SCOPE)),
+    ],
+    tags=TAGS,
+    operation_id=GET_SERVICES_OPERATION_ID,
+    response_model=service_api_models.ServicesListResponse,
+)
+def get_services(
+    active: bool = True,
+    offset: int = 0,
+    limit: int = 10,
+) -> service_api_models.ServicesListResponse:
+    """Gets a list of services for the application in context"""
+    return handlers.get_services(active, offset, limit)
+
+
+@router.get(
+    "/{service_id}",
+    dependencies=[
+        Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.READ_SERVICES_SCOPE)),
+    ],
+    tags=TAGS,
+    operation_id=GET_SERVICE_BY_ID_OPERATION_ID,
+    response_model=base_api_models.Service,
+)
+def get_service_by_id(service_id: int) -> base_api_models.Service:
+    """
+    Get info of an existing service by Id
+    """
+    return handlers.get_service_by_id(service_id)
+
+
+@router.post(
+    "/",
+    dependencies=[
+        Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.WRITE_SERVICES_SCOPE)),
+    ],
+    tags=TAGS,
+    operation_id=ADD_SERVICE_OPERATION_ID,
+    response_model=base_api_models.APIResponse,
+)
+def add_service(
+    payload: service_api_models.CreateServicePayload,
+) -> base_api_models.APIResponse:
+    """
+    Add a new service
+    """
+    return handlers.add_service(payload)
+
+
+@router.put(
+    "/{service_id}",
+    dependencies=[
+        Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.WRITE_SERVICES_SCOPE)),
+    ],
+    tags=TAGS,
+    operation_id=UPDATE_SERVICE_OPERATION_ID,
+    response_model=base_api_models.APIResponse,
+)
+def update_service(
+    service_id: int, payload: service_api_models.UpdateServicePayload
+) -> base_api_models.APIResponse:
+    """
+    Update an existing service by Id
+    """
+    return handlers.update_service(service_id, payload)
+
+
+@router.patch(
+    "/{service_id}",
+    dependencies=[
+        Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.WRITE_SERVICES_SCOPE)),
+    ],
+    tags=TAGS,
+    operation_id=PATCH_SERVICE_OPERATION_ID,
+    response_model=base_api_models.APIResponse,
+)
+def patch_service(
+    service_id: int, payload: service_api_models.PatchServicePayload
+) -> base_api_models.APIResponse:
+    """
+    Update partially an existing service by Id
+    """
+    return handlers.partially_update_service(service_id, payload)
+
+
+@router.delete(
+    "/{service_id}",
+    dependencies=[
+        Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.WRITE_SERVICES_SCOPE)),
+    ],
+    tags=TAGS,
+    operation_id=DELETE_SERVICE_BY_ID_OPERATION_ID,
+    response_model=base_api_models.APIResponse,
+)
+def delete_service_by_id(service_id: int) -> base_api_models.APIResponse:
+    """
+    Delete an existing service by Id
+    """
+    return handlers.delete_service_by_id(service_id)
 
 
 @router.post(
@@ -19,21 +139,12 @@ router = APIRouter()
     ],
     tags=TAGS,
     operation_id=CREATE_SERVICE_TURN_OPERATION_ID,
-    response_model=models.CreateServiceTurnResponse,
+    response_model=service_api_models.CreateServiceTurnResponse,
 )
 def create_service_turn(
     service_id: int,
-    item: models.CreateServiceTurnPayload,
+    item: service_api_models.CreateServiceTurnPayload,
     application: str = Header(..., convert_underscores=False),
-) -> models.CreateServiceTurnResponse:
-    """Creates a service turn for the given service
-
-    Args:
-        service_id (int): ID of service to create a turn from
-        item (models.CreateServiceTurnPayload): The required payload
-        application (str, optional): The application in context.
-
-    Returns:
-        models.CreateServiceTurnResponse: Basic information of the created service turn
-    """
+) -> service_api_models.CreateServiceTurnResponse:
+    """Creates a service turn for the given service"""
     return handlers.create_service_turn(application, service_id, item)
