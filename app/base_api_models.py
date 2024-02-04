@@ -57,3 +57,27 @@ class Priority(BaseModel):
     description: str
     weight: int
     isActive: bool
+
+
+class QueueBasicData(BaseModel):
+    """Queue basic data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    id: int
+    name: str
+    code: str
+    description: str
+    isActive: bool
+
+class Queue(QueueBasicData):
+    """Queue data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    status: Status
+    priority: Priority
