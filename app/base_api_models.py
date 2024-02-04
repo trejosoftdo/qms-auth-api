@@ -29,6 +29,14 @@ class StatusType(Enum):
     APPOINTMENT = "APPOINTMENT"
 
 
+class Gender(Enum):
+    """Diferent types of genders
+    """
+
+    MALE = "M"
+    FEMALE = "F"
+    NOT_SPECIFIED = "N/S"
+
 class Status(BaseModel):
     """Status data
 
@@ -81,3 +89,32 @@ class Queue(QueueBasicData):
 
     status: Status
     priority: Priority
+
+
+class CustomerBasicData(BaseModel):
+    """Customer basic data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    id: int
+    firstName: str
+    lastName: str
+    email: str
+    gender: Gender
+    yearOfBirth: int
+
+
+class Customer(CustomerBasicData):
+    """Customer data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    created: str
+    createdBy: str
+    lastModified: str
+    lastModifiedBy: str
+    status: Status
