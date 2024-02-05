@@ -32,10 +32,10 @@ class PatchCategoryPayload(base_api_models.Category):
     """
 
     id: Optional[int] = None
+    type: Optional[str] = None
     name: Optional[str] = None
     code: Optional[str] = None
     description: Optional[str] = None
-    type: Optional[str] = None
     isActive: Optional[bool] = None
     statusId: Optional[int] = None
 

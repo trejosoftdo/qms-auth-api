@@ -4,6 +4,7 @@ from datetime import datetime
 from sqlalchemy import select, func
 from .. import constants
 from ..database import models as db_models, main
+from ..enums import StatusType
 from . import models as api_models
 
 # pylint: disable=W0613
@@ -25,13 +26,13 @@ def get_service_by_id(service_id: int) -> db_models.Service:
 
 
 def get_status_by_code_and_type(
-    code: str, status_type: db_models.StatusType
+    code: str, status_type: StatusType
 ) -> db_models.Status:
     """Gets a status by code and type
 
     Args:
         code (str): Code of the status item
-        status_type (db_models.StatusType): type of the status
+        status_type (StatusType): type of the status
 
     Returns:
         db_models.Status: The matched status
@@ -91,7 +92,7 @@ def create_service_turn(
     """
     service = get_service_by_id(service_id)
     turns_count = get_total_turns_for_service_id(service_id)
-    status = get_status_by_code_and_type(constants.DEFAULT_TURN_STATUS, db_models.StatusType.TURN)
+    status = get_status_by_code_and_type(constants.DEFAULT_TURN_STATUS, StatusType.TURN)
     priority = get_priority_by_code(constants.DEFAULT_TURN_PRIORITY)
     current_datetime = datetime.now()
     turn = db_models.ServiceTurn(

@@ -40,10 +40,10 @@ class PatchQueuePayload(base_api_models.QueueBasicData):
     id: Optional[int] = None
     name: Optional[str] = None
     code: Optional[str] = None
+    priorityId: Optional[int] = None
+    statusId: Optional[int] = None
     description: Optional[str] = None
     isActive: Optional[bool] = None
-    statusId: Optional[int] = None
-    priorityId: Optional[int] = None
 
 
 QueuesListResponse = List[base_api_models.Queue]

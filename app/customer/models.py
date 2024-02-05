@@ -1,9 +1,8 @@
 """Customer API models"""
 
 from typing import List, Optional
-
-# from pydantic import BaseModel
 from .. import base_api_models
+from .. import enums
 
 
 class CreateCustomerPayload(base_api_models.CustomerBasicData):
@@ -39,7 +38,7 @@ class PatchCustomerPayload(base_api_models.CustomerBasicData):
     firstName: Optional[str] = None
     lastName: Optional[str] = None
     email: Optional[str] = None
-    gender: Optional[base_api_models.Gender] = None
+    gender: Optional[enums.Gender] = None
     yearOfBirth: Optional[int] = None
     statusId: Optional[int] = None
 

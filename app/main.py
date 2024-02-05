@@ -8,6 +8,7 @@ from .customer import router as customer
 from .priority import router as priority
 from .queue import router as queue
 from .service import router as service
+from .service_turn import router as service_turn
 from .status import router as status
 
 
@@ -25,3 +26,4 @@ app.include_router(priority.router, prefix=constants.PRIORITIES_ROUTE_PREFIX)
 app.include_router(queue.router, prefix=constants.QUEUES_ROUTE_PREFIX)
 app.include_router(service.router, prefix=constants.SERVICES_ROUTE_PREFIX)
 app.include_router(status.router, prefix=constants.STATUSES_ROUTE_PREFIX)
+app.include_router(service_turn.router, prefix=constants.SERVICE_TURNS_ROUTE_PREFIX)

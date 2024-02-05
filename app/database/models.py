@@ -1,7 +1,6 @@
 """Database models
 """
 
-import enum
 from sqlalchemy import (
     Column,
     DateTime,
@@ -13,37 +12,11 @@ from sqlalchemy import (
 )
 from sqlalchemy.sql import func
 from sqlalchemy.orm import mapped_column, relationship
+from .. import enums
 from . import setup
 
 # pylint: disable=R0903
 # pylint: disable=E1102
-
-
-class StatusType(enum.Enum):
-    """Diferent types of statuses
-
-    Args:
-        enum (enum.Enum): Base enum class
-    """
-
-    CATEGORY = "CATEGORY"
-    SERVICE = "SERVICE"
-    CUSTOMER = "CUSTOMER"
-    TURN = "TURN"
-    QUEUE = "QUEUE"
-    APPOINTMENT = "APPOINTMENT"
-
-
-class Gender(enum.Enum):
-    """Diferent genders
-
-    Args:
-        enum (enum.Enum): Base enum class
-    """
-
-    FEMALE = "F"
-    MALE = "M"
-    NOT_SPECIFIED = "N/S"
 
 
 class Status(setup.Base):
@@ -58,7 +31,7 @@ class Status(setup.Base):
     name = Column(String(50))
     code = Column(String(50))
     description = Column(String(500))
-    type = Column(Enum(StatusType))
+    type = Column(Enum(enums.StatusType))
     is_active = Column(Boolean, default=True)
 
 
@@ -134,7 +107,7 @@ class Customer(setup.Base):
     first_name = Column(String(50))
     last_name = Column(String(50))
     email = Column(String(200))
-    gender = Column(Enum(Gender))
+    gender = Column(Enum(enums.Gender))
     year_of_birth = Column(Integer)
     status_id = mapped_column(ForeignKey("statuses.id"))
     status = relationship("Status")

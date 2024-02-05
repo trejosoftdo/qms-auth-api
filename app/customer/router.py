@@ -70,11 +70,14 @@ def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
     operation_id=GET_CUSTOMER_APPOINTMENTS_OPERATION_ID,
     response_model=customer_api_models.CustomersAppointmentsListResponse,
 )
-def get_customer_appointments(customer_id: int) -> customer_api_models.CustomersAppointmentsListResponse:
+def get_customer_appointments(
+    customer_id: int,
+) -> customer_api_models.CustomersAppointmentsListResponse:
     """
     Get list of appointments of an existing customer by customer Id
     """
     return handlers.get_customer_appointments(customer_id)
+
 
 @router.get(
     "/{customer_id}/serviceturns",
@@ -86,7 +89,9 @@ def get_customer_appointments(customer_id: int) -> customer_api_models.Customers
     operation_id=GET_CUSTOMER_SERVICE_TURNS_OPERATION_ID,
     response_model=customer_api_models.CustomersServiceTurnsListResponse,
 )
-def get_customer_serviceturns(customer_id: int) -> customer_api_models.CustomersServiceTurnsListResponse:
+def get_customer_serviceturns(
+    customer_id: int,
+) -> customer_api_models.CustomersServiceTurnsListResponse:
     """
     Get list of turns an existing customer by customer Id
     """

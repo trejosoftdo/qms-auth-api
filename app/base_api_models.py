@@ -1,8 +1,8 @@
 """Common API models"""
 
-from enum import Enum
 from typing import Optional
 from pydantic import BaseModel
+from . import enums
 
 
 class APIResponse(BaseModel):
@@ -17,26 +17,6 @@ class APIResponse(BaseModel):
     message: str
 
 
-class StatusType(Enum):
-    """Diferent types of statuses
-    """
-
-    CATEGORY = "CATEGORY"
-    SERVICE = "SERVICE"
-    CUSTOMER = "CUSTOMER"
-    TURN = "TURN"
-    QUEUE = "QUEUE"
-    APPOINTMENT = "APPOINTMENT"
-
-
-class Gender(Enum):
-    """Diferent types of genders
-    """
-
-    MALE = "M"
-    FEMALE = "F"
-    NOT_SPECIFIED = "N/S"
-
 class Status(BaseModel):
     """Status data
 
@@ -48,7 +28,7 @@ class Status(BaseModel):
     name: str
     code: str
     description: str
-    type: StatusType
+    type: enums.StatusType
     isActive: bool
 
 
@@ -150,7 +130,7 @@ class CustomerBasicData(BaseModel):
     firstName: str
     lastName: str
     email: str
-    gender: Gender
+    gender: enums.Gender
     yearOfBirth: int
 
 

@@ -1,3 +1,6 @@
+"""API entity mocks
+"""
+
 from . import base_api_models
 
 
@@ -26,7 +29,7 @@ queue = base_api_models.Queue(
     description="Primera cola",
     isActive=True,
     status=status,
-    priority=priority
+    priority=priority,
 )
 
 category = base_api_models.Category(

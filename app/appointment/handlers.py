@@ -49,7 +49,9 @@ def delete_appointment_by_id(appointment_id: int) -> base_api_models.APIResponse
     )
 
 
-def add_appointment(payload: appointment_api_models.CreateAppointmentPayload) -> base_api_models.APIResponse:
+def add_appointment(
+    payload: appointment_api_models.CreateAppointmentPayload,
+) -> base_api_models.APIResponse:
     """Add a new appointment
 
     Args:
