@@ -1,14 +1,33 @@
 """Service API handlers"""
 
-from . import models
+from .. import base_api_models
+from .. import mocks
+from . import models as service_api_models
 from . import mappers
 from . import service
 
+
 # pylint: disable=W0613
 
+def get_services(
+    active: bool, offset: int, limit: int
+) -> service_api_models.ServicesListResponse:
+    """Get list of services
+
+    Args:
+        active (bool): Flag to return only active records.
+        offset (int): The items to skip before collecting the result set.
+        limit (int): The items to return.
+
+    Returns:
+        ServicesListResponse: List of services
+    """
+    return [mocks.service]
+
+
 def create_service_turn(
-    application: str, service_id: int, item: models.CreateServiceTurnPayload
-) -> models.CreateServiceTurnResponse:
+    application: str, service_id: int, item: service_api_models.CreateServiceTurnPayload
+) -> service_api_models.CreateServiceTurnResponse:
     """Creates a service turn for the given service
 
     Args:
@@ -17,7 +36,7 @@ def create_service_turn(
         item (models.CreateServiceTurnPayload): The required payload
 
     Returns:
-        models.CreateServiceTurnResponse: Created service turn
+        CreateServiceTurnResponse: Created service turn
     """
     item = service.create_service_turn(
         application,
@@ -25,3 +44,77 @@ def create_service_turn(
         item,
     )
     return mappers.map_service_turn_response(item)
+
+
+def get_service_by_id(service_id: int) -> base_api_models.Service:
+    """Get info of an existing service by Id
+
+    Args:
+        service_id (int): id of the service
+
+    Returns:
+        Service: Service for id
+    """
+    return mocks.service
+
+
+def delete_service_by_id(service_id: int) -> base_api_models.APIResponse:
+    """Delete an existing service by Id
+
+    Args:
+        service_id (int): id of the service
+
+    Returns:
+        APIResponse: The result of the deletion
+    """
+    return base_api_models.APIResponse(
+        code=200, type="DELETE", message="Service deleted successfully"
+    )
+
+
+def add_service(payload: service_api_models.CreateServicePayload) -> base_api_models.APIResponse:
+    """Add a new service
+
+    Args:
+        payload (CreateServicePayload): payload to create service
+
+    Returns:
+        APIResponse: The result of the addition
+    """
+    return base_api_models.APIResponse(
+        code=200, type="ADD", message="Service added successfully"
+    )
+
+
+def update_service(
+    service_id: int, payload: service_api_models.UpdateServicePayload
+) -> base_api_models.APIResponse:
+    """Update an existing service by Id
+
+    Args:
+        service_id (int): id of the service to update
+        payload (UpdateServicePayload): payload to update service
+
+    Returns:
+        APIResponse: The result of the update
+    """
+    return base_api_models.APIResponse(
+        code=200, type="UPDATE", message="Service updated successfully"
+    )
+
+
+def partially_update_service(
+    service_id: int, payload: service_api_models.PatchServicePayload
+) -> base_api_models.APIResponse:
+    """Partially updates an existing service by Id
+
+    Args:
+        service_id (int): id of the service to partially update
+        payload (PatchServicePayload): payload to update service
+
+    Returns:
+        APIResponse: The result of the update
+    """
+    return base_api_models.APIResponse(
+        code=200, type="UPDATE", message="Service updated successfully"
+    )

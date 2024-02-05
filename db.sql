@@ -12,6 +12,7 @@ CREATE TABLE priorities (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(50) NOT NULL,
     `code` varchar(50) NOT NULL,
+    `weight` INTEGER NOT NULL,
     `description` varchar(500) NOT NULL,
     `is_active` tinyint(1) NOT NULL DEFAULT '1',
     PRIMARY KEY (`id`)

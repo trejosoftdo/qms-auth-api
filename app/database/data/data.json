@@ -170,6 +170,7 @@
         "id": 1,
         "name": "Alta Prioridad",
         "code": "HIGH_PRIORITY",
+        "weight": 6,
         "description": "Tareas o problemas que requieren atención inmediata y deben ser abordados lo antes posible.",
         "is_active": true
       },
@@ -177,6 +178,7 @@
         "id": 2,
         "name": "Prioridad Media",
         "code": "MEDIUM_PRIORITY",
+        "weight": 5,
         "description": "Tareas o problemas que son importantes pero no tan urgentes como los elementos de alta prioridad. Deben ser abordados después de las tareas de alta prioridad.",
         "is_active": true
       },
@@ -184,6 +186,7 @@
         "id": 3,
         "name": "Baja Prioridad",
         "code": "LOW_PRIORITY",
+        "weight": 3,
         "description": "Tareas o problemas que son menos urgentes y pueden ser pospuestos o abordados después de los elementos de alta y media prioridad.",
         "is_active": true
       },
@@ -191,6 +194,7 @@
         "id": 4,
         "name": "Prioridad Crítica",
         "code": "CRITICAL_PRIORITY",
+        "weight": 9,
         "description": "Tareas o problemas que son de suma importancia y requieren acción inmediata para evitar consecuencias graves.",
         "is_active": true
       },
@@ -198,6 +202,7 @@
         "id": 5,
         "name": "Prioridad Normal",
         "code": "NORMAL_PRIORITY",
+        "weight": 4,
         "description": "Tareas o problemas que entran dentro del alcance regular de las operaciones y no son particularmente urgentes o críticos.",
         "is_active": true
       },
@@ -205,6 +210,7 @@
         "id": 6,
         "name": "Prioridad de Emergencia",
         "code": "EMERGENCY_PRIORITY",
+        "weight": 8,
         "description": "Tareas o problemas que son urgentes y requieren acción inmediata para evitar daños graves, lesiones o pérdidas.",
         "is_active": true
       },
@@ -212,6 +218,7 @@
         "id": 7,
         "name": "Prioridad Urgente",
         "code": "URGENT_PRIORITY",
+        "weight": 7,
         "description": "Tareas o problemas que deben ser abordados rápidamente pero que no necesariamente tienen implicaciones críticas si se retrasan ligeramente.",
         "is_active": true
       },
@@ -219,6 +226,7 @@
         "id": 8,
         "name": "Prioridad Rutinaria",
         "code": "ROUTINE_PRIORITY",
+        "weight": 4,
         "description": "Tareas o problemas que forman parte de las operaciones regulares y que típicamente se manejan en el curso normal de los negocios.",
         "is_active": true
       },
@@ -226,6 +234,7 @@
         "id": 9,
         "name": "Prioridad Diferida",
         "code": "DEFERRED_PRIORITY",
+        "weight": 2,
         "description": "Tareas o problemas que son postergados o aplazados intencionalmente hasta un momento posterior o hasta que se aborden otras prioridades.",
         "is_active": true
       }

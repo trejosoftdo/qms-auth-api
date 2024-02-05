@@ -1,54 +1,45 @@
 """Category API models"""
 
-from typing import List
-from pydantic import BaseModel
+from typing import List, Optional
+from .. import base_api_models
 
 
-class Status(BaseModel):
-    """Status data
-
-    Args:
-        BaseModel (class): Base model class
-    """
-
-    id: int
-    name: str
-    description: str
-    type: str
-    isActive: bool
-
-
-class Category(BaseModel):
-    """Category data
+class CreateCategoryPayload(base_api_models.Category):
+    """Payload to create a category
 
     Args:
-        BaseModel (class): Base model class
+        Category (class): Category class
     """
 
-    id: int
-    name: str
-    description: str
-    iconUrl: str
-    status: Status
-    isActive: bool
+    id: Optional[int] = None
 
 
-class CategoryService(BaseModel):
-    """Category Service data
+class UpdateCategoryPayload(base_api_models.Category):
+    """Payload to update a category
 
     Args:
-        BaseModel (class): Base model class
+        Category (class): Category class
     """
 
-    id: int
-    name: str
-    description: str
-    prefix: str
-    iconUrl: str
-    status: Status
-    category: Category
-    isActive: bool
+    id: Optional[int] = None
 
 
-CategoriesListResponse = List[Category]
+class PatchCategoryPayload(base_api_models.Category):
+    """Payload to patch a category
+
+    Args:
+        Category (class): Category class
+    """
+
+    id: Optional[int] = None
+    type: Optional[str] = None
+    name: Optional[str] = None
+    code: Optional[str] = None
+    description: Optional[str] = None
+    isActive: Optional[bool] = None
+    statusId: Optional[int] = None
+
+
+CategoryService = base_api_models.Service
+CategoriesListResponse = List[base_api_models.Category]
 CategoryServicesListResponse = List[CategoryService]
