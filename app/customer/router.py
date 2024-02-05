@@ -169,4 +169,4 @@ def delete_customer_by_id(customer_id: int) -> base_api_models.APIResponse:
     """
     Delete an existing customer by Id
     """
-    return handlers.get_customer_by_id(customer_id)
+    return handlers.delete_customer_by_id(customer_id)

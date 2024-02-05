@@ -129,4 +129,4 @@ def delete_priority_by_id(priority_id: int) -> base_api_models.APIResponse:
     """
     Delete an existing priority by Id
     """
-    return handlers.get_priority_by_id(priority_id)
+    return handlers.delete_priority_by_id(priority_id)

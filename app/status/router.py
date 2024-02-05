@@ -129,4 +129,4 @@ def delete_status_by_id(status_id: int) -> base_api_models.APIResponse:
     """
     Delete an existing status by Id
     """
-    return handlers.get_status_by_id(status_id)
+    return handlers.delete_status_by_id(status_id)

@@ -129,4 +129,4 @@ def delete_service_turn_by_id(service_turn_id: int) -> base_api_models.APIRespon
     """
     Delete an existing service turn by Id
     """
-    return handlers.get_service_turn_by_id(service_turn_id)
+    return handlers.delete_service_turn_by_id(service_turn_id)

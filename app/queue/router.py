@@ -129,4 +129,4 @@ def delete_queue_by_id(queue_id: int) -> base_api_models.APIResponse:
     """
     Delete an existing queue by Id
     """
-    return handlers.get_queue_by_id(queue_id)
+    return handlers.delete_queue_by_id(queue_id)
