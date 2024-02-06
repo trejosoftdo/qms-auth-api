@@ -1,6 +1,7 @@
 """Status API handlers"""
 
 from .. import base_api_models
+from ..database import models as db_models
 from .. import mocks
 from . import models as status_api_models
 
@@ -32,6 +33,8 @@ def get_status_by_id(status_id: int) -> base_api_models.Status:
     Returns:
         Status: Status for id
     """
+    item =  db_models.Status.get_by_id(status_id)
+    print(item.id)
     return mocks.status
 
 

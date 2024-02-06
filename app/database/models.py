@@ -1,6 +1,7 @@
 """Database models
 """
 
+from typing import Type, TypeVar
 from sqlalchemy import (
     Column,
     DateTime,
@@ -9,17 +10,40 @@ from sqlalchemy import (
     Enum,
     Boolean,
     ForeignKey,
+    select,
 )
 from sqlalchemy.sql import func
 from sqlalchemy.orm import mapped_column, relationship
 from .. import enums
+from . import main
 from . import setup
 
 # pylint: disable=R0903
 # pylint: disable=E1102
 
 
-class Status(setup.Base):
+T = TypeVar("T", bound="DatabaseModel")
+
+
+class DatabaseModel(setup.Base):
+    """Base database model
+    """
+
+    @classmethod
+    def get_by_id(cls: Type[T], entity_id: int) -> T:
+        """Gets an entity by id
+
+        Args:
+            entity_id (int): ID of entity
+
+        Returns:
+            Status: The matched entity
+        """
+        statement = select(cls).where(cls.id == entity_id).limit(1)
+        return main.session.scalars(statement).one()
+
+
+class Status(DatabaseModel):
     """Status related to each type of object
 
     Args:
