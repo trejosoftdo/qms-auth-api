@@ -2,7 +2,7 @@
 
 from .. import base_api_models
 from .. import mocks
-from . import mappers
+from .. import mappers
 from . import models as category_api_models
 from . import service
 
@@ -53,7 +53,7 @@ def get_category_services(
         offset,
         limit,
     )
-    return list(map(mappers.map_category_service, items))
+    return list(map(mappers.map_service, items))
 
 
 def get_category_by_id(category_id: int) -> base_api_models.Category:

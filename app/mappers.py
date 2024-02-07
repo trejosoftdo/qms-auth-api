@@ -1,7 +1,7 @@
-"""Category API mappers"""
+"""Base API mappers"""
 
-from .. import base_api_models
-from ..database import models as db_models
+from . import base_api_models
+from .database import models as db_models
 
 
 def map_status(status: db_models.Status) -> base_api_models.Status:
@@ -43,14 +43,14 @@ def map_category(category: db_models.Category) -> base_api_models.Category:
     )
 
 
-def map_category_service(service: db_models.Service) -> base_api_models.Service:
-    """Maps a database service to a API category service
+def map_service(service: db_models.Service) -> base_api_models.Service:
+    """Maps a database service to a API service
 
     Args:
         service (db_models.Service): database service item
 
     Returns:
-        base_api_models.Service: API category service item
+        base_api_models.Service: API service item
     """
     return base_api_models.Service(
         id=service.id,

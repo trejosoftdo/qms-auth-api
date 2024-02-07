@@ -1,7 +1,9 @@
 """Status API handlers"""
 
 from .. import base_api_models
-from .. import mocks
+from .. import api_responses
+from ..database import models as db_models
+from .. import mappers
 from . import models as status_api_models
 
 # pylint: disable=W0613
@@ -20,7 +22,10 @@ def get_statuses(
     Returns:
         StatusesListResponse: List of statuses
     """
-    return [mocks.status]
+    items = db_models.Status.find_paginated(
+        limit, offset, lambda x: x.where(db_models.Status.is_active == active)
+    )
+    return list(map(mappers.map_status, items))
 
 
 def get_status_by_id(status_id: int) -> base_api_models.Status:
@@ -32,7 +37,8 @@ def get_status_by_id(status_id: int) -> base_api_models.Status:
     Returns:
         Status: Status for id
     """
-    return mocks.status
+    item = db_models.Status.find_by_id(status_id)
+    return mappers.map_status(item)
 
 
 def delete_status_by_id(status_id: int) -> base_api_models.APIResponse:
@@ -44,12 +50,13 @@ def delete_status_by_id(status_id: int) -> base_api_models.APIResponse:
     Returns:
         APIResponse: The result of the deletion
     """
-    return base_api_models.APIResponse(
-        code=200, type="DELETE", message="Status deleted successfully"
-    )
+    db_models.Status.delete_by_id(status_id)
+    return api_responses.ITEM_DELETED_RESPONSE
 
 
-def add_status(payload: status_api_models.CreateStatusPayload) -> base_api_models.APIResponse:
+def add_status(
+    payload: status_api_models.CreateStatusPayload,
+) -> base_api_models.APIResponse:
     """Add a new status
 
     Args:
@@ -58,9 +65,8 @@ def add_status(payload: status_api_models.CreateStatusPayload) -> base_api_model
     Returns:
         APIResponse: The result of the addition
     """
-    return base_api_models.APIResponse(
-        code=200, type="ADD", message="Status added successfully"
-    )
+    db_models.Status.create_from_data(payload.dict())
+    return api_responses.ITEM_ADDED_RESPONSE
 
 
 def update_status(
@@ -75,9 +81,8 @@ def update_status(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Status updated successfully"
-    )
+    db_models.Status.update_by_id(status_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
 
 
 def partially_update_status(
@@ -92,6 +97,5 @@ def partially_update_status(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Status updated successfully"
-    )
+    db_models.Status.update_by_id(status_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE

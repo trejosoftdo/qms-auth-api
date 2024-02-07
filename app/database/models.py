@@ -14,12 +14,14 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import mapped_column, relationship
 from .. import enums
 from . import setup
+from .mixins import ModelMethodsMixin
+
 
 # pylint: disable=R0903
 # pylint: disable=E1102
 
 
-class Status(setup.Base):
+class Status(ModelMethodsMixin, setup.Base):
     """Status related to each type of object
 
     Args:
