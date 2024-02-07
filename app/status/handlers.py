@@ -3,6 +3,7 @@
 from .. import base_api_models
 from ..database import models as db_models
 from .. import mappers
+from .. import helpers
 from . import models as status_api_models
 
 # pylint: disable=W0613
@@ -67,13 +68,7 @@ def add_status(
     Returns:
         APIResponse: The result of the addition
     """
-    status = db_models.Status(
-        name=payload.name,
-        code=payload.code,
-        description=payload.description,
-        type=payload.type,
-        is_active=payload.isActive,
-    )
+    status = db_models.Status(**helpers.snake_case_props(payload.dict()))
     status.create()
     return base_api_models.APIResponse(
         code=200, type="ADD", message="Status added successfully"
@@ -93,11 +88,7 @@ def update_status(
         APIResponse: The result of the update
     """
     status = db_models.Status.find_by_id(status_id)
-    status.name=payload.name
-    status.code=payload.code
-    status.description=payload.description
-    status.type=payload.type
-    status.is_active=payload.isActive
+    status.set_values(helpers.snake_case_props(payload.dict()))
     status.update()
     return base_api_models.APIResponse(
         code=200, type="UPDATE", message="Status updated successfully"
@@ -117,22 +108,7 @@ def partially_update_status(
         APIResponse: The result of the update
     """
     status = db_models.Status.find_by_id(status_id)
-
-    if not payload.name is None:
-        status.name=payload.name
-
-    if not payload.code is None:
-        status.code=payload.code
-    
-    if not payload.description is None:
-        status.description=payload.description
-
-    if not payload.type is None:
-        status.type=payload.type
-
-    if not payload.isActive is None:
-        status.is_active=payload.isActive
-
+    status.set_values(helpers.snake_case_props(payload.dict()))
     status.update()
     return base_api_models.APIResponse(
         code=200, type="UPDATE", message="Status updated successfully"

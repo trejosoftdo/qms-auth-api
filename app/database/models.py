@@ -78,6 +78,16 @@ class ModelMethodsMixin:
         """
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
+    def set_values(self: T, data: dict) -> None:
+        """Sets properties values from data dictionary
+
+        Args:
+            data (dict): Data dictionary
+        """
+        for name in data:
+            if name != 'id' and (name in self.__table__.columns) and not data[name] is None:
+                setattr(self, name, data[name])
+
     def create(self: T) -> None:
         """Creates a new item in the database
 
