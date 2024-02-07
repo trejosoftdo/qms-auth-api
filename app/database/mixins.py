@@ -138,7 +138,6 @@ class ModelMethodsMixin:
         Args:
             self (T): Database model
         """
-        # TODO: validate it has id
         main.session.commit()
 
     def delete(self: T) -> None:
