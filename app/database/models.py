@@ -1,7 +1,6 @@
 """Database models
 """
 
-from typing import Type, TypeVar, List, Callable, Any
 from sqlalchemy import (
     Column,
     DateTime,
@@ -10,110 +9,16 @@ from sqlalchemy import (
     Enum,
     Boolean,
     ForeignKey,
-    select,
 )
 from sqlalchemy.sql import func
 from sqlalchemy.orm import mapped_column, relationship
 from .. import enums
-from . import main
 from . import setup
+from .mixins import ModelMethodsMixin
+
 
 # pylint: disable=R0903
 # pylint: disable=E1102
-
-
-T = TypeVar("T", bound=setup.Base)
-
-
-class ModelMethodsMixin:
-    """Model Methods Mixin"""
-
-    @classmethod
-    def find_by_id(cls: Type[T], entity_id: int) -> T:
-        """Gets an entity by id
-
-        Args:
-            entity_id (int): ID of entity
-
-        Returns:
-            Status: The matched entity
-        """
-        statement = select(cls).where(cls.id == entity_id).limit(1)
-        return main.session.scalars(statement).one()
-
-    @classmethod
-    def find_paginated(
-        cls: Type[T],
-        limit: int,
-        offset: int,
-        filter_selection: Callable[[Any], Any] = None,
-    ) -> List[T]:
-        """Find many items in a paginated manner
-
-        Args:
-            limit (int): total number of items to be returned
-            offset (int): starting offset position
-            filter_selection (Callable[[Any], Any]): Filter func
-
-        Returns:
-            List[T]: The matched entities
-        """
-        selection = select(cls)
-
-        if callable(filter_selection):
-            selection = filter_selection(selection)
-
-        statement = selection.limit(limit).offset(offset)
-
-        return main.session.scalars(statement)
-
-    def to_dict(self: T) -> dict:
-        """Transform the item into dictionary
-
-        Args:
-            self (T): Database model
-
-        Returns:
-            dict: The created dictionary
-        """
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
-    def set_values(self: T, data: dict) -> None:
-        """Sets properties values from data dictionary
-
-        Args:
-            data (dict): Data dictionary
-        """
-        for name in data:
-            if name != 'id' and (name in self.__table__.columns) and not data[name] is None:
-                setattr(self, name, data[name])
-
-    def create(self: T) -> None:
-        """Creates a new item in the database
-
-        Args:
-            self (T): Database model
-        """
-        main.session.add(self)
-        main.session.commit()
-
-    def update(self: T) -> None:
-        """Saves the changes made on the item
-
-        Args:
-            self (T): Database model
-        """
-        # TODO: validate it has id
-        main.session.commit()
-
-    def delete(self: T) -> None:
-        """Deletes the current item from the database
-
-        Args:
-            self (T): Database model
-        """
-        main.session.delete(self)
-        main.session.commit()
 
 
 class Status(ModelMethodsMixin, setup.Base):

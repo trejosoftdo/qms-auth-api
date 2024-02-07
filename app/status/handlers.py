@@ -1,9 +1,9 @@
 """Status API handlers"""
 
 from .. import base_api_models
+from .. import api_responses
 from ..database import models as db_models
 from .. import mappers
-from .. import helpers
 from . import models as status_api_models
 
 # pylint: disable=W0613
@@ -50,11 +50,8 @@ def delete_status_by_id(status_id: int) -> base_api_models.APIResponse:
     Returns:
         APIResponse: The result of the deletion
     """
-    status = db_models.Status.find_by_id(status_id)
-    status.delete()
-    return base_api_models.APIResponse(
-        code=200, type="DELETE", message="Status deleted successfully"
-    )
+    db_models.Status.delete_by_id(status_id)
+    return api_responses.ITEM_DELETED_RESPONSE
 
 
 def add_status(
@@ -68,11 +65,8 @@ def add_status(
     Returns:
         APIResponse: The result of the addition
     """
-    status = db_models.Status(**helpers.snake_case_props(payload.dict()))
-    status.create()
-    return base_api_models.APIResponse(
-        code=200, type="ADD", message="Status added successfully"
-    )
+    db_models.Status.create_from_data(payload.dict())
+    return api_responses.ITEM_ADDED_RESPONSE
 
 
 def update_status(
@@ -87,12 +81,8 @@ def update_status(
     Returns:
         APIResponse: The result of the update
     """
-    status = db_models.Status.find_by_id(status_id)
-    status.set_values(helpers.snake_case_props(payload.dict()))
-    status.update()
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Status updated successfully"
-    )
+    db_models.Status.update_by_id(status_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
 
 
 def partially_update_status(
@@ -107,9 +97,5 @@ def partially_update_status(
     Returns:
         APIResponse: The result of the update
     """
-    status = db_models.Status.find_by_id(status_id)
-    status.set_values(helpers.snake_case_props(payload.dict()))
-    status.update()
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Status updated successfully"
-    )
+    db_models.Status.update_by_id(status_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
