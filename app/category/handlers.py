@@ -1,7 +1,8 @@
 """Category API handlers"""
 
 from .. import base_api_models
-from .. import mocks
+from .. import api_responses
+from ..database import models as db_models
 from .. import mappers
 from . import models as category_api_models
 from . import service
@@ -65,7 +66,8 @@ def get_category_by_id(category_id: int) -> base_api_models.Category:
     Returns:
         Category: Category for id
     """
-    return mocks.category
+    item = db_models.Category.find_by_id(category_id)
+    return mappers.map_category(item)
 
 
 def delete_category_by_id(category_id: int) -> base_api_models.APIResponse:
@@ -77,9 +79,8 @@ def delete_category_by_id(category_id: int) -> base_api_models.APIResponse:
     Returns:
         APIResponse: The result of the deletion
     """
-    return base_api_models.APIResponse(
-        code=200, type="DELETE", message="Category deleted successfully"
-    )
+    db_models.Category.delete_by_id(category_id)
+    return api_responses.ITEM_DELETED_RESPONSE
 
 
 def add_category(payload: category_api_models.CreateCategoryPayload) -> base_api_models.APIResponse:
@@ -91,9 +92,8 @@ def add_category(payload: category_api_models.CreateCategoryPayload) -> base_api
     Returns:
         APIResponse: The result of the addition
     """
-    return base_api_models.APIResponse(
-        code=200, type="ADD", message="Category added successfully"
-    )
+    db_models.Category.create_from_data(payload.dict())
+    return api_responses.ITEM_ADDED_RESPONSE
 
 
 def update_category(
@@ -108,9 +108,8 @@ def update_category(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Category updated successfully"
-    )
+    db_models.Category.update_by_id(category_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
 
 
 def partially_update_category(
@@ -125,6 +124,5 @@ def partially_update_category(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Category updated successfully"
-    )
+    db_models.Category.update_by_id(category_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
