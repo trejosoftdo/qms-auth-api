@@ -23,9 +23,6 @@ from .mixins import ModelMethodsMixin
 
 class Status(ModelMethodsMixin, setup.Base):
     """Status related to each type of object
-
-    Args:
-        setup (Base): Database base model
     """
 
     __tablename__ = "statuses"
@@ -37,11 +34,8 @@ class Status(ModelMethodsMixin, setup.Base):
     is_active = Column(Boolean, default=True)
 
 
-class Priority(setup.Base):
+class Priority(ModelMethodsMixin, setup.Base):
     """Turn or queue priorities
-
-    Args:
-        setup (Base): Database base model
     """
 
     __tablename__ = "priorities"
@@ -57,9 +51,6 @@ class Category(setup.Base):
     """Categories are higher-level classification
        or grouping of customers
        or visitors based on the nature or purpose of their visit.
-
-    Args:
-        setup (Base): Database base model
     """
 
     __tablename__ = "categories"
@@ -177,12 +168,9 @@ class ServiceTurn(setup.Base):
     customer = relationship("Customer")
 
 
-class Queue(setup.Base):
+class Queue(ModelMethodsMixin, setup.Base):
     """Queues are sequence of customers
        or individuals waiting for a service or assistance.
-
-    Args:
-        setup (Base): Database base model
     """
 
     __tablename__ = "queues"

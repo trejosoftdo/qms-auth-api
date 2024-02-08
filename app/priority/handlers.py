@@ -1,7 +1,9 @@
 """Priority API handlers"""
 
 from .. import base_api_models
-from .. import mocks
+from .. import api_responses
+from ..database import models as db_models
+from .. import mappers
 from . import models as priority_api_models
 
 # pylint: disable=W0613
@@ -20,7 +22,10 @@ def get_priorities(
     Returns:
         PrioritiesListResponse: List of priorities
     """
-    return [mocks.priority]
+    items = db_models.Priority.find_paginated(
+        limit, offset, lambda x: x.where(db_models.Priority.is_active == active)
+    )
+    return list(map(mappers.map_priority, items))
 
 
 def get_priority_by_id(priority_id: int) -> base_api_models.Priority:
@@ -32,7 +37,8 @@ def get_priority_by_id(priority_id: int) -> base_api_models.Priority:
     Returns:
         Priority: Priority for id
     """
-    return mocks.priority
+    item = db_models.Priority.find_by_id(priority_id)
+    return mappers.map_priority(item)
 
 
 def delete_priority_by_id(priority_id: int) -> base_api_models.APIResponse:
@@ -44,9 +50,8 @@ def delete_priority_by_id(priority_id: int) -> base_api_models.APIResponse:
     Returns:
         APIResponse: The result of the deletion
     """
-    return base_api_models.APIResponse(
-        code=200, type="DELETE", message="Priority deleted successfully"
-    )
+    db_models.Priority.delete_by_id(priority_id)
+    return api_responses.ITEM_DELETED_RESPONSE
 
 
 def add_priority(payload: priority_api_models.CreatePriorityPayload) -> base_api_models.APIResponse:
@@ -58,9 +63,8 @@ def add_priority(payload: priority_api_models.CreatePriorityPayload) -> base_api
     Returns:
         APIResponse: The result of the addition
     """
-    return base_api_models.APIResponse(
-        code=200, type="ADD", message="Priority added successfully"
-    )
+    db_models.Priority.create_from_data(payload.dict())
+    return api_responses.ITEM_ADDED_RESPONSE
 
 
 def update_priority(
@@ -75,9 +79,8 @@ def update_priority(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Priority updated successfully"
-    )
+    db_models.Priority.update_by_id(priority_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
 
 
 def partially_update_priority(
@@ -92,6 +95,5 @@ def partially_update_priority(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Priority updated successfully"
-    )
+    db_models.Priority.update_by_id(priority_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE

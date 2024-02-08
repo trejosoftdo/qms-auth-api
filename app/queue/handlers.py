@@ -1,7 +1,9 @@
 """Queue API handlers"""
 
 from .. import base_api_models
-from .. import mocks
+from .. import api_responses
+from ..database import models as db_models
+from .. import mappers
 from . import models as queue_api_models
 
 # pylint: disable=W0613
@@ -20,7 +22,10 @@ def get_queues(
     Returns:
         QueuesListResponse: List of queues
     """
-    return [mocks.queue]
+    items = db_models.Queue.find_paginated(
+        limit, offset, lambda x: x.where(db_models.Queue.is_active == active)
+    )
+    return list(map(mappers.map_queue, items))
 
 
 def get_queue_by_id(queue_id: int) -> base_api_models.Queue:
@@ -32,7 +37,8 @@ def get_queue_by_id(queue_id: int) -> base_api_models.Queue:
     Returns:
         Queue: Queue for id
     """
-    return mocks.queue
+    item = db_models.Queue.find_by_id(queue_id)
+    return mappers.map_queue(item)
 
 
 def delete_queue_by_id(queue_id: int) -> base_api_models.APIResponse:
@@ -44,9 +50,8 @@ def delete_queue_by_id(queue_id: int) -> base_api_models.APIResponse:
     Returns:
         APIResponse: The result of the deletion
     """
-    return base_api_models.APIResponse(
-        code=200, type="DELETE", message="Queue deleted successfully"
-    )
+    db_models.Queue.delete_by_id(queue_id)
+    return api_responses.ITEM_DELETED_RESPONSE
 
 
 def add_queue(payload: queue_api_models.CreateQueuePayload) -> base_api_models.APIResponse:
@@ -58,9 +63,8 @@ def add_queue(payload: queue_api_models.CreateQueuePayload) -> base_api_models.A
     Returns:
         APIResponse: The result of the addition
     """
-    return base_api_models.APIResponse(
-        code=200, type="ADD", message="Queue added successfully"
-    )
+    db_models.Queue.create_from_data(payload.dict())
+    return api_responses.ITEM_ADDED_RESPONSE
 
 
 def update_queue(
@@ -75,9 +79,8 @@ def update_queue(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Queue updated successfully"
-    )
+    db_models.Queue.update_by_id(queue_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
 
 
 def partially_update_queue(
@@ -92,6 +95,5 @@ def partially_update_queue(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Queue updated successfully"
-    )
+    db_models.Queue.update_by_id(queue_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
