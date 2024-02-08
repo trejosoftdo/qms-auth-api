@@ -22,6 +22,43 @@ def map_status(status: db_models.Status) -> base_api_models.Status:
         isActive=status.is_active,
     )
 
+def map_priority(priority: db_models.Priority) -> base_api_models.Priority:
+    """Maps a database priority to a API priority
+
+    Args:
+        priority (db_models.Priority): database priority item
+
+    Returns:
+        base_api_models.Priority: API priority item
+    """
+    return base_api_models.Priority(
+        id=priority.id,
+        name=priority.name,
+        code=priority.code,
+        description=priority.description,
+        weight=priority.weight,
+        isActive=priority.is_active,
+    )
+
+def map_queue(queue: db_models.Queue) -> base_api_models.Queue:
+    """Maps a database queue to a API queue
+
+    Args:
+        queue (db_models.Priority): database queue item
+
+    Returns:
+        base_api_models.Queue: API queue item
+    """
+    return base_api_models.Queue(
+        id=queue.id,
+        name=queue.name,
+        code=queue.code,
+        description=queue.description,
+        isActive=queue.is_active,
+        status=map_status(queue.status),
+        priority=map_priority(queue.priority),
+    )
+
 
 def map_category(category: db_models.Category) -> base_api_models.Category:
     """Maps a database category to a API category
