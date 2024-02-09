@@ -4,37 +4,40 @@ from typing import List, Optional
 from .. import base_api_models
 
 
-class CreateCategoryPayload(base_api_models.Category):
+class CreateCategoryPayload(base_api_models.CategoryBasicData):
     """Payload to create a category
 
     Args:
-        Category (class): Category class
+        CategoryBasicData (class): Category basic class
     """
 
     id: Optional[int] = None
+    statusId: Optional[int] = None
 
 
-class UpdateCategoryPayload(base_api_models.Category):
+class UpdateCategoryPayload(base_api_models.CategoryBasicData):
     """Payload to update a category
 
     Args:
-        Category (class): Category class
+        CategoryBasicData (class): Category basic class
     """
 
     id: Optional[int] = None
+    statusId: Optional[int] = None
 
 
-class PatchCategoryPayload(base_api_models.Category):
+class PatchCategoryPayload(base_api_models.CategoryBasicData):
     """Payload to patch a category
 
     Args:
-        Category (class): Category class
+        CategoryBasicData (class): Category basic class
     """
 
     id: Optional[int] = None
     type: Optional[str] = None
     name: Optional[str] = None
     code: Optional[str] = None
+    iconUrl: Optional[str] = None
     description: Optional[str] = None
     isActive: Optional[bool] = None
     statusId: Optional[int] = None

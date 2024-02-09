@@ -47,7 +47,7 @@ class Priority(ModelMethodsMixin, setup.Base):
     is_active = Column(Boolean, default=True)
 
 
-class Category(setup.Base):
+class Category(ModelMethodsMixin, setup.Base):
     """Categories are higher-level classification
        or grouping of customers
        or visitors based on the nature or purpose of their visit.
@@ -64,7 +64,7 @@ class Category(setup.Base):
     status = relationship("Status")
 
 
-class Service(setup.Base):
+class Service(ModelMethodsMixin, setup.Base):
     """Services are specific assistance
        or task that a customer or visitor needs to be addressed
        at a service point (e.g., a service counter or desk).
@@ -87,7 +87,7 @@ class Service(setup.Base):
     category = relationship("Category")
 
 
-class Customer(setup.Base):
+class Customer(ModelMethodsMixin, setup.Base):
     """Customers are visitors served by service agent
        or service counter
 
@@ -100,7 +100,7 @@ class Customer(setup.Base):
     first_name = Column(String(50))
     last_name = Column(String(50))
     email = Column(String(200))
-    gender = Column(Enum(enums.Gender))
+    gender = Column(Enum(*enums.Gender.get_values()))
     year_of_birth = Column(Integer)
     status_id = mapped_column(ForeignKey("statuses.id"))
     status = relationship("Status")
@@ -110,7 +110,7 @@ class Customer(setup.Base):
     last_modified_by = Column(String(50))
 
 
-class Appointment(setup.Base):
+class Appointment(ModelMethodsMixin, setup.Base):
     """Appointments are pre-scheduled
        or pre-arranged time when a customer is expected
        to visit a service location to receive a specific service.
@@ -136,7 +136,7 @@ class Appointment(setup.Base):
     customer = relationship("Customer")
 
 
-class ServiceTurn(setup.Base):
+class ServiceTurn(ModelMethodsMixin, setup.Base):
     """Service turns are customer's
        or visitor's time to be served by a service agent
        or at a service counter on a specific.
