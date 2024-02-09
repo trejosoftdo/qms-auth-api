@@ -1,14 +1,14 @@
 """ServiceTurn API handlers"""
 
 from .. import base_api_models
-from .. import mocks
+from .. import api_responses
+from ..database import models as db_models
+from .. import mappers
 from . import models as service_turn_api_models
-
-# pylint: disable=W0613
 
 
 def get_service_turns(
-    active: bool, offset: int, limit: int
+    offset: int, limit: int
 ) -> service_turn_api_models.ServiceTurnsListResponse:
     """Get list of service_turns
 
@@ -20,7 +20,8 @@ def get_service_turns(
     Returns:
         ServiceTurnsListResponse: List of service turns
     """
-    return [mocks.turn]
+    items = db_models.ServiceTurn.find_paginated(limit, offset)
+    return list(map(mappers.map_service_turn, items))
 
 
 def get_service_turn_by_id(service_turn_id: int) -> base_api_models.ServiceTurn:
@@ -32,7 +33,8 @@ def get_service_turn_by_id(service_turn_id: int) -> base_api_models.ServiceTurn:
     Returns:
         ServiceTurn: ServiceTurn for id
     """
-    return mocks.turn
+    item = db_models.ServiceTurn.find_by_id(service_turn_id)
+    return mappers.map_service_turn(item)
 
 
 def delete_service_turn_by_id(service_turn_id: int) -> base_api_models.APIResponse:
@@ -44,9 +46,8 @@ def delete_service_turn_by_id(service_turn_id: int) -> base_api_models.APIRespon
     Returns:
         APIResponse: The result of the deletion
     """
-    return base_api_models.APIResponse(
-        code=200, type="DELETE", message="ServiceTurn deleted successfully"
-    )
+    db_models.ServiceTurn.delete_by_id(service_turn_id)
+    return api_responses.ITEM_DELETED_RESPONSE
 
 
 def add_service_turn(
@@ -60,9 +61,8 @@ def add_service_turn(
     Returns:
         APIResponse: The result of the addition
     """
-    return base_api_models.APIResponse(
-        code=200, type="ADD", message="ServiceTurn added successfully"
-    )
+    db_models.ServiceTurn.create_from_data(payload.dict())
+    return api_responses.ITEM_ADDED_RESPONSE
 
 
 def update_service_turn(
@@ -77,9 +77,8 @@ def update_service_turn(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="ServiceTurn updated successfully"
-    )
+    db_models.ServiceTurn.update_by_id(service_turn_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
 
 
 def partially_update_service_turn(
@@ -94,6 +93,5 @@ def partially_update_service_turn(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="ServiceTurn updated successfully"
-    )
+    db_models.ServiceTurn.update_by_id(service_turn_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE

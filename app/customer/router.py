@@ -33,14 +33,13 @@ router = APIRouter()
     response_model=customer_api_models.CustomersListResponse,
 )
 def get_customers(
-    active: bool = True,
     offset: int = 0,
     limit: int = 10,
 ) -> customer_api_models.CustomersListResponse:
     """
     Gets a list of customers
     """
-    return handlers.get_customers(active, offset, limit)
+    return handlers.get_customers(offset, limit)
 
 
 @router.get(

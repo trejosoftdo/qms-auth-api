@@ -1,26 +1,24 @@
 """Appointment API handlers"""
 
 from .. import base_api_models
-from .. import mocks
+from .. import api_responses
+from ..database import models as db_models
+from .. import mappers
 from . import models as appointment_api_models
 
-# pylint: disable=W0613
 
-
-def get_appointments(
-    active: bool, offset: int, limit: int
-) -> appointment_api_models.AppointmentsListResponse:
+def get_appointments(offset: int, limit: int) -> appointment_api_models.AppointmentsListResponse:
     """Get list of appointments
 
     Args:
-        active (bool): Flag to return only active records.
         offset (int): The items to skip before collecting the result set.
         limit (int): The items to return.
 
     Returns:
         AppointmentsListResponse: List of appointments
     """
-    return [mocks.appointment]
+    items = db_models.Appointment.find_paginated(limit, offset)
+    return list(map(mappers.map_appointment, items))
 
 
 def get_appointment_by_id(appointment_id: int) -> base_api_models.Appointment:
@@ -32,7 +30,8 @@ def get_appointment_by_id(appointment_id: int) -> base_api_models.Appointment:
     Returns:
         Appointment: Appointment for id
     """
-    return mocks.appointment
+    item = db_models.Appointment.find_by_id(appointment_id)
+    return mappers.map_appointment(item)
 
 
 def delete_appointment_by_id(appointment_id: int) -> base_api_models.APIResponse:
@@ -44,9 +43,8 @@ def delete_appointment_by_id(appointment_id: int) -> base_api_models.APIResponse
     Returns:
         APIResponse: The result of the deletion
     """
-    return base_api_models.APIResponse(
-        code=200, type="DELETE", message="Appointment deleted successfully"
-    )
+    db_models.Appointment.delete_by_id(appointment_id)
+    return api_responses.ITEM_DELETED_RESPONSE
 
 
 def add_appointment(
@@ -60,9 +58,8 @@ def add_appointment(
     Returns:
         APIResponse: The result of the addition
     """
-    return base_api_models.APIResponse(
-        code=200, type="ADD", message="Appointment added successfully"
-    )
+    db_models.Appointment.create_from_data(payload.dict())
+    return api_responses.ITEM_ADDED_RESPONSE
 
 
 def update_appointment(
@@ -77,9 +74,8 @@ def update_appointment(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Appointment updated successfully"
-    )
+    db_models.Appointment.update_by_id(appointment_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
 
 
 def partially_update_appointment(
@@ -94,6 +90,5 @@ def partially_update_appointment(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Appointment updated successfully"
-    )
+    db_models.Appointment.update_by_id(appointment_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE

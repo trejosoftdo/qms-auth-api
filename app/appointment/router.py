@@ -31,14 +31,13 @@ router = APIRouter()
     response_model=appointment_api_models.AppointmentsListResponse,
 )
 def get_appointments(
-    active: bool = True,
     offset: int = 0,
     limit: int = 10,
 ) -> appointment_api_models.AppointmentsListResponse:
     """
     Gets a list of appointments
     """
-    return handlers.get_appointments(active, offset, limit)
+    return handlers.get_appointments(offset, limit)
 
 
 @router.get(

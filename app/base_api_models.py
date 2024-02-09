@@ -80,6 +80,7 @@ class CategoryBasicData(BaseModel):
 
     id: int
     name: str
+    code: str
     description: str
     iconUrl: str
     isActive: bool
