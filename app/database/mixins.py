@@ -29,6 +29,26 @@ class ModelMethodsMixin:
         return main.session.scalars(statement).one()
 
     @classmethod
+    def find_many(
+        cls: Type[T],
+        filter_selection: Callable[[Select], Select] = None,
+    ) -> List[T]:
+        """Find many items in a paginated manner
+
+        Args:
+            filter_selection (Callable[[Any], Any]): Filter func
+
+        Returns:
+            List[T]: The matched entities
+        """
+        selection = select(cls)
+
+        if callable(filter_selection):
+            selection = filter_selection(selection)
+
+        return main.session.scalars(selection)
+
+    @classmethod
     def find_paginated(
         cls: Type[T],
         limit: int,

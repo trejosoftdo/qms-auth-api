@@ -22,6 +22,7 @@ def map_status(status: db_models.Status) -> base_api_models.Status:
         isActive=status.is_active,
     )
 
+
 def map_priority(priority: db_models.Priority) -> base_api_models.Priority:
     """Maps a database priority to a API priority
 
@@ -39,6 +40,7 @@ def map_priority(priority: db_models.Priority) -> base_api_models.Priority:
         weight=priority.weight,
         isActive=priority.is_active,
     )
+
 
 def map_queue(queue: db_models.Queue) -> base_api_models.Queue:
     """Maps a database queue to a API queue
@@ -99,4 +101,80 @@ def map_service(service: db_models.Service) -> base_api_models.Service:
         status=map_status(service.status),
         category=map_category(service.category),
         isActive=service.is_active,
+    )
+
+
+def map_customer(customer: db_models.Customer) -> base_api_models.Customer:
+    """Maps a database customer to a API customer
+
+    Args:
+        customer (db_models.Customer): database customer item
+
+    Returns:
+        base_api_models.Customer: API customer item
+    """
+    return base_api_models.Customer(
+        id=customer.id,
+        firstName=customer.first_name,
+        lastName=customer.last_name,
+        email=customer.email,
+        gender=customer.gender,
+        yearOfBirth=customer.year_of_birth,
+        created=customer.created,
+        createdBy=customer.created_by,
+        lastModified=customer.last_modified,
+        lastModifiedBy=customer.last_modified_by,
+        status=map_status(customer.status),
+    )
+
+
+def map_appointment(appointment: db_models.Appointment) -> base_api_models.Appointment:
+    """Maps a database appointment to a API appointment
+
+    Args:
+        appointment (db_models.Appointment): database appointment item
+
+    Returns:
+        base_api_models.Appointment: API appointment item
+    """
+    return base_api_models.Appointment(
+        id=appointment.id,
+        createdBy=appointment.created_by,
+        lastModifiedBy=appointment.last_modified_by,
+        serviceEndingExpected=appointment.service_ending_expected,
+        serviceStarted=appointment.service_started,
+        serviceEnded=appointment.service_ended,
+        created=appointment.created,
+        lastModified=appointment.last_modified,
+        status=map_status(appointment.status),
+        service=map_service(appointment.service),
+        customer=map_customer(appointment.customer),
+    )
+
+
+def map_service_turn(turn: db_models.ServiceTurn) -> base_api_models.ServiceTurn:
+    """Maps a database service turn to a API service turn
+
+    Args:
+        turn (db_models.ServiceTurn): database service turn item
+
+    Returns:
+        base_api_models.ServiceTurn: API service turn item
+    """
+    return base_api_models.Appointment(
+        id=turn.id,
+        ticketNumber=turn.ticket_number,
+        customerName=turn.customer_name,
+        createdBy=turn.created_by,
+        lastModifiedBy=turn.last_modified_by,
+        serviceEndingExpected=turn.service_ending_expected,
+        serviceStarted=turn.service_started,
+        serviceEnded=turn.service_ended,
+        created=turn.created,
+        lastModified=turn.last_modified,
+        priority=map_priority(turn.priority),
+        appointment=map_appointment(turn.appointment),
+        status=map_status(turn.status),
+        service=map_service(turn.service),
+        customer=map_customer(turn.customer),
     )

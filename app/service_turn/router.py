@@ -31,14 +31,13 @@ router = APIRouter()
     response_model=service_turn_api_models.ServiceTurnsListResponse,
 )
 def get_service_turns(
-    active: bool = True,
     offset: int = 0,
     limit: int = 10,
 ) -> service_turn_api_models.ServiceTurnsListResponse:
     """
     Gets a list of service turns
     """
-    return handlers.get_service_turns(active, offset, limit)
+    return handlers.get_service_turns(offset, limit)
 
 
 @router.get(

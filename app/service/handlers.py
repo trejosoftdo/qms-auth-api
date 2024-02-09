@@ -1,7 +1,9 @@
 """Service API handlers"""
 
 from .. import base_api_models
-from .. import mocks
+from .. import api_responses
+from ..database import models as db_models
+from .. import mappers as general_mappers
 from . import models as service_api_models
 from . import mappers
 from . import service
@@ -22,7 +24,81 @@ def get_services(
     Returns:
         ServicesListResponse: List of services
     """
-    return [mocks.service]
+    items = db_models.Service.find_paginated(
+        limit, offset, lambda x: x.where(db_models.Service.is_active == active)
+    )
+    return list(map(general_mappers.map_service, items))
+
+
+def get_service_by_id(service_id: int) -> base_api_models.Service:
+    """Get info of an existing service by Id
+
+    Args:
+        service_id (int): id of the service
+
+    Returns:
+        Service: Service for id
+    """
+    item = db_models.Service.find_by_id(service_id)
+    return general_mappers.map_service(item)
+
+
+def delete_service_by_id(service_id: int) -> base_api_models.APIResponse:
+    """Delete an existing service by Id
+
+    Args:
+        service_id (int): id of the service
+
+    Returns:
+        APIResponse: The result of the deletion
+    """
+    db_models.Service.delete_by_id(service_id)
+    return api_responses.ITEM_DELETED_RESPONSE
+
+
+def add_service(payload: service_api_models.CreateServicePayload) -> base_api_models.APIResponse:
+    """Add a new service
+
+    Args:
+        payload (CreateServicePayload): payload to create service
+
+    Returns:
+        APIResponse: The result of the addition
+    """
+    db_models.Service.create_from_data(payload.dict())
+    return api_responses.ITEM_ADDED_RESPONSE
+
+
+def update_service(
+    service_id: int, payload: service_api_models.UpdateServicePayload
+) -> base_api_models.APIResponse:
+    """Update an existing service by Id
+
+    Args:
+        service_id (int): id of the service to update
+        payload (UpdateServicePayload): payload to update service
+
+    Returns:
+        APIResponse: The result of the update
+    """
+    db_models.Service.update_by_id(service_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
+
+
+def partially_update_service(
+    service_id: int, payload: service_api_models.PatchServicePayload
+) -> base_api_models.APIResponse:
+    """Partially updates an existing service by Id
+
+    Args:
+        service_id (int): id of the service to partially update
+        payload (PatchServicePayload): payload to update service
+
+    Returns:
+        APIResponse: The result of the update
+    """
+    db_models.Service.update_by_id(service_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
 
 
 def create_service_turn(
@@ -44,77 +120,3 @@ def create_service_turn(
         item,
     )
     return mappers.map_service_turn_response(item)
-
-
-def get_service_by_id(service_id: int) -> base_api_models.Service:
-    """Get info of an existing service by Id
-
-    Args:
-        service_id (int): id of the service
-
-    Returns:
-        Service: Service for id
-    """
-    return mocks.service
-
-
-def delete_service_by_id(service_id: int) -> base_api_models.APIResponse:
-    """Delete an existing service by Id
-
-    Args:
-        service_id (int): id of the service
-
-    Returns:
-        APIResponse: The result of the deletion
-    """
-    return base_api_models.APIResponse(
-        code=200, type="DELETE", message="Service deleted successfully"
-    )
-
-
-def add_service(payload: service_api_models.CreateServicePayload) -> base_api_models.APIResponse:
-    """Add a new service
-
-    Args:
-        payload (CreateServicePayload): payload to create service
-
-    Returns:
-        APIResponse: The result of the addition
-    """
-    return base_api_models.APIResponse(
-        code=200, type="ADD", message="Service added successfully"
-    )
-
-
-def update_service(
-    service_id: int, payload: service_api_models.UpdateServicePayload
-) -> base_api_models.APIResponse:
-    """Update an existing service by Id
-
-    Args:
-        service_id (int): id of the service to update
-        payload (UpdateServicePayload): payload to update service
-
-    Returns:
-        APIResponse: The result of the update
-    """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Service updated successfully"
-    )
-
-
-def partially_update_service(
-    service_id: int, payload: service_api_models.PatchServicePayload
-) -> base_api_models.APIResponse:
-    """Partially updates an existing service by Id
-
-    Args:
-        service_id (int): id of the service to partially update
-        payload (PatchServicePayload): payload to update service
-
-    Returns:
-        APIResponse: The result of the update
-    """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Service updated successfully"
-    )

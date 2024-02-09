@@ -1,26 +1,24 @@
 """Customer API handlers"""
 
 from .. import base_api_models
-from .. import mocks
+from .. import api_responses
+from ..database import models as db_models
+from .. import mappers as general_mappers
 from . import models as customer_api_models
 
-# pylint: disable=W0613
 
-
-def get_customers(
-    active: bool, offset: int, limit: int
-) -> customer_api_models.CustomersListResponse:
+def get_customers(offset: int, limit: int) -> customer_api_models.CustomersListResponse:
     """Get list of customers
 
     Args:
-        active (bool): Flag to return only active records.
         offset (int): The items to skip before collecting the result set.
         limit (int): The items to return.
 
     Returns:
         CustomersListResponse: List of customers
     """
-    return [mocks.customer]
+    items = db_models.Customer.find_paginated(limit, offset)
+    return list(map(general_mappers.map_customer, items))
 
 
 def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
@@ -32,7 +30,8 @@ def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
     Returns:
         Customer: Customer for id
     """
-    return mocks.customer
+    item = db_models.Customer.find_by_id(customer_id)
+    return general_mappers.map_customer(item)
 
 
 def get_customer_serviceturns(
@@ -46,7 +45,10 @@ def get_customer_serviceturns(
     Returns:
         CustomersServiceTurnsListResponse: List of service turns associated to customer
     """
-    return [mocks.turn]
+    items = db_models.ServiceTurn.find_many(
+        lambda x: x.where(db_models.ServiceTurn.customer_id == customer_id)
+    )
+    return list(map(general_mappers.map_service_turn, items))
 
 
 def get_customer_appointments(
@@ -60,7 +62,10 @@ def get_customer_appointments(
     Returns:
         CustomersAppointmentsListResponse: List of appoinments associated to customer
     """
-    return [mocks.appointment]
+    items = db_models.Appointment.find_many(
+        lambda x: x.where(db_models.Appointment.customer_id == customer_id)
+    )
+    return list(map(general_mappers.map_appointment, items))
 
 
 def delete_customer_by_id(customer_id: int) -> base_api_models.APIResponse:
@@ -72,9 +77,8 @@ def delete_customer_by_id(customer_id: int) -> base_api_models.APIResponse:
     Returns:
         APIResponse: The result of the deletion
     """
-    return base_api_models.APIResponse(
-        code=200, type="DELETE", message="Customer deleted successfully"
-    )
+    db_models.Customer.delete_by_id(customer_id)
+    return api_responses.ITEM_DELETED_RESPONSE
 
 
 def add_customer(
@@ -88,9 +92,8 @@ def add_customer(
     Returns:
         APIResponse: The result of the addition
     """
-    return base_api_models.APIResponse(
-        code=200, type="ADD", message="Customer added successfully"
-    )
+    db_models.Customer.create_from_data(payload.dict())
+    return api_responses.ITEM_ADDED_RESPONSE
 
 
 def update_customer(
@@ -105,9 +108,8 @@ def update_customer(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Customer updated successfully"
-    )
+    db_models.Customer.update_by_id(customer_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
 
 
 def partially_update_customer(
@@ -122,6 +124,5 @@ def partially_update_customer(
     Returns:
         APIResponse: The result of the update
     """
-    return base_api_models.APIResponse(
-        code=200, type="UPDATE", message="Customer updated successfully"
-    )
+    db_models.Customer.update_by_id(customer_id, payload.dict())
+    return api_responses.ITEM_UPDATED_RESPONSE
