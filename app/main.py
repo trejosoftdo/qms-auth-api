@@ -1,7 +1,11 @@
 """Entry point"""
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status as status_codes
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from sqlalchemy.exc import IntegrityError
 from . import constants
+from . import api_responses
 from .appointment import router as appointment
 from .category import router as category
 from .customer import router as customer
@@ -18,6 +22,46 @@ app = FastAPI(
     summary=constants.API_SUMMARY,
     version=constants.API_VERSION,
 )
+
+# pylint: disable=W0613
+
+@app.exception_handler(IntegrityError)
+def integrity_error_handler(request: Request, exc: IntegrityError):
+    """Database integrity error handler
+
+    Args:
+        request (Request): HTTP Request
+        exc (IntegrityError): Database integrity error
+
+    Returns:
+        JSONResponse: Error response
+    """
+    return JSONResponse(
+        status_code=status_codes.HTTP_400_BAD_REQUEST,
+        content=api_responses.get_validation_error_response(
+            constants.REVIEW_REQUEST_ERROR_MESSAGE
+        ).__dict__,
+    )
+
+
+@app.exception_handler(RequestValidationError)
+def request_validation_error_handler(request: Request, exc: RequestValidationError):
+    """Request validation error handler
+
+    Args:
+        request (Request): HTTP Request
+        exc (RequestValidationError): Request validation error
+
+    Returns:
+        JSONResponse: Error response
+    """
+    errors = [f"{err['msg']} ({'.'.join(err['loc'])})" for err in exc.errors()]
+    message = ". ".join(errors)
+    return JSONResponse(
+        status_code=status_codes.HTTP_400_BAD_REQUEST,
+        content=api_responses.get_validation_error_response(message).__dict__,
+    )
+
 
 app.include_router(appointment.router, prefix=constants.APPOINTMENTS_ROUTE_PREFIX)
 app.include_router(category.router, prefix=constants.CATEGORIES_ROUTE_PREFIX)

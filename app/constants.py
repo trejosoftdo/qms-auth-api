@@ -16,18 +16,18 @@ DEFAULT_TURN_PRIORITY = "NORMAL_PRIORITY"
 # Scopes START
 
 # Read status information
-READ_STATUSES_SCOPE="read_statuses"
+READ_STATUSES_SCOPE = "read_statuses"
 # Create, modify and delete status information
-WRITE_STATUSES_SCOPE="write_statuses"
+WRITE_STATUSES_SCOPE = "write_statuses"
 # Administrate status information
-ADMIN_STATUSES_SCOPE="admin_statuses"
+ADMIN_STATUSES_SCOPE = "admin_statuses"
 
 # Read priority information
-READ_PRIORITIES_SCOPE="read_priorities"
+READ_PRIORITIES_SCOPE = "read_priorities"
 # Create, modify and delete priority information
-WRITE_PRIORITIES_SCOPE="write_priorities"
+WRITE_PRIORITIES_SCOPE = "write_priorities"
 # Administrate priority information
-ADMIN_PRIORITIES_SCOPE="admin_priorities"
+ADMIN_PRIORITIES_SCOPE = "admin_priorities"
 
 # Read category information
 READ_CATEGORIES_SCOPE = "read_categories"
@@ -98,15 +98,21 @@ AUTH_ALLOWED_IP_ADDRESSES_ENV_NAME = "AUTH_ALLOWED_IP_ADDRESSES"
 AUTH_ALLOWED_API_KEYS_ENV_NAME = "AUTH_ALLOWED_API_KEYS"
 DB_CONNECTION_STRING_ENV_NAME = "DB_CONNECTION_STRING"
 
-# Errors
+# Error messages
 INTERNAL_SERVER_ERROR_MESSAGE = "Internal Server Error"
-INTERNAL_SERVER_ERROR_CODE = 500
-
+REVIEW_REQUEST_ERROR_MESSAGE = "Please, review your request and try later."
 INVALID_TOKEN_ERROR_MESSAGE = "Invalid token"
-INVALID_TOKEN_ERROR_CODE = 401
-
 FORBIDDEN_ERROR_MESSAGE = "Forbidden"
-FORBIDDEN_ERROR_CODE = 403
-
 UNAUTHORIZED_ERROR_MESSAGE = "Unauthorized"
-UNAUTHORIZED_ERROR_CODE = 401
+NOT_FOUND_ERROR_MESSAGE = "Item not found"
+INVALID_REQUEST = "INVALID_REQUEST"
+
+# Operations
+OPERATION_DELETE = "DELETE"
+OPERATION_ADD = "ADD"
+OPERATION_UPDATE = "UPDATE"
+
+# Success messages
+ITEM_DELETED_SUCCESSFULLY_MESSAGE = "Item deleted successfully"
+ITEM_ADDED_SUCCESSFULLY_MESSAGE = "Item added successfully"
+ITEM_UPDATED_SUCCESSFULLY_MESSAGE = "Item updated successfully"
