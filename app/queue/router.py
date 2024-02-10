@@ -1,6 +1,7 @@
 """Queue API router"""
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
+from .. import api_responses
 from .. import base_api_models
 from .. import constants
 from .. import helpers
@@ -29,11 +30,12 @@ router = APIRouter()
     tags=TAGS,
     operation_id=GET_QUEUES_OPERATION_ID,
     response_model=queue_api_models.QueuesListResponse,
+    responses=api_responses.responses_descriptions,
 )
 def get_queues(
     active: bool = True,
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> queue_api_models.QueuesListResponse:
     """
     Gets a list of queues
@@ -50,6 +52,7 @@ def get_queues(
     tags=TAGS,
     operation_id=GET_QUEUE_BY_ID_OPERATION_ID,
     response_model=base_api_models.Queue,
+    responses=api_responses.responses_descriptions,
 )
 def get_queue_by_id(queue_id: int) -> base_api_models.Queue:
     """
@@ -67,6 +70,8 @@ def get_queue_by_id(queue_id: int) -> base_api_models.Queue:
     tags=TAGS,
     operation_id=ADD_QUEUE_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    status_code=status.HTTP_201_CREATED,
+    responses=api_responses.responses_descriptions,
 )
 def add_queue(
     payload: queue_api_models.CreateQueuePayload,
@@ -86,6 +91,7 @@ def add_queue(
     tags=TAGS,
     operation_id=UPDATE_QUEUE_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def update_queue(
     queue_id: int, payload: queue_api_models.UpdateQueuePayload
@@ -105,6 +111,7 @@ def update_queue(
     tags=TAGS,
     operation_id=PATCH_QUEUE_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def patch_queue(
     queue_id: int, payload: queue_api_models.PatchQueuePayload
@@ -124,6 +131,7 @@ def patch_queue(
     tags=TAGS,
     operation_id=DELETE_QUEUE_BY_ID_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def delete_queue_by_id(queue_id: int) -> base_api_models.APIResponse:
     """

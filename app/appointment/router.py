@@ -1,6 +1,7 @@
 """Appointment API router"""
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
+from .. import api_responses
 from .. import base_api_models
 from .. import constants
 from .. import helpers
@@ -29,10 +30,11 @@ router = APIRouter()
     tags=TAGS,
     operation_id=GET_APPOINTMENTS_OPERATION_ID,
     response_model=appointment_api_models.AppointmentsListResponse,
+    responses=api_responses.responses_descriptions,
 )
 def get_appointments(
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> appointment_api_models.AppointmentsListResponse:
     """
     Gets a list of appointments
@@ -49,6 +51,7 @@ def get_appointments(
     tags=TAGS,
     operation_id=GET_APPOINTMENT_BY_ID_OPERATION_ID,
     response_model=base_api_models.Appointment,
+    responses=api_responses.responses_descriptions,
 )
 def get_appointment_by_id(appointment_id: int) -> base_api_models.Appointment:
     """
@@ -66,6 +69,8 @@ def get_appointment_by_id(appointment_id: int) -> base_api_models.Appointment:
     tags=TAGS,
     operation_id=ADD_APPOINTMENT_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    status_code=status.HTTP_201_CREATED,
+    responses=api_responses.responses_descriptions,
 )
 def add_appointment(
     payload: appointment_api_models.CreateAppointmentPayload,
@@ -85,6 +90,7 @@ def add_appointment(
     tags=TAGS,
     operation_id=UPDATE_APPOINTMENT_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def update_appointment(
     appointment_id: int, payload: appointment_api_models.UpdateAppointmentPayload
@@ -104,6 +110,7 @@ def update_appointment(
     tags=TAGS,
     operation_id=PATCH_APPOINTMENT_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def patch_appointment(
     appointment_id: int, payload: appointment_api_models.PatchAppointmentPayload
@@ -123,6 +130,7 @@ def patch_appointment(
     tags=TAGS,
     operation_id=DELETE_APPOINTMENT_BY_ID_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def delete_appointment_by_id(appointment_id: int) -> base_api_models.APIResponse:
     """

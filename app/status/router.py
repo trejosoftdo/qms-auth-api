@@ -1,6 +1,7 @@
 """Status API router"""
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
+from .. import api_responses
 from .. import base_api_models
 from .. import constants
 from .. import helpers
@@ -29,11 +30,12 @@ router = APIRouter()
     tags=TAGS,
     operation_id=GET_STATUSES_OPERATION_ID,
     response_model=status_api_models.StatusesListResponse,
+    responses=api_responses.responses_descriptions,
 )
 def get_statuses(
     active: bool = True,
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> status_api_models.StatusesListResponse:
     """
     Gets a list of statuses
@@ -50,6 +52,7 @@ def get_statuses(
     tags=TAGS,
     operation_id=GET_STATUS_BY_ID_OPERATION_ID,
     response_model=base_api_models.Status,
+    responses=api_responses.responses_descriptions,
 )
 def get_status_by_id(status_id: int) -> base_api_models.Status:
     """
@@ -67,6 +70,8 @@ def get_status_by_id(status_id: int) -> base_api_models.Status:
     tags=TAGS,
     operation_id=ADD_STATUS_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    status_code=status.HTTP_201_CREATED,
+    responses=api_responses.responses_descriptions,
 )
 def add_status(
     payload: status_api_models.CreateStatusPayload,
@@ -86,6 +91,7 @@ def add_status(
     tags=TAGS,
     operation_id=UPDATE_STATUS_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def update_status(
     status_id: int, payload: status_api_models.UpdateStatusPayload
@@ -105,6 +111,7 @@ def update_status(
     tags=TAGS,
     operation_id=PATCH_STATUS_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def patch_status(
     status_id: int, payload: status_api_models.PatchStatusPayload
@@ -124,6 +131,7 @@ def patch_status(
     tags=TAGS,
     operation_id=DELETE_STATUS_BY_ID_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def delete_status_by_id(status_id: int) -> base_api_models.APIResponse:
     """

@@ -4,6 +4,8 @@
 from typing import Type, TypeVar, List, Callable
 from sqlalchemy import select
 from sqlalchemy.sql import Select
+from sqlalchemy.exc import NoResultFound
+from .. import exceptions
 from .. import helpers
 from . import main
 from . import setup
@@ -25,8 +27,12 @@ class ModelMethodsMixin:
         Returns:
             T: The matched entity
         """
-        statement = select(cls).where(cls.id == entity_id).limit(1)
-        return main.session.scalars(statement).one()
+        try:
+            statement = select(cls).where(cls.id == entity_id).limit(1)
+            return main.session.scalars(statement).one()
+        except NoResultFound as exc:
+            raise exceptions.NOT_FOUND_ERROR from exc
+
 
     @classmethod
     def find_many(

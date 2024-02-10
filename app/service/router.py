@@ -1,6 +1,7 @@
 """Service API router"""
 
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends, Header, status
+from .. import api_responses
 from .. import constants
 from .. import base_api_models
 from .constants import (
@@ -30,11 +31,12 @@ router = APIRouter()
     tags=TAGS,
     operation_id=GET_SERVICES_OPERATION_ID,
     response_model=service_api_models.ServicesListResponse,
+    responses=api_responses.responses_descriptions,
 )
 def get_services(
     active: bool = True,
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> service_api_models.ServicesListResponse:
     """Gets a list of services for the application in context"""
     return handlers.get_services(active, offset, limit)
@@ -49,6 +51,7 @@ def get_services(
     tags=TAGS,
     operation_id=GET_SERVICE_BY_ID_OPERATION_ID,
     response_model=base_api_models.Service,
+    responses=api_responses.responses_descriptions,
 )
 def get_service_by_id(service_id: int) -> base_api_models.Service:
     """
@@ -66,6 +69,8 @@ def get_service_by_id(service_id: int) -> base_api_models.Service:
     tags=TAGS,
     operation_id=ADD_SERVICE_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    status_code=status.HTTP_201_CREATED,
+    responses=api_responses.responses_descriptions,
 )
 def add_service(
     payload: service_api_models.CreateServicePayload,
@@ -85,6 +90,7 @@ def add_service(
     tags=TAGS,
     operation_id=UPDATE_SERVICE_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def update_service(
     service_id: int, payload: service_api_models.UpdateServicePayload
@@ -104,6 +110,7 @@ def update_service(
     tags=TAGS,
     operation_id=PATCH_SERVICE_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def patch_service(
     service_id: int, payload: service_api_models.PatchServicePayload
@@ -123,6 +130,7 @@ def patch_service(
     tags=TAGS,
     operation_id=DELETE_SERVICE_BY_ID_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def delete_service_by_id(service_id: int) -> base_api_models.APIResponse:
     """
@@ -140,6 +148,8 @@ def delete_service_by_id(service_id: int) -> base_api_models.APIResponse:
     tags=TAGS,
     operation_id=CREATE_SERVICE_TURN_OPERATION_ID,
     response_model=service_api_models.CreateServiceTurnResponse,
+    status_code=status.HTTP_201_CREATED,
+    responses=api_responses.responses_descriptions,
 )
 def create_service_turn(
     service_id: int,

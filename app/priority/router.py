@@ -1,6 +1,7 @@
 """Priority API router"""
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
+from .. import api_responses
 from .. import base_api_models
 from .. import constants
 from .. import helpers
@@ -29,11 +30,12 @@ router = APIRouter()
     tags=TAGS,
     operation_id=GET_PRIORITIES_OPERATION_ID,
     response_model=priority_api_models.PrioritiesListResponse,
+    responses=api_responses.responses_descriptions,
 )
 def get_priorities(
     active: bool = True,
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> priority_api_models.PrioritiesListResponse:
     """
     Gets a list of priorities
@@ -50,6 +52,7 @@ def get_priorities(
     tags=TAGS,
     operation_id=GET_PRIORITY_BY_ID_OPERATION_ID,
     response_model=base_api_models.Priority,
+    responses=api_responses.responses_descriptions,
 )
 def get_priority_by_id(priority_id: int) -> base_api_models.Priority:
     """
@@ -67,6 +70,8 @@ def get_priority_by_id(priority_id: int) -> base_api_models.Priority:
     tags=TAGS,
     operation_id=ADD_PRIORITY_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    status_code=status.HTTP_201_CREATED,
+    responses=api_responses.responses_descriptions,
 )
 def add_priority(
     payload: priority_api_models.CreatePriorityPayload,
@@ -86,6 +91,7 @@ def add_priority(
     tags=TAGS,
     operation_id=UPDATE_PRIORITY_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def update_priority(
     priority_id: int, payload: priority_api_models.UpdatePriorityPayload
@@ -105,6 +111,7 @@ def update_priority(
     tags=TAGS,
     operation_id=PATCH_PRIORITY_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def patch_priority(
     priority_id: int, payload: priority_api_models.PatchPriorityPayload
@@ -124,6 +131,7 @@ def patch_priority(
     tags=TAGS,
     operation_id=DELETE_PRIORITY_BY_ID_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def delete_priority_by_id(priority_id: int) -> base_api_models.APIResponse:
     """

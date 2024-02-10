@@ -1,6 +1,7 @@
 """Customer API router"""
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
+from .. import api_responses
 from .. import base_api_models
 from .. import constants
 from .. import helpers
@@ -31,10 +32,11 @@ router = APIRouter()
     tags=TAGS,
     operation_id=GET_CUSTOMERS_OPERATION_ID,
     response_model=customer_api_models.CustomersListResponse,
+    responses=api_responses.responses_descriptions,
 )
 def get_customers(
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> customer_api_models.CustomersListResponse:
     """
     Gets a list of customers
@@ -51,6 +53,7 @@ def get_customers(
     tags=TAGS,
     operation_id=GET_CUSTOMER_BY_ID_OPERATION_ID,
     response_model=base_api_models.Customer,
+    responses=api_responses.responses_descriptions,
 )
 def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
     """
@@ -68,6 +71,7 @@ def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
     tags=TAGS,
     operation_id=GET_CUSTOMER_APPOINTMENTS_OPERATION_ID,
     response_model=customer_api_models.CustomersAppointmentsListResponse,
+    responses=api_responses.responses_descriptions,
 )
 def get_customer_appointments(
     customer_id: int,
@@ -87,6 +91,7 @@ def get_customer_appointments(
     tags=TAGS,
     operation_id=GET_CUSTOMER_SERVICE_TURNS_OPERATION_ID,
     response_model=customer_api_models.CustomersServiceTurnsListResponse,
+    responses=api_responses.responses_descriptions,
 )
 def get_customer_serviceturns(
     customer_id: int,
@@ -106,6 +111,8 @@ def get_customer_serviceturns(
     tags=TAGS,
     operation_id=ADD_CUSTOMER_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    status_code=status.HTTP_201_CREATED,
+    responses=api_responses.responses_descriptions,
 )
 def add_customer(
     payload: customer_api_models.CreateCustomerPayload,
@@ -125,6 +132,7 @@ def add_customer(
     tags=TAGS,
     operation_id=UPDATE_CUSTOMER_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def update_customer(
     customer_id: int, payload: customer_api_models.UpdateCustomerPayload
@@ -144,6 +152,7 @@ def update_customer(
     tags=TAGS,
     operation_id=PATCH_CUSTOMER_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def patch_customer(
     customer_id: int, payload: customer_api_models.PatchCustomerPayload
@@ -163,6 +172,7 @@ def patch_customer(
     tags=TAGS,
     operation_id=DELETE_CUSTOMER_BY_ID_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def delete_customer_by_id(customer_id: int) -> base_api_models.APIResponse:
     """
