@@ -4,7 +4,7 @@ from typing import List, Optional
 from .. import base_api_models
 
 
-class CreateServiceTurnPayload(base_api_models.ServiceTurn):
+class CreateServiceTurnPayload(base_api_models.ServiceTurnBasicData):
     """Payload to create an service turn
 
     Args:
@@ -14,7 +14,7 @@ class CreateServiceTurnPayload(base_api_models.ServiceTurn):
     id: Optional[int] = None
 
 
-class UpdateServiceTurnPayload(base_api_models.ServiceTurn):
+class UpdateServiceTurnPayload(base_api_models.ServiceTurnBasicData):
     """Payload to update an service turn
 
     Args:
@@ -24,7 +24,7 @@ class UpdateServiceTurnPayload(base_api_models.ServiceTurn):
     id: Optional[int] = None
 
 
-class PatchServiceTurnPayload(base_api_models.ServiceTurn):
+class PatchServiceTurnPayload(base_api_models.ServiceTurnBasicData):
     """Payload to patch an service turn
 
     Args:

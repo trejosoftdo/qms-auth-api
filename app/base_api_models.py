@@ -107,7 +107,6 @@ class ServiceBasicData(BaseModel):
     description: str
     prefix: str
     iconUrl: str
-    status: Status
     isActive: bool
 
 class Service(ServiceBasicData):
@@ -118,6 +117,7 @@ class Service(ServiceBasicData):
     """
 
     category: Category
+    status: Status
 
 
 class CustomerBasicData(BaseModel):

@@ -4,7 +4,7 @@ from typing import List, Optional
 from .. import base_api_models
 
 
-class CreateAppointmentPayload(base_api_models.Appointment):
+class CreateAppointmentPayload(base_api_models.AppointmentBasicData):
     """Payload to create an appointment
 
     Args:
@@ -12,9 +12,12 @@ class CreateAppointmentPayload(base_api_models.Appointment):
     """
 
     id: Optional[int] = None
+    customerId: int
+    statusId: int
+    serviceId: int
 
 
-class UpdateAppointmentPayload(base_api_models.Appointment):
+class UpdateAppointmentPayload(base_api_models.AppointmentBasicData):
     """Payload to update an appointment
 
     Args:
@@ -22,9 +25,12 @@ class UpdateAppointmentPayload(base_api_models.Appointment):
     """
 
     id: Optional[int] = None
+    customerId: int
+    statusId: int
+    serviceId: int
 
 
-class PatchAppointmentPayload(base_api_models.Appointment):
+class PatchAppointmentPayload(base_api_models.AppointmentBasicData):
     """Payload to patch an appointment
 
     Args:
