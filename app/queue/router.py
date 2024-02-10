@@ -34,8 +34,8 @@ router = APIRouter()
 )
 def get_queues(
     active: bool = True,
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> queue_api_models.QueuesListResponse:
     """
     Gets a list of queues

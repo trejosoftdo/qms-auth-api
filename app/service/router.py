@@ -35,8 +35,8 @@ router = APIRouter()
 )
 def get_services(
     active: bool = True,
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> service_api_models.ServicesListResponse:
     """Gets a list of services for the application in context"""
     return handlers.get_services(active, offset, limit)

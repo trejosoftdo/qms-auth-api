@@ -1,9 +1,13 @@
 """Common API models"""
 
 from typing import Optional
+# from annotated_types import Gt
+# from typing_extensions import Annotated
 from pydantic import BaseModel
 from . import enums
 
+
+# PositiveInt = Annotated[int, Gt(0)]
 
 class APIResponse(BaseModel):
     """API response

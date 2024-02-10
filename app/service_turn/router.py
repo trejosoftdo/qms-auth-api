@@ -33,8 +33,8 @@ router = APIRouter()
     responses=api_responses.responses_descriptions,
 )
 def get_service_turns(
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> service_turn_api_models.ServiceTurnsListResponse:
     """
     Gets a list of service turns

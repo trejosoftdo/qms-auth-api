@@ -35,8 +35,8 @@ router = APIRouter()
 )
 def get_categories(
     active: bool = True,
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
     application: str = Header(..., convert_underscores=False),
 ) -> category_api_models.CategoriesListResponse:
     """Gets a list of categories for the application in context"""

@@ -34,8 +34,8 @@ router = APIRouter()
 )
 def get_statuses(
     active: bool = True,
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> status_api_models.StatusesListResponse:
     """
     Gets a list of statuses

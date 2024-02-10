@@ -34,8 +34,8 @@ router = APIRouter()
 )
 def get_priorities(
     active: bool = True,
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> priority_api_models.PrioritiesListResponse:
     """
     Gets a list of priorities

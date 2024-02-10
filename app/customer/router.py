@@ -35,8 +35,8 @@ router = APIRouter()
     responses=api_responses.responses_descriptions,
 )
 def get_customers(
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> customer_api_models.CustomersListResponse:
     """
     Gets a list of customers

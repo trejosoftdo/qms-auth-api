@@ -33,8 +33,8 @@ router = APIRouter()
     responses=api_responses.responses_descriptions,
 )
 def get_appointments(
-    offset: int = 0,
-    limit: int = 10,
+    offset: int = constants.DEFAULT_PAGE_OFFSET,
+    limit: int = constants.DEFAULT_PAGE_LIMIT,
 ) -> appointment_api_models.AppointmentsListResponse:
     """
     Gets a list of appointments

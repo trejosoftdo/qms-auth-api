@@ -4,6 +4,7 @@ from fastapi import status, HTTPException
 from . import base_api_models
 from . import constants
 
+# pylint: disable=C0301
 
 ITEM_DELETED_RESPONSE = base_api_models.APIResponse(
     code=status.HTTP_200_OK,
