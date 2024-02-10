@@ -1,6 +1,6 @@
 """Entry point"""
 
-from fastapi import FastAPI, Request, status as status_codes
+from fastapi import FastAPI, Request, status as status_codes, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from sqlalchemy.exc import IntegrityError
@@ -25,6 +25,24 @@ app = FastAPI(
 
 # pylint: disable=W0613
 
+
+
+@app.exception_handler(HTTPException)
+def http_exception_handler(request: Request, exc: HTTPException):
+    """Handles HTTP exceptions
+
+    Args:
+        request (Request): HTTP Request
+        exc (HTTPException): HTTP Exception
+
+    Returns:
+        JSONResponse: Error response
+    """
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=api_responses.get_response_from_exception(exc).__dict__,
+    )
+
 @app.exception_handler(IntegrityError)
 def integrity_error_handler(request: Request, exc: IntegrityError):
     """Database integrity error handler
@@ -42,7 +60,6 @@ def integrity_error_handler(request: Request, exc: IntegrityError):
             constants.REVIEW_REQUEST_ERROR_MESSAGE
         ).__dict__,
     )
-
 
 @app.exception_handler(RequestValidationError)
 def request_validation_error_handler(request: Request, exc: RequestValidationError):

@@ -1,6 +1,7 @@
 """ServiceTurn API router"""
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
+from .. import api_responses
 from .. import base_api_models
 from .. import constants
 from .. import helpers
@@ -29,6 +30,7 @@ router = APIRouter()
     tags=TAGS,
     operation_id=GET_SERVICE_TURNS_OPERATION_ID,
     response_model=service_turn_api_models.ServiceTurnsListResponse,
+    responses=api_responses.responses_descriptions,
 )
 def get_service_turns(
     offset: int = 0,
@@ -49,6 +51,7 @@ def get_service_turns(
     tags=TAGS,
     operation_id=GET_SERVICE_TURN_BY_ID_OPERATION_ID,
     response_model=base_api_models.ServiceTurn,
+    responses=api_responses.responses_descriptions,
 )
 def get_service_turn_by_id(service_turn_id: int) -> base_api_models.ServiceTurn:
     """
@@ -66,6 +69,8 @@ def get_service_turn_by_id(service_turn_id: int) -> base_api_models.ServiceTurn:
     tags=TAGS,
     operation_id=ADD_SERVICE_TURN_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    status_code=status.HTTP_201_CREATED,
+    responses=api_responses.responses_descriptions,
 )
 def add_service_turn(
     payload: service_turn_api_models.CreateServiceTurnPayload,
@@ -85,6 +90,7 @@ def add_service_turn(
     tags=TAGS,
     operation_id=UPDATE_SERVICE_TURN_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def update_service_turn(
     service_turn_id: int, payload: service_turn_api_models.UpdateServiceTurnPayload
@@ -104,6 +110,7 @@ def update_service_turn(
     tags=TAGS,
     operation_id=PATCH_SERVICE_TURN_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def patch_service_turn(
     service_turn_id: int, payload: service_turn_api_models.PatchServiceTurnPayload
@@ -123,6 +130,7 @@ def patch_service_turn(
     tags=TAGS,
     operation_id=DELETE_SERVICE_TURN_BY_ID_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def delete_service_turn_by_id(service_turn_id: int) -> base_api_models.APIResponse:
     """

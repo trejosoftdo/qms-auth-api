@@ -1,6 +1,7 @@
 """Category API router"""
 
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends, Header, status
+from .. import api_responses
 from .. import helpers
 from .. import constants
 from .. import base_api_models
@@ -30,6 +31,7 @@ router = APIRouter()
     tags=TAGS,
     operation_id=GET_CATEGORIES_OPERATION_ID,
     response_model=category_api_models.CategoriesListResponse,
+    responses=api_responses.responses_descriptions,
 )
 def get_categories(
     active: bool = True,
@@ -50,6 +52,7 @@ def get_categories(
     tags=TAGS,
     operation_id=GET_CATEGORY_SERVICES_OPERATION_ID,
     response_model=category_api_models.CategoryServicesListResponse,
+    responses=api_responses.responses_descriptions,
 )
 def get_category_services(
     category_id: int,
@@ -73,6 +76,7 @@ def get_category_services(
     tags=TAGS,
     operation_id=GET_CATEGORY_BY_ID_OPERATION_ID,
     response_model=base_api_models.Category,
+    responses=api_responses.responses_descriptions,
 )
 def get_category_by_id(category_id: int) -> base_api_models.Category:
     """
@@ -90,6 +94,7 @@ def get_category_by_id(category_id: int) -> base_api_models.Category:
     tags=TAGS,
     operation_id=ADD_CATEGORY_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    status_code=status.HTTP_201_CREATED,
 )
 def add_category(
     payload: category_api_models.CreateCategoryPayload,
@@ -109,6 +114,7 @@ def add_category(
     tags=TAGS,
     operation_id=UPDATE_CATEGORY_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def update_category(
     category_id: int, payload: category_api_models.UpdateCategoryPayload
@@ -128,6 +134,7 @@ def update_category(
     tags=TAGS,
     operation_id=PATCH_CATEGORY_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def patch_category(
     category_id: int, payload: category_api_models.PatchCategoryPayload
@@ -147,6 +154,7 @@ def patch_category(
     tags=TAGS,
     operation_id=DELETE_CATEGORY_BY_ID_OPERATION_ID,
     response_model=base_api_models.APIResponse,
+    responses=api_responses.responses_descriptions,
 )
 def delete_category_by_id(category_id: int) -> base_api_models.APIResponse:
     """
