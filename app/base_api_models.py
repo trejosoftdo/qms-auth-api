@@ -1,13 +1,9 @@
 """Common API models"""
 
 from typing import Optional
-# from annotated_types import Gt
-# from typing_extensions import Annotated
 from pydantic import BaseModel
 from . import enums
 
-
-# PositiveInt = Annotated[int, Gt(0)]
 
 class APIResponse(BaseModel):
     """API response
@@ -64,6 +60,7 @@ class QueueBasicData(BaseModel):
     description: str
     isActive: bool
 
+
 class Queue(QueueBasicData):
     """Queue data
 
@@ -89,6 +86,7 @@ class CategoryBasicData(BaseModel):
     iconUrl: str
     isActive: bool
 
+
 class Category(CategoryBasicData):
     """Category data
 
@@ -112,6 +110,7 @@ class ServiceBasicData(BaseModel):
     prefix: str
     iconUrl: str
     isActive: bool
+
 
 class Service(ServiceBasicData):
     """Service data
@@ -161,6 +160,7 @@ class AppointmentBasicData(BaseModel):
     """
 
     id: int
+
 
 class Appointment(AppointmentBasicData):
     """Appointment data

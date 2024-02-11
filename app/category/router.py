@@ -1,6 +1,6 @@
 """Category API router"""
 
-from fastapi import APIRouter, Depends, Header, status
+from fastapi import APIRouter, Depends, Header, Query, status
 from .. import api_responses
 from .. import helpers
 from .. import constants
@@ -35,8 +35,8 @@ router = APIRouter()
 )
 def get_categories(
     active: bool = True,
-    offset: int = constants.DEFAULT_PAGE_OFFSET,
-    limit: int = constants.DEFAULT_PAGE_LIMIT,
+    offset: int = Query(default=constants.DEFAULT_PAGE_OFFSET, ge=0),
+    limit: int = Query(default=constants.DEFAULT_PAGE_LIMIT, ge=1),
     application: str = Header(..., convert_underscores=False),
 ) -> category_api_models.CategoriesListResponse:
     """Gets a list of categories for the application in context"""
