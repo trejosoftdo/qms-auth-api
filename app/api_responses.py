@@ -4,7 +4,6 @@ from fastapi import status, HTTPException
 from . import base_api_models
 from . import constants
 
-# pylint: disable=C0301
 
 ITEM_DELETED_RESPONSE = base_api_models.APIResponse(
     code=status.HTTP_200_OK,
@@ -24,34 +23,35 @@ ITEM_UPDATED_RESPONSE = base_api_models.APIResponse(
     message=constants.ITEM_UPDATED_SUCCESSFULLY_MESSAGE,
 )
 
+
 responses_descriptions = {
     400: {
         "model": base_api_models.APIResponse,
-        "description": "Client is sending an incorrect format of API request",
+        "description": constants.HTTP_400_DESCRIPTION,
     },
     422: {
         "model": base_api_models.APIResponse,
-        "description": "The server was unable to process the request because it contains invalid data",
+        "description": constants.HTTP_422_DESCRIPTION,
     },
     401: {
         "model": base_api_models.APIResponse,
-        "description": "Client is not authenticated against the API",
+        "description": constants.HTTP_401_DESCRIPTION,
     },
     403: {
         "model": base_api_models.APIResponse,
-        "description": "Client doesn't have permission to request this resource",
+        "description": constants.HTTP_403_DESCRIPTION,
     },
     404: {
         "model": base_api_models.APIResponse,
-        "description": "Resource could not be found",
+        "description": constants.HTTP_404_DESCRIPTION,
     },
     409: {
         "model": base_api_models.APIResponse,
-        "description": "Request could not be processed because of conflict in the current state of the resource",
+        "description": constants.HTTP_409_DESCRIPTION,
     },
     500: {
         "model": base_api_models.APIResponse,
-        "description": "Unexpected internal error",
+        "description": constants.HTTP_500_DESCRIPTION,
     },
 }
 

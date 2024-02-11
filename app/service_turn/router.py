@@ -1,6 +1,6 @@
 """ServiceTurn API router"""
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, status
 from .. import api_responses
 from .. import base_api_models
 from .. import constants
@@ -33,8 +33,8 @@ router = APIRouter()
     responses=api_responses.responses_descriptions,
 )
 def get_service_turns(
-    offset: int = constants.DEFAULT_PAGE_OFFSET,
-    limit: int = constants.DEFAULT_PAGE_LIMIT,
+    offset: int = Query(default=constants.DEFAULT_PAGE_OFFSET, ge=0),
+    limit: int = Query(default=constants.DEFAULT_PAGE_LIMIT, ge=1),
 ) -> service_turn_api_models.ServiceTurnsListResponse:
     """
     Gets a list of service turns

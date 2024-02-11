@@ -1,5 +1,7 @@
 """General constants"""
 
+# pylint: disable=C0301
+
 BEARER_PORTION = "Bearer "
 IS_AUTHORIZED_PROPERTY = "isAuthorized"
 IS_VALID_PROPERTY = "isValid"
@@ -110,12 +112,12 @@ UNAUTHORIZED_ERROR_MESSAGE = "Unauthorized"
 NOT_FOUND_ERROR_MESSAGE = "Item not found"
 INVALID_REQUEST = "INVALID_REQUEST"
 
-UNEXPECTED_ERROR_TYPE = 'UNEXPECTED_ERROR'
-INVALID_TOKEN_ERROR_TYPE = 'INVALID_TOKEN'
-UNAUTHORIZED_ERROR_TYPE = 'UNAUTHORIZED'
-NOT_FOUND_ERROR_TYPE = 'NOT_FOUND'
-FORBIDDEN_ERROR_TYPE = 'FORBIDDEN'
-NOT_FOUND_ERROR_TYPE = 'NOT_FOUND'
+UNEXPECTED_ERROR_TYPE = "UNEXPECTED_ERROR"
+INVALID_TOKEN_ERROR_TYPE = "INVALID_TOKEN"
+UNAUTHORIZED_ERROR_TYPE = "UNAUTHORIZED"
+NOT_FOUND_ERROR_TYPE = "NOT_FOUND"
+FORBIDDEN_ERROR_TYPE = "FORBIDDEN"
+NOT_FOUND_ERROR_TYPE = "NOT_FOUND"
 
 
 # Operations
@@ -127,3 +129,14 @@ OPERATION_UPDATE = "UPDATE"
 ITEM_DELETED_SUCCESSFULLY_MESSAGE = "Item deleted successfully"
 ITEM_ADDED_SUCCESSFULLY_MESSAGE = "Item added successfully"
 ITEM_UPDATED_SUCCESSFULLY_MESSAGE = "Item updated successfully"
+
+# Statuses API description
+HTTP_400_DESCRIPTION = "Client is sending an incorrect format of API request"
+HTTP_422_DESCRIPTION = (
+    "The server was unable to process the request because it contains invalid data"
+)
+HTTP_401_DESCRIPTION = "Client is not authenticated against the API"
+HTTP_403_DESCRIPTION = "Client doesn't have permission to request this resource"
+HTTP_404_DESCRIPTION = "Resource could not be found"
+HTTP_409_DESCRIPTION = "Request could not be processed because of conflict in the current state of the resource"
+HTTP_500_DESCRIPTION = "Unexpected internal error"

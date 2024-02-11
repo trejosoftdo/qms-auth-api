@@ -7,8 +7,6 @@ from .. import mappers
 from . import models as category_api_models
 from . import service
 
-# pylint: disable=W0613
-
 
 def get_categories(
     application: str, active: bool, offset: int, limit: int

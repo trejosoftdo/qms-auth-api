@@ -6,8 +6,6 @@ from ..database import models as db_models
 from .. import mappers
 from . import models as queue_api_models
 
-# pylint: disable=W0613
-
 
 def get_queues(
     active: bool, offset: int, limit: int

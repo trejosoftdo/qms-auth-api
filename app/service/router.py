@@ -1,6 +1,6 @@
 """Service API router"""
 
-from fastapi import APIRouter, Depends, Header, status
+from fastapi import APIRouter, Depends, Header, Query, status
 from .. import api_responses
 from .. import constants
 from .. import base_api_models
@@ -35,8 +35,8 @@ router = APIRouter()
 )
 def get_services(
     active: bool = True,
-    offset: int = constants.DEFAULT_PAGE_OFFSET,
-    limit: int = constants.DEFAULT_PAGE_LIMIT,
+    offset: int = Query(default=constants.DEFAULT_PAGE_OFFSET, ge=0),
+    limit: int = Query(default=constants.DEFAULT_PAGE_LIMIT, ge=1),
 ) -> service_api_models.ServicesListResponse:
     """Gets a list of services for the application in context"""
     return handlers.get_services(active, offset, limit)

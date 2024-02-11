@@ -1,6 +1,6 @@
 """Customer API router"""
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, status
 from .. import api_responses
 from .. import base_api_models
 from .. import constants
@@ -35,8 +35,8 @@ router = APIRouter()
     responses=api_responses.responses_descriptions,
 )
 def get_customers(
-    offset: int = constants.DEFAULT_PAGE_OFFSET,
-    limit: int = constants.DEFAULT_PAGE_LIMIT,
+    offset: int = Query(default=constants.DEFAULT_PAGE_OFFSET, ge=0),
+    limit: int = Query(default=constants.DEFAULT_PAGE_LIMIT, ge=1),
 ) -> customer_api_models.CustomersListResponse:
     """
     Gets a list of customers
