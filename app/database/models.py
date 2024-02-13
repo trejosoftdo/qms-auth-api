@@ -13,6 +13,7 @@ from sqlalchemy import (
 from sqlalchemy.sql import func
 from sqlalchemy.orm import mapped_column, relationship
 from .. import enums
+from .. import exceptions
 from . import setup
 from .mixins import ModelMethodsMixin
 
@@ -22,8 +23,7 @@ from .mixins import ModelMethodsMixin
 
 
 class Status(ModelMethodsMixin, setup.Base):
-    """Status related to each type of object
-    """
+    """Status related to each type of object"""
 
     __tablename__ = "statuses"
     id = Column(Integer, primary_key=True)
@@ -33,10 +33,24 @@ class Status(ModelMethodsMixin, setup.Base):
     type = Column(Enum(enums.StatusType))
     is_active = Column(Boolean, default=True)
 
+    @classmethod
+    def validate_status_type(
+        cls: "Status", status_id: int, status_type: enums.StatusType
+    ):
+        """Checks if a status is of a type
+
+        Args:
+            status_id (int): ID of status
+            status_type (StatusType): expected type of the status
+        """
+        item = cls.find_by_id(status_id)
+
+        if item.type != status_type:
+            raise exceptions.INVALID_STATUS_TYPE_ERROR
+
 
 class Priority(ModelMethodsMixin, setup.Base):
-    """Turn or queue priorities
-    """
+    """Turn or queue priorities"""
 
     __tablename__ = "priorities"
     id = Column(Integer, primary_key=True)
@@ -49,8 +63,8 @@ class Priority(ModelMethodsMixin, setup.Base):
 
 class Category(ModelMethodsMixin, setup.Base):
     """Categories are higher-level classification
-       or grouping of customers
-       or visitors based on the nature or purpose of their visit.
+    or grouping of customers
+    or visitors based on the nature or purpose of their visit.
     """
 
     __tablename__ = "categories"
@@ -170,7 +184,7 @@ class ServiceTurn(ModelMethodsMixin, setup.Base):
 
 class Queue(ModelMethodsMixin, setup.Base):
     """Queues are sequence of customers
-       or individuals waiting for a service or assistance.
+    or individuals waiting for a service or assistance.
     """
 
     __tablename__ = "queues"
