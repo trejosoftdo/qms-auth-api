@@ -9,11 +9,11 @@ from sqlalchemy import (
     Enum,
     Boolean,
     ForeignKey,
+    UniqueConstraint,
 )
 from sqlalchemy.sql import func
 from sqlalchemy.orm import mapped_column, relationship
-from .. import enums
-from .. import exceptions
+from app import enums, exceptions
 from . import setup
 from .mixins import ModelMethodsMixin
 
@@ -32,6 +32,11 @@ class Status(ModelMethodsMixin, setup.Base):
     description = Column(String(500))
     type = Column(Enum(enums.StatusType))
     is_active = Column(Boolean, default=True)
+    __table_args__ = (
+        UniqueConstraint("name", "type", name="status_name_and_type_unique"),
+        UniqueConstraint("code", "type", name="status_code_and_type_unique"),
+    )
+
 
     @classmethod
     def validate_status_type(
@@ -59,6 +64,10 @@ class Priority(ModelMethodsMixin, setup.Base):
     weight = Column(Integer)
     description = Column(String(500))
     is_active = Column(Boolean, default=True)
+    __table_args__ = (
+        UniqueConstraint("name", name="priority_name_unique"),
+        UniqueConstraint("code", name="priority_code_unique"),
+    )
 
 
 class Category(ModelMethodsMixin, setup.Base):
@@ -76,6 +85,10 @@ class Category(ModelMethodsMixin, setup.Base):
     is_active = Column(Boolean, default=True)
     status_id = mapped_column(ForeignKey("statuses.id"))
     status = relationship("Status")
+    __table_args__ = (
+        UniqueConstraint("name", name="category_name_unique"),
+        UniqueConstraint("code", name="category_code_unique"),
+    )
 
 
 class Service(ModelMethodsMixin, setup.Base):
@@ -99,6 +112,11 @@ class Service(ModelMethodsMixin, setup.Base):
     status = relationship("Status")
     category_id = mapped_column(ForeignKey("categories.id"))
     category = relationship("Category")
+    __table_args__ = (
+        UniqueConstraint("name", name="service_name_unique"),
+        UniqueConstraint("code", name="service_code_unique"),
+        UniqueConstraint("prefix", name="service_prefix_unique"),
+    )
 
 
 class Customer(ModelMethodsMixin, setup.Base):
@@ -122,6 +140,9 @@ class Customer(ModelMethodsMixin, setup.Base):
     created_by = Column(String(50))
     last_modified = Column(DateTime(timezone=True), onupdate=func.now())
     last_modified_by = Column(String(50))
+    __table_args__ = (
+        UniqueConstraint("email", name="customer_email_unique"),
+    )
 
 
 class Appointment(ModelMethodsMixin, setup.Base):
@@ -180,6 +201,9 @@ class ServiceTurn(ModelMethodsMixin, setup.Base):
     appointment = relationship("Appointment")
     customer_id = mapped_column(ForeignKey("customers.id"))
     customer = relationship("Customer")
+    __table_args__ = (
+        UniqueConstraint("ticket_number", name="turn_ticket_number_unique"),
+    )
 
 
 class Queue(ModelMethodsMixin, setup.Base):
@@ -197,3 +221,7 @@ class Queue(ModelMethodsMixin, setup.Base):
     status = relationship("Status")
     priority_id = mapped_column(ForeignKey("priorities.id"))
     priority = relationship("Priority")
+    __table_args__ = (
+        UniqueConstraint("name", name="queue_name_unique"),
+        UniqueConstraint("code", name="queue_code_unique"),
+    )
