@@ -3,6 +3,7 @@
 from .. import base_api_models
 from .. import api_responses
 from ..database import models as db_models
+from .. import enums
 from .. import mappers
 from . import models as service_turn_api_models
 
@@ -61,6 +62,7 @@ def add_service_turn(
     Returns:
         APIResponse: The result of the addition
     """
+    db_models.Status.validate_status_type(payload.statusId, enums.StatusType.TURN)
     db_models.ServiceTurn.create_from_data(payload.dict())
     return api_responses.ITEM_ADDED_RESPONSE
 
@@ -77,6 +79,7 @@ def update_service_turn(
     Returns:
         APIResponse: The result of the update
     """
+    db_models.Status.validate_status_type(payload.statusId, enums.StatusType.TURN)
     db_models.ServiceTurn.update_by_id(service_turn_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
 
@@ -93,5 +96,8 @@ def partially_update_service_turn(
     Returns:
         APIResponse: The result of the update
     """
+    if not payload.statusId is None:
+        db_models.Status.validate_status_type(payload.statusId, enums.StatusType.TURN)
+
     db_models.ServiceTurn.update_by_id(service_turn_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE

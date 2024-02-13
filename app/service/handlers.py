@@ -3,6 +3,7 @@
 from .. import base_api_models
 from .. import api_responses
 from ..database import models as db_models
+from .. import enums
 from .. import mappers as general_mappers
 from . import models as service_api_models
 from . import mappers
@@ -65,6 +66,7 @@ def add_service(payload: service_api_models.CreateServicePayload) -> base_api_mo
     Returns:
         APIResponse: The result of the addition
     """
+    db_models.Status.validate_status_type(payload.statusId, enums.StatusType.SERVICE)
     db_models.Service.create_from_data(payload.dict())
     return api_responses.ITEM_ADDED_RESPONSE
 
@@ -81,6 +83,7 @@ def update_service(
     Returns:
         APIResponse: The result of the update
     """
+    db_models.Status.validate_status_type(payload.statusId, enums.StatusType.SERVICE)
     db_models.Service.update_by_id(service_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
 
@@ -97,6 +100,9 @@ def partially_update_service(
     Returns:
         APIResponse: The result of the update
     """
+    if not payload.statusId is None:
+        db_models.Status.validate_status_type(payload.statusId, enums.StatusType.SERVICE)
+
     db_models.Service.update_by_id(service_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
 

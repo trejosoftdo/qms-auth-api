@@ -3,6 +3,7 @@
 from .. import base_api_models
 from .. import api_responses
 from ..database import models as db_models
+from .. import enums
 from .. import mappers as general_mappers
 from . import models as customer_api_models
 
@@ -92,6 +93,7 @@ def add_customer(
     Returns:
         APIResponse: The result of the addition
     """
+    db_models.Status.validate_status_type(payload.statusId, enums.StatusType.CUSTOMER)
     db_models.Customer.create_from_data(payload.dict())
     return api_responses.ITEM_ADDED_RESPONSE
 
@@ -108,6 +110,7 @@ def update_customer(
     Returns:
         APIResponse: The result of the update
     """
+    db_models.Status.validate_status_type(payload.statusId, enums.StatusType.CUSTOMER)
     db_models.Customer.update_by_id(customer_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
 
@@ -124,5 +127,8 @@ def partially_update_customer(
     Returns:
         APIResponse: The result of the update
     """
+    if not payload.statusId is None:
+        db_models.Status.validate_status_type(payload.statusId, enums.StatusType.CUSTOMER)
+
     db_models.Customer.update_by_id(customer_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
