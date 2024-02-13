@@ -5,10 +5,10 @@ from typing import Type, TypeVar, List, Callable
 from sqlalchemy import select
 from sqlalchemy.sql import Select
 from sqlalchemy.exc import NoResultFound
-from .. import exceptions
-from .. import helpers
+from app import exceptions
 from . import main
 from . import setup
+from . import helpers
 
 
 T = TypeVar("T", bound=setup.Base)
@@ -32,7 +32,6 @@ class ModelMethodsMixin:
             return main.session.scalars(statement).one()
         except NoResultFound as exc:
             raise exceptions.NOT_FOUND_ERROR from exc
-
 
     @classmethod
     def find_many(
@@ -149,6 +148,8 @@ class ModelMethodsMixin:
             ):
                 setattr(self, name, data[name])
 
+    @helpers.handle_duplicate_error
+    @helpers.handle_session_rollback
     def create(self: T) -> None:
         """Creates a new item in the database
 
@@ -158,6 +159,8 @@ class ModelMethodsMixin:
         main.session.add(self)
         main.session.commit()
 
+    @helpers.handle_duplicate_error
+    @helpers.handle_session_rollback
     def update(self: T) -> None:
         """Saves the changes made on the item
 
@@ -166,6 +169,8 @@ class ModelMethodsMixin:
         """
         main.session.commit()
 
+    @helpers.handle_duplicate_error
+    @helpers.handle_session_rollback
     def delete(self: T) -> None:
         """Deletes the current item from the database
 

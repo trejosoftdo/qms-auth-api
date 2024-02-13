@@ -52,3 +52,11 @@ INVALID_STATUS_TYPE_ERROR = HTTPException(
         "message": constants.INVALID_STATUS_ERROR_MESSAGE,
     },
 )
+
+CONFLICT_ERROR = HTTPException(
+    status_code=status.HTTP_409_CONFLICT,
+    detail={
+        "type": constants.CONFLICT_ERROR_TYPE,
+        "message": constants.CONFLICT_ERROR_MESSAGE,
+    },
+)

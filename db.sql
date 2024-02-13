@@ -5,7 +5,9 @@ CREATE TABLE statuses (
     `description` varchar(500) NOT NULL,
     `type` enum('CATEGORY','SERVICE','CUSTOMER','TURN','QUEUE', 'APPOINTMENT') NOT NULL,
     `is_active` tinyint(1) NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    CONSTRAINT `status_name_and_type_unique` UNIQUE (`name`, `type`),
+    CONSTRAINT `status_code_and_type_unique` UNIQUE (`code`, `type`)
 );
 
 CREATE TABLE priorities (
@@ -15,7 +17,9 @@ CREATE TABLE priorities (
     `weight` INTEGER NOT NULL,
     `description` varchar(500) NOT NULL,
     `is_active` tinyint(1) NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    CONSTRAINT `priority_name_unique` UNIQUE (`name`),
+    CONSTRAINT `priority_code_unique` UNIQUE (`code`)
 );
 
 CREATE TABLE categories (
@@ -27,7 +31,9 @@ CREATE TABLE categories (
     `is_active` tinyint(1) NOT NULL DEFAULT '1',
     `status_id` INTEGER NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY(`status_id`) REFERENCES `statuses` (`id`)
+    FOREIGN KEY(`status_id`) REFERENCES `statuses` (`id`),
+    CONSTRAINT `category_name_unique` UNIQUE (`name`),
+    CONSTRAINT `category_code_unique` UNIQUE (`code`)
 );
 
 CREATE TABLE services (
@@ -42,7 +48,10 @@ CREATE TABLE services (
     `category_id` INTEGER NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY(`status_id`) REFERENCES `statuses` (`id`),
-    FOREIGN KEY(`category_id`) REFERENCES `categories` (`id`)
+    FOREIGN KEY(`category_id`) REFERENCES `categories` (`id`),
+    CONSTRAINT `service_name_unique` UNIQUE (`name`),
+    CONSTRAINT `service_code_unique` UNIQUE (`code`),
+    CONSTRAINT `service_prefix_unique` UNIQUE (`prefix`)
 );
 
 CREATE TABLE customers (
@@ -58,7 +67,8 @@ CREATE TABLE customers (
     `last_modified_by` varchar(50),
     `status_id` INTEGER NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY(`status_id`) REFERENCES `statuses` (`id`)
+    FOREIGN KEY(`status_id`) REFERENCES `statuses` (`id`),
+    CONSTRAINT `customer_email_unique` UNIQUE (`email`)
 );
 
 
@@ -102,7 +112,8 @@ CREATE TABLE service_turns (
     FOREIGN KEY(`service_id`) REFERENCES `services` (`id`),
     FOREIGN KEY(`priority_id`) REFERENCES `priorities` (`id`),
     FOREIGN KEY(`appointment_id`) REFERENCES `appointments` (`id`),
-    FOREIGN KEY(`customer_id`) REFERENCES `customers` (`id`)
+    FOREIGN KEY(`customer_id`) REFERENCES `customers` (`id`),
+    CONSTRAINT `turn_ticket_number_unique` UNIQUE (`ticket_number`)
 );
 
 
@@ -116,5 +127,7 @@ CREATE TABLE queues (
     `priority_id` INTEGER NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY(`status_id`) REFERENCES `statuses` (`id`),
-    FOREIGN KEY(`priority_id`) REFERENCES `priorities` (`id`)
+    FOREIGN KEY(`priority_id`) REFERENCES `priorities` (`id`),
+    CONSTRAINT `queue_name_unique` UNIQUE (`name`),
+    CONSTRAINT `queue_code_unique` UNIQUE (`code`)
 );

@@ -1,37 +1,10 @@
 """Common helpers"""
 
-import re
 from fastapi import Header, Request
 from .auth import api
 from . import constants
 from . import environment
 from . import exceptions
-
-
-def to_snake_case(text: str) -> str:
-    """Changes from camel case to snake case
-
-    Args:
-        text (str): text in camel case
-
-    Returns:
-        str: text in snake case
-    """
-    return re.sub(
-        r"(?<=[a-z0-9])[A-Z]+|(?<=[A-Za-z])[0-9]", lambda m: f"_{m[0].lower()}", text
-    )
-
-
-def snake_case_props(data: dict) -> dict:
-    """Tranform the properties of the data to snake case
-
-    Args:
-        data (dict): source data
-
-    Returns:
-        dict: resulting data
-    """
-    return {to_snake_case(name): data[name] for name in data}
 
 
 def validate_api_access(
