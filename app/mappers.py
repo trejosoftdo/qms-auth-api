@@ -179,3 +179,20 @@ def map_service_turn(turn: db_models.ServiceTurn) -> base_api_models.ServiceTurn
         service=map_service(turn.service),
         customer=map_customer(turn.customer) if not turn.customer is None else None,
     )
+
+
+def map_turn_status_item(turn: db_models.ServiceTurn) -> base_api_models.ServiceTurnStatusItem:
+    """Maps a service turn status item from the given data
+
+    Args:
+        turn (db_models.ServiceTurn): database service turn item
+
+    Returns:
+        base_api_models.ServiceTurnStatusItem: Service Turn status item
+    """
+    return base_api_models.ServiceTurnStatusItem(
+        ticketNumber=turn.ticket_number,
+        queueName=turn.service.name,
+        statusName=turn.status.name,
+        statusCode=turn.status.code,
+    )

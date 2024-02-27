@@ -212,3 +212,15 @@ class ServiceTurn(ServiceTurnBasicData):
     service: Service
     appointment: Optional[Appointment] = None
     customer: Optional[Customer] = None
+
+class ServiceTurnStatusItem(BaseModel):
+    """Service Turn Status Item data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    ticketNumber: str
+    queueName: str
+    statusName: str
+    statusCode: str

@@ -9,3 +9,7 @@ DELETE_SERVICE_TURN_BY_ID_OPERATION_ID = "deleteServiceTurnById"
 ADD_SERVICE_TURN_OPERATION_ID = "addServiceTurn"
 UPDATE_SERVICE_TURN_OPERATION_ID = "updateServiceTurn"
 PATCH_SERVICE_TURN_OPERATION_ID = "patchServiceTurn"
+GET_TURNS_STATUS_TABLE_OPERATION_ID = "getTurnsStatusTable"
+
+# Internal routes paths
+TURNS_STATUS_TABLE_PATH = "/status-table"

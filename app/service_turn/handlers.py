@@ -101,3 +101,21 @@ def partially_update_service_turn(
 
     db_models.ServiceTurn.update_by_id(service_turn_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
+
+
+def get_turns_status_table() -> service_turn_api_models.ServiceTurnsStatusTableResponse:
+    """Gets turns status table for the application in context
+
+    Returns:
+        models.ServiceTurnsStatusTableResponse: Turns status table response
+    """
+    statuses = db_models.Status.find_many(
+        lambda x: x.where(db_models.Status.code.in_(["BEING_ATTENDED", "TO_BE_ATTENDED"])).where(
+            db_models.Status.type == enums.StatusType.TURN
+        )
+    )
+    statuses_ids = [status.id for status in statuses]
+    items = db_models.ServiceTurn.find_many(
+        lambda x: x.where(db_models.ServiceTurn.status_id.in_(statuses_ids))
+    )
+    return list(map(mappers.map_turn_status_item, items))
