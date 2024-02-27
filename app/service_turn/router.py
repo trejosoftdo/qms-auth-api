@@ -1,6 +1,6 @@
 """ServiceTurn API router"""
 
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, Header, Query, status
 from .. import api_responses
 from .. import base_api_models
 from .. import constants
@@ -13,6 +13,8 @@ from .constants import (
     GET_SERVICE_TURN_BY_ID_OPERATION_ID,
     PATCH_SERVICE_TURN_OPERATION_ID,
     UPDATE_SERVICE_TURN_OPERATION_ID,
+    GET_TURNS_STATUS_TABLE_OPERATION_ID,
+    TURNS_STATUS_TABLE_PATH,
 )
 from . import handlers
 from . import models as service_turn_api_models
@@ -40,6 +42,19 @@ def get_service_turns(
     Gets a list of service turns
     """
     return handlers.get_service_turns(offset, limit)
+
+
+@router.get(
+    TURNS_STATUS_TABLE_PATH,
+    dependencies=[Depends(helpers.validate_token(constants.READ_SERVICE_TURNS_SCOPE))],
+    tags=TAGS,
+    operation_id=GET_TURNS_STATUS_TABLE_OPERATION_ID,
+    response_model=service_turn_api_models.ServiceTurnsStatusTableResponse,
+    responses=api_responses.responses_descriptions,
+)
+def get_turns_status_table() -> service_turn_api_models.ServiceTurnsStatusTableResponse:
+    """Gets turns status table for the application in context"""
+    return handlers.get_turns_status_table()
 
 
 @router.get(

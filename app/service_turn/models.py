@@ -43,4 +43,6 @@ class PatchServiceTurnPayload(base_api_models.ServiceTurnBasicData):
     lastModifiedBy: Optional[str] = None
 
 
+ServiceTurnsStatusTableResponse = List[base_api_models.ServiceTurnStatusItem]
+
 ServiceTurnsListResponse = List[base_api_models.ServiceTurn]
