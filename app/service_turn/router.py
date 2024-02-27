@@ -1,6 +1,6 @@
 """ServiceTurn API router"""
 
-from fastapi import APIRouter, Depends, Header, Query, status
+from fastapi import APIRouter, Depends, Query, status
 from .. import api_responses
 from .. import base_api_models
 from .. import constants
