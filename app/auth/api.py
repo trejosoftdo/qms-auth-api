@@ -1,7 +1,6 @@
 """Auth API"""
 
 import requests
-from urllib.parse import urlencode
 from .. import environment
 from .. import constants
 

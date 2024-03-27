@@ -35,27 +35,32 @@ def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
     item = db_models.Customer.find_by_id(customer_id)
     return general_mappers.map_customer(item)
 
-def get_current_customer(application: str, authorization: str) -> base_api_models.Customer:
+
+def get_current_customer(
+    application: str, authorization: str
+) -> base_api_models.Customer:
     """Get info of the current user
 
     Args:
         application (str): Application id
         authorization (str): Current user authorization
-        
+
 
     Returns:
         Customer: Customer for id
     """
     response = auth_api.get_user_basic_data(application, authorization)
     data = response.json()
-    email = data.get('data', {}).get('email', '')
+    email = data.get("data", {}).get("email", "")
     item = db_models.Customer.find_one(
         lambda x: x.where(db_models.Customer.email == email)
     )
     return general_mappers.map_customer(item)
 
 
-def get_own_appointments(application: str, authorization: str) -> customer_api_models.CustomersAppointmentsResponse:
+def get_own_appointments(
+    application: str, authorization: str
+) -> customer_api_models.CustomersAppointmentsResponse:
     """Gets current user appointments
 
     Args:
@@ -72,8 +77,8 @@ def get_own_appointments(application: str, authorization: str) -> customer_api_m
     print(customer)
     appointments = list(map(general_mappers.map_appointment, items))
     return customer_api_models.CustomersAppointmentsResponse(
-        customer = customer,
-        appointments = appointments,
+        customer=customer,
+        appointments=appointments,
     )
 
 
@@ -170,7 +175,9 @@ def partially_update_customer(
         APIResponse: The result of the update
     """
     if not payload.statusId is None:
-        db_models.Status.validate_status_type(payload.statusId, enums.StatusType.CUSTOMER)
+        db_models.Status.validate_status_type(
+            payload.statusId, enums.StatusType.CUSTOMER
+        )
 
     db_models.Customer.update_by_id(customer_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
