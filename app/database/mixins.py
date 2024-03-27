@@ -31,7 +31,32 @@ class ModelMethodsMixin:
             statement = select(cls).where(cls.id == entity_id).limit(1)
             return main.session.scalars(statement).one()
         except NoResultFound as exc:
+            main.session.rollback()
             raise exceptions.NOT_FOUND_ERROR from exc
+        except:
+            main.session.rollback()
+            raise
+
+    @classmethod
+    def find_one(cls: Type[T], filter_selection: Callable[[Select], Select]) -> T:
+        """Gets an entity by filter
+
+        Args:
+            filter_selection (Callable[[Any], Any]): Filter func
+
+        Returns:
+            T: The matched entity
+        """
+        try:
+            statement = select(cls)
+            selection = filter_selection(statement).limit(1)
+            return main.session.scalars(selection).one()
+        except NoResultFound as exc:
+            main.session.rollback()
+            raise exceptions.NOT_FOUND_ERROR from exc
+        except:
+            main.session.rollback()
+            raise
 
     @classmethod
     def find_many(
@@ -46,12 +71,16 @@ class ModelMethodsMixin:
         Returns:
             List[T]: The matched entities
         """
-        selection = select(cls)
+        try:
+            selection = select(cls)
 
-        if callable(filter_selection):
-            selection = filter_selection(selection)
+            if callable(filter_selection):
+                selection = filter_selection(selection)
 
-        return main.session.scalars(selection)
+            return main.session.scalars(selection)
+        except:
+            main.session.rollback()
+            raise
 
     @classmethod
     def find_paginated(
@@ -70,14 +99,18 @@ class ModelMethodsMixin:
         Returns:
             List[T]: The matched entities
         """
-        selection = select(cls)
+        try:
+            selection = select(cls)
 
-        if callable(filter_selection):
-            selection = filter_selection(selection)
+            if callable(filter_selection):
+                selection = filter_selection(selection)
 
-        statement = selection.limit(limit).offset(offset)
+            statement = selection.limit(limit).offset(offset)
 
-        return main.session.scalars(statement)
+            return main.session.scalars(statement)
+        except:
+            main.session.rollback()
+            raise
 
     @classmethod
     def create_from_data(cls: Type[T], data: dict) -> T:

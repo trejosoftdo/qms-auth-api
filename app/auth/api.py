@@ -40,3 +40,25 @@ def validate_token(
         "authorization": authorization,
     }
     return requests.post(url, headers=headers, json=payload, timeout=constants.TIMEOUT)
+
+
+def get_user_basic_data(application: str, authorization: str) -> requests.Response:
+    """Gets the user basic for the authorization
+
+    Args:
+        application (str): The application in context
+        authorization (str): The access token of the user
+
+    Returns:
+        requests.Response: The response from the auth API.
+    """
+    url = f"{environment.auth_api_base_url}/api/v1/auth/user-basic-data"
+    payload = {
+        **common_payload,
+    }
+    headers = {
+        **common_headers,
+        "application": application,
+        "authorization": authorization,
+    }
+    return requests.post(url, headers=headers, json=payload, timeout=constants.TIMEOUT)

@@ -46,7 +46,10 @@ def get_service_turns(
 
 @router.get(
     TURNS_STATUS_TABLE_PATH,
-    dependencies=[Depends(helpers.validate_token(constants.READ_SERVICE_TURNS_SCOPE))],
+    dependencies=[
+        Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.READ_SERVICE_TURNS_SCOPE)),
+    ],
     tags=TAGS,
     operation_id=GET_TURNS_STATUS_TABLE_OPERATION_ID,
     response_model=service_turn_api_models.ServiceTurnsStatusTableResponse,

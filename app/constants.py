@@ -61,9 +61,13 @@ READ_CUSTOMERS_SCOPE = "read_customers"
 WRITE_CUSTOMERS_SCOPE = "write_customers"
 # Administrate customer information
 ADMIN_CUSTOMERS_SCOPE = "admin_customers"
+# Read own customer information
+READ_OWN_CUSTOMER_SCOPE = "read_own_profile"
 
 # Read customers' appointments information
 READ_APPOINTMENTS_SCOPE = "read_appointments"
+# Read own appointments information
+READ_OWN_APPOINTMENTS_SCOPE = "read_own_appointments"
 # Create, modify and delete customers' appointments information
 WRITE_APPOINTMENTS_SCOPE = "write_appointments"
 # Administrate customers' appointments information
@@ -75,6 +79,13 @@ READ_QUEUES_SCOPE = "read_queues"
 WRITE_QUEUES_SCOPE = "write_queues"
 # Administrate queue
 ADMIN_QUEUES_SCOPE = "admin_queues"
+
+# Read location information
+READ_LOCATIONS_SCOPE = "read_locations"
+# Create, modify and delete location information
+WRITE_LOCATIONS_SCOPE = "write_locations"
+# Administrate location
+ADMIN_LOCATIONS_SCOPE = "admin_locations"
 
 # Scopes END
 
