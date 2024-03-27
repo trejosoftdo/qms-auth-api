@@ -1,6 +1,7 @@
 """Customer API models"""
 
 from typing import List, Optional
+from pydantic import BaseModel
 from .. import base_api_models
 from .. import enums
 
@@ -43,6 +44,13 @@ class PatchCustomerPayload(base_api_models.CustomerBasicData):
     statusId: Optional[int] = None
 
 
+Appointments = List[base_api_models.Appointment]
 CustomersListResponse = List[base_api_models.Customer]
 CustomersServiceTurnsListResponse = List[base_api_models.ServiceTurn]
-CustomersAppointmentsListResponse = List[base_api_models.Appointment]
+
+class CustomersAppointmentsResponse(BaseModel):
+    """Customer Appointments Response
+    """
+
+    appointments: Appointments
+    customer: base_api_models.Customer

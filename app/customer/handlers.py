@@ -3,6 +3,7 @@
 from .. import base_api_models
 from .. import api_responses
 from ..database import models as db_models
+from ..auth import api as auth_api
 from .. import enums
 from .. import mappers as general_mappers
 from . import models as customer_api_models
@@ -34,6 +35,47 @@ def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
     item = db_models.Customer.find_by_id(customer_id)
     return general_mappers.map_customer(item)
 
+def get_current_customer(application: str, authorization: str) -> base_api_models.Customer:
+    """Get info of the current user
+
+    Args:
+        application (str): Application id
+        authorization (str): Current user authorization
+        
+
+    Returns:
+        Customer: Customer for id
+    """
+    response = auth_api.get_user_basic_data(application, authorization)
+    data = response.json()
+    email = data.get('data', {}).get('email', '')
+    item = db_models.Customer.find_one(
+        lambda x: x.where(db_models.Customer.email == email)
+    )
+    return general_mappers.map_customer(item)
+
+
+def get_own_appointments(application: str, authorization: str) -> customer_api_models.CustomersAppointmentsResponse:
+    """Gets current user appointments
+
+    Args:
+        application (str): Application id
+        authorization (str): Current user authorization
+
+    Returns:
+        CustomersAppointmentsResponse: List of appoinments associated to customer
+    """
+    customer = get_current_customer(application, authorization)
+    items = db_models.Appointment.find_many(
+        lambda x: x.where(db_models.Appointment.customer_id == customer.id)
+    )
+    print(customer)
+    appointments = list(map(general_mappers.map_appointment, items))
+    return customer_api_models.CustomersAppointmentsResponse(
+        customer = customer,
+        appointments = appointments,
+    )
+
 
 def get_customer_serviceturns(
     customer_id: int,
@@ -54,14 +96,14 @@ def get_customer_serviceturns(
 
 def get_customer_appointments(
     customer_id: int,
-) -> customer_api_models.CustomersAppointmentsListResponse:
+) -> customer_api_models.Appointments:
     """Get list of appoinments of an existing customer by customer Id
 
     Args:
         customer_id (int): id of the customer
 
     Returns:
-        CustomersAppointmentsListResponse: List of appoinments associated to customer
+        Appointments: List of appoinments associated to customer
     """
     items = db_models.Appointment.find_many(
         lambda x: x.where(db_models.Appointment.customer_id == customer_id)

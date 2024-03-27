@@ -1,6 +1,6 @@
 """Customer API router"""
 
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, Query, status, Header
 from .. import api_responses
 from .. import base_api_models
 from .. import constants
@@ -10,7 +10,9 @@ from .constants import (
     ADD_CUSTOMER_OPERATION_ID,
     DELETE_CUSTOMER_BY_ID_OPERATION_ID,
     GET_CUSTOMERS_OPERATION_ID,
+    GET_OWN_APPOINTMENTS_OPERATION_ID,
     GET_CUSTOMER_BY_ID_OPERATION_ID,
+    GET_CURRENT_CUSTOMER_OPERATION_ID,
     GET_CUSTOMER_APPOINTMENTS_OPERATION_ID,
     GET_CUSTOMER_SERVICE_TURNS_OPERATION_ID,
     PATCH_CUSTOMER_OPERATION_ID,
@@ -45,6 +47,47 @@ def get_customers(
 
 
 @router.get(
+    "/current",
+    dependencies=[
+        Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.READ_OWN_CUSTOMER_SCOPE)),
+    ],
+    tags=TAGS,
+    operation_id=GET_CURRENT_CUSTOMER_OPERATION_ID,
+    response_model=base_api_models.Customer,
+    responses=api_responses.responses_descriptions,
+)
+def get_current_customer(
+    application: str = Header(..., convert_underscores=False),
+    authorization: str = Header(..., convert_underscores=False),
+) -> base_api_models.Customer:
+    """
+    Get info of of the current user customer
+    """
+    return handlers.get_current_customer(application, authorization)
+
+@router.get(
+    "/current/appointments",
+    dependencies=[
+        Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.READ_OWN_APPOINTMENTS_SCOPE)),
+    ],
+    tags=TAGS,
+    operation_id=GET_OWN_APPOINTMENTS_OPERATION_ID,
+    response_model=customer_api_models.CustomersAppointmentsResponse,
+    responses=api_responses.responses_descriptions,
+)
+def get_own_appointments(
+    application: str = Header(..., convert_underscores=False),
+    authorization: str = Header(..., convert_underscores=False),
+) -> customer_api_models.CustomersAppointmentsResponse:
+    """
+    Get list of appointments of the current user
+    """
+    return handlers.get_own_appointments(application, authorization)
+
+
+@router.get(
     "/{customer_id}",
     dependencies=[
         Depends(helpers.validate_api_access),
@@ -70,12 +113,12 @@ def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
     ],
     tags=TAGS,
     operation_id=GET_CUSTOMER_APPOINTMENTS_OPERATION_ID,
-    response_model=customer_api_models.CustomersAppointmentsListResponse,
+    response_model=customer_api_models.Appointments,
     responses=api_responses.responses_descriptions,
 )
 def get_customer_appointments(
     customer_id: int,
-) -> customer_api_models.CustomersAppointmentsListResponse:
+) -> customer_api_models.Appointments:
     """
     Get list of appointments of an existing customer by customer Id
     """
