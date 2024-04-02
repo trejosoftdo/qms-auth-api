@@ -56,7 +56,9 @@ def get_services(
     response_model=base_api_models.Service,
     responses=api_responses.responses_descriptions,
 )
-def get_service_by_id(service_id: int, session: Session = Depends(main.get_session)) -> base_api_models.Service:
+def get_service_by_id(
+    service_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.Service:
     """
     Get info of an existing service by Id
     """
@@ -140,7 +142,10 @@ def patch_service(
     response_model=base_api_models.APIResponse,
     responses=api_responses.responses_descriptions,
 )
-def delete_service_by_id(service_id: int, session: Session = Depends(main.get_session),) -> base_api_models.APIResponse:
+def delete_service_by_id(
+    service_id: int,
+    session: Session = Depends(main.get_session),
+) -> base_api_models.APIResponse:
     """
     Delete an existing service by Id
     """

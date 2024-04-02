@@ -13,7 +13,7 @@ def run():
     """
 
     dir_name = os.path.dirname(os.path.abspath(__file__))
-    session = main.get_session()
+    session = next(main.get_session())
     seeder = Seeder(session)
     entities = load_entities_from_json(f"{dir_name}/data/data.json")
     seeder.seed(entities)
