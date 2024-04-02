@@ -47,6 +47,21 @@ class Priority(BaseModel):
     isActive: bool
 
 
+class Location(BaseModel):
+    """Location data
+
+    Args:
+        BaseModel (class): Base model class
+    """
+
+    id: int
+    name: str
+    code: str
+    description: str
+    address: str
+    isActive: bool
+
+
 class QueueBasicData(BaseModel):
     """Queue basic data
 

@@ -1,10 +1,12 @@
 """Customer API router"""
 
 from fastapi import APIRouter, Depends, Query, status, Header
+from sqlalchemy.orm import Session
 from .. import api_responses
 from .. import base_api_models
 from .. import constants
 from .. import helpers
+from ..database import main
 from .constants import (
     TAGS,
     ADD_CUSTOMER_OPERATION_ID,
@@ -39,11 +41,12 @@ router = APIRouter()
 def get_customers(
     offset: int = Query(default=constants.DEFAULT_PAGE_OFFSET, ge=0),
     limit: int = Query(default=constants.DEFAULT_PAGE_LIMIT, ge=1),
+    session: Session = Depends(main.get_session)
 ) -> customer_api_models.CustomersListResponse:
     """
     Gets a list of customers
     """
-    return handlers.get_customers(offset, limit)
+    return handlers.get_customers(session, offset, limit)
 
 
 @router.get(
@@ -60,16 +63,18 @@ def get_customers(
 def get_current_customer(
     application: str = Header(..., convert_underscores=False),
     authorization: str = Header(..., convert_underscores=False),
+    session: Session = Depends(main.get_session)
 ) -> base_api_models.Customer:
     """
     Get info of of the current user customer
     """
-    return handlers.get_current_customer(application, authorization)
+    return handlers.get_current_customer(session, application, authorization)
 
 @router.get(
     "/current/appointments",
     dependencies=[
         Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.READ_OWN_APPOINTMENTS_SCOPE)),
         Depends(helpers.validate_token(constants.READ_OWN_APPOINTMENTS_SCOPE)),
     ],
     tags=TAGS,
@@ -80,11 +85,12 @@ def get_current_customer(
 def get_own_appointments(
     application: str = Header(..., convert_underscores=False),
     authorization: str = Header(..., convert_underscores=False),
+    session: Session = Depends(main.get_session)
 ) -> customer_api_models.CustomersAppointmentsResponse:
     """
     Get list of appointments of the current user
     """
-    return handlers.get_own_appointments(application, authorization)
+    return handlers.get_own_appointments(session, application, authorization)
 
 
 @router.get(
@@ -98,11 +104,14 @@ def get_own_appointments(
     response_model=base_api_models.Customer,
     responses=api_responses.responses_descriptions,
 )
-def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
+def get_customer_by_id(
+    customer_id: int,
+    session: Session = Depends(main.get_session)
+) -> base_api_models.Customer:
     """
     Get info of an existing customer by Id
     """
-    return handlers.get_customer_by_id(customer_id)
+    return handlers.get_customer_by_id(session, customer_id)
 
 
 @router.get(
@@ -118,11 +127,12 @@ def get_customer_by_id(customer_id: int) -> base_api_models.Customer:
 )
 def get_customer_appointments(
     customer_id: int,
+    session: Session = Depends(main.get_session)
 ) -> customer_api_models.Appointments:
     """
     Get list of appointments of an existing customer by customer Id
     """
-    return handlers.get_customer_appointments(customer_id)
+    return handlers.get_customer_appointments(session, customer_id)
 
 
 @router.get(
@@ -138,11 +148,12 @@ def get_customer_appointments(
 )
 def get_customer_serviceturns(
     customer_id: int,
+    session: Session = Depends(main.get_session)
 ) -> customer_api_models.CustomersServiceTurnsListResponse:
     """
     Get list of turns an existing customer by customer Id
     """
-    return handlers.get_customer_serviceturns(customer_id)
+    return handlers.get_customer_serviceturns(session, customer_id)
 
 
 @router.post(
@@ -159,11 +170,12 @@ def get_customer_serviceturns(
 )
 def add_customer(
     payload: customer_api_models.CreateCustomerPayload,
+    session: Session = Depends(main.get_session)
 ) -> base_api_models.APIResponse:
     """
     Add a new customer
     """
-    return handlers.add_customer(payload)
+    return handlers.add_customer(session, payload)
 
 
 @router.put(
@@ -178,12 +190,14 @@ def add_customer(
     responses=api_responses.responses_descriptions,
 )
 def update_customer(
-    customer_id: int, payload: customer_api_models.UpdateCustomerPayload
+    customer_id: int,
+    payload: customer_api_models.UpdateCustomerPayload,
+    session: Session = Depends(main.get_session)
 ) -> base_api_models.APIResponse:
     """
     Update an existing customer by Id
     """
-    return handlers.update_customer(customer_id, payload)
+    return handlers.update_customer(session, customer_id, payload)
 
 
 @router.patch(
@@ -198,12 +212,14 @@ def update_customer(
     responses=api_responses.responses_descriptions,
 )
 def patch_customer(
-    customer_id: int, payload: customer_api_models.PatchCustomerPayload
+    customer_id: int,
+    payload: customer_api_models.PatchCustomerPayload,
+    session: Session = Depends(main.get_session)
 ) -> base_api_models.APIResponse:
     """
     Update partially an existing customer by Id
     """
-    return handlers.partially_update_customer(customer_id, payload)
+    return handlers.partially_update_customer(session, customer_id, payload)
 
 
 @router.delete(
@@ -217,8 +233,11 @@ def patch_customer(
     response_model=base_api_models.APIResponse,
     responses=api_responses.responses_descriptions,
 )
-def delete_customer_by_id(customer_id: int) -> base_api_models.APIResponse:
+def delete_customer_by_id(
+    customer_id: int,
+    session: Session = Depends(main.get_session)
+) -> base_api_models.APIResponse:
     """
     Delete an existing customer by Id
     """
-    return handlers.delete_customer_by_id(customer_id)
+    return handlers.delete_customer_by_id(session, customer_id)

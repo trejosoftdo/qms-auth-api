@@ -2,16 +2,23 @@
 
 from typing import List
 from sqlalchemy import select
-from ..database import models as db_models, main
+from sqlalchemy.orm import Session
+from ..database import models as db_models
 
 # pylint: disable=W0613
+# pylint: disable=R0913
 
 def get_categories(
-    application: str, active: bool, offset: int, limit: int
+    session: Session,
+    application: str,
+    active: bool,
+    offset: int,
+    limit: int
 ) -> List[db_models.Category]:
     """Get list of categories from database
 
     Args:
+        session (Session): Database session
         application (str): The application in context
         active (bool, optional): Flag to return only active records. Defaults to True.
         offset (int, optional): The items to skip before collecting the result set. Defaults to 0.
@@ -26,10 +33,11 @@ def get_categories(
         .limit(limit)
         .offset(offset)
     )
-    return main.session.scalars(statement)
+    return session.scalars(statement)
 
 
 def get_category_services(
+    session: Session,
     application: str,
     category_id: int,
     active: bool,
@@ -39,7 +47,8 @@ def get_category_services(
     """Gets the list of services asociated to a category for an application in context
 
     Args:
-        application (str, optional): The application in context.
+        session (Session): Database session
+        application (str): The application in context.
         category_id (int): ID of category of the services to return.
         active (bool, optional): Flag to return only active records.
         offset (int, optional): The number of items to skip before collecting the result set.
@@ -55,4 +64,4 @@ def get_category_services(
         .limit(limit)
         .offset(offset)
     )
-    return main.session.scalars(statement)
+    return session.scalars(statement)

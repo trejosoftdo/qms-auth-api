@@ -12,7 +12,7 @@ from sqlalchemy import (
     UniqueConstraint,
 )
 from sqlalchemy.sql import func
-from sqlalchemy.orm import mapped_column, relationship
+from sqlalchemy.orm import mapped_column, relationship, Session
 from app import enums, exceptions
 from . import setup
 from .mixins import ModelMethodsMixin
@@ -40,15 +40,19 @@ class Status(ModelMethodsMixin, setup.Base):
 
     @classmethod
     def validate_status_type(
-        cls: "Status", status_id: int, status_type: enums.StatusType
+        cls: "Status",
+        session: Session,
+        status_id: int,
+        status_type: enums.StatusType
     ):
         """Checks if a status is of a type
 
         Args:
+            session (Session): Database session
             status_id (int): ID of status
             status_type (StatusType): expected type of the status
         """
-        item = cls.find_by_id(status_id)
+        item = cls.find_by_id(session, status_id)
 
         if item.type != status_type:
             raise exceptions.INVALID_STATUS_TYPE_ERROR
@@ -67,6 +71,21 @@ class Priority(ModelMethodsMixin, setup.Base):
     __table_args__ = (
         UniqueConstraint("name", name="priority_name_unique"),
         UniqueConstraint("code", name="priority_code_unique"),
+    )
+
+class Location(ModelMethodsMixin, setup.Base):
+    """Turn or queue locations"""
+
+    __tablename__ = "locations"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50))
+    code = Column(String(50))
+    address = Column(String(500))
+    description = Column(String(500))
+    is_active = Column(Boolean, default=True)
+    __table_args__ = (
+        UniqueConstraint("name", name="location_name_unique"),
+        UniqueConstraint("code", name="location_code_unique"),
     )
 
 

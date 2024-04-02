@@ -1,10 +1,12 @@
 """ServiceTurn API router"""
 
 from fastapi import APIRouter, Depends, Query, status
+from sqlalchemy.orm import Session
 from .. import api_responses
 from .. import base_api_models
 from .. import constants
 from .. import helpers
+from ..database import main
 from .constants import (
     TAGS,
     ADD_SERVICE_TURN_OPERATION_ID,
@@ -37,11 +39,12 @@ router = APIRouter()
 def get_service_turns(
     offset: int = Query(default=constants.DEFAULT_PAGE_OFFSET, ge=0),
     limit: int = Query(default=constants.DEFAULT_PAGE_LIMIT, ge=1),
+    session: Session = Depends(main.get_session),
 ) -> service_turn_api_models.ServiceTurnsListResponse:
     """
     Gets a list of service turns
     """
-    return handlers.get_service_turns(offset, limit)
+    return handlers.get_service_turns(session, offset, limit)
 
 
 @router.get(
@@ -55,9 +58,11 @@ def get_service_turns(
     response_model=service_turn_api_models.ServiceTurnsStatusTableResponse,
     responses=api_responses.responses_descriptions,
 )
-def get_turns_status_table() -> service_turn_api_models.ServiceTurnsStatusTableResponse:
+def get_turns_status_table(
+    session: Session = Depends(main.get_session),
+) -> service_turn_api_models.ServiceTurnsStatusTableResponse:
     """Gets turns status table for the application in context"""
-    return handlers.get_turns_status_table()
+    return handlers.get_turns_status_table(session)
 
 
 @router.get(
@@ -71,11 +76,13 @@ def get_turns_status_table() -> service_turn_api_models.ServiceTurnsStatusTableR
     response_model=base_api_models.ServiceTurn,
     responses=api_responses.responses_descriptions,
 )
-def get_service_turn_by_id(service_turn_id: int) -> base_api_models.ServiceTurn:
+def get_service_turn_by_id(
+    service_turn_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.ServiceTurn:
     """
     Get info of an existing service turn by Id
     """
-    return handlers.get_service_turn_by_id(service_turn_id)
+    return handlers.get_service_turn_by_id(session, service_turn_id)
 
 
 @router.post(
@@ -92,11 +99,12 @@ def get_service_turn_by_id(service_turn_id: int) -> base_api_models.ServiceTurn:
 )
 def add_service_turn(
     payload: service_turn_api_models.CreateServiceTurnPayload,
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Add a new service turn
     """
-    return handlers.add_service_turn(payload)
+    return handlers.add_service_turn(session, payload)
 
 
 @router.put(
@@ -111,12 +119,14 @@ def add_service_turn(
     responses=api_responses.responses_descriptions,
 )
 def update_service_turn(
-    service_turn_id: int, payload: service_turn_api_models.UpdateServiceTurnPayload
+    service_turn_id: int,
+    payload: service_turn_api_models.UpdateServiceTurnPayload,
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Update an existing service_turn by Id
     """
-    return handlers.update_service_turn(service_turn_id, payload)
+    return handlers.update_service_turn(session, service_turn_id, payload)
 
 
 @router.patch(
@@ -131,12 +141,14 @@ def update_service_turn(
     responses=api_responses.responses_descriptions,
 )
 def patch_service_turn(
-    service_turn_id: int, payload: service_turn_api_models.PatchServiceTurnPayload
+    service_turn_id: int,
+    payload: service_turn_api_models.PatchServiceTurnPayload,
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Update partially an existing service turn by Id
     """
-    return handlers.partially_update_service_turn(service_turn_id, payload)
+    return handlers.partially_update_service_turn(session, service_turn_id, payload)
 
 
 @router.delete(
@@ -150,8 +162,10 @@ def patch_service_turn(
     response_model=base_api_models.APIResponse,
     responses=api_responses.responses_descriptions,
 )
-def delete_service_turn_by_id(service_turn_id: int) -> base_api_models.APIResponse:
+def delete_service_turn_by_id(
+    service_turn_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.APIResponse:
     """
     Delete an existing service turn by Id
     """
-    return handlers.delete_service_turn_by_id(service_turn_id)
+    return handlers.delete_service_turn_by_id(session, service_turn_id)

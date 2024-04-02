@@ -1,10 +1,12 @@
 """Status API router"""
 
 from fastapi import APIRouter, Depends, Query, status
+from sqlalchemy.orm import Session
 from .. import api_responses
 from .. import base_api_models
 from .. import constants
 from .. import helpers
+from ..database import main
 from .constants import (
     TAGS,
     ADD_STATUS_OPERATION_ID,
@@ -36,11 +38,12 @@ def get_statuses(
     active: bool = True,
     offset: int = Query(default=constants.DEFAULT_PAGE_OFFSET, ge=0),
     limit: int = Query(default=constants.DEFAULT_PAGE_LIMIT, ge=1),
+    session: Session = Depends(main.get_session),
 ) -> status_api_models.StatusesListResponse:
     """
     Gets a list of statuses
     """
-    return handlers.get_statuses(active, offset, limit)
+    return handlers.get_statuses(session, active, offset, limit)
 
 
 @router.get(
@@ -54,11 +57,13 @@ def get_statuses(
     response_model=base_api_models.Status,
     responses=api_responses.responses_descriptions,
 )
-def get_status_by_id(status_id: int) -> base_api_models.Status:
+def get_status_by_id(
+    status_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.Status:
     """
     Get info of an existing status by Id
     """
-    return handlers.get_status_by_id(status_id)
+    return handlers.get_status_by_id(session, status_id)
 
 
 @router.post(
@@ -75,11 +80,12 @@ def get_status_by_id(status_id: int) -> base_api_models.Status:
 )
 def add_status(
     payload: status_api_models.CreateStatusPayload,
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Add a new status
     """
-    return handlers.add_status(payload)
+    return handlers.add_status(session, payload)
 
 
 @router.put(
@@ -94,12 +100,14 @@ def add_status(
     responses=api_responses.responses_descriptions,
 )
 def update_status(
-    status_id: int, payload: status_api_models.UpdateStatusPayload
+    status_id: int,
+    payload: status_api_models.UpdateStatusPayload,
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Update an existing status by Id
     """
-    return handlers.update_status(status_id, payload)
+    return handlers.update_status(session, status_id, payload)
 
 
 @router.patch(
@@ -114,12 +122,14 @@ def update_status(
     responses=api_responses.responses_descriptions,
 )
 def patch_status(
-    status_id: int, payload: status_api_models.PatchStatusPayload
+    status_id: int,
+    payload: status_api_models.PatchStatusPayload,
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Update partially an existing status by Id
     """
-    return handlers.partially_update_status(status_id, payload)
+    return handlers.partially_update_status(session, status_id, payload)
 
 
 @router.delete(
@@ -133,8 +143,10 @@ def patch_status(
     response_model=base_api_models.APIResponse,
     responses=api_responses.responses_descriptions,
 )
-def delete_status_by_id(status_id: int) -> base_api_models.APIResponse:
+def delete_status_by_id(
+    status_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.APIResponse:
     """
     Delete an existing status by Id
     """
-    return handlers.delete_status_by_id(status_id)
+    return handlers.delete_status_by_id(session, status_id)

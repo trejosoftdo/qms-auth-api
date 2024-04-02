@@ -1,10 +1,12 @@
 """Queue API router"""
 
 from fastapi import APIRouter, Depends, Query, status
+from sqlalchemy.orm import Session
 from .. import api_responses
 from .. import base_api_models
 from .. import constants
 from .. import helpers
+from ..database import main
 from .constants import (
     TAGS,
     ADD_QUEUE_OPERATION_ID,
@@ -36,11 +38,12 @@ def get_queues(
     active: bool = True,
     offset: int = Query(default=constants.DEFAULT_PAGE_OFFSET, ge=0),
     limit: int = Query(default=constants.DEFAULT_PAGE_LIMIT, ge=1),
+    session: Session = Depends(main.get_session),
 ) -> queue_api_models.QueuesListResponse:
     """
     Gets a list of queues
     """
-    return handlers.get_queues(active, offset, limit)
+    return handlers.get_queues(session, active, offset, limit)
 
 
 @router.get(
@@ -54,11 +57,13 @@ def get_queues(
     response_model=base_api_models.Queue,
     responses=api_responses.responses_descriptions,
 )
-def get_queue_by_id(queue_id: int) -> base_api_models.Queue:
+def get_queue_by_id(
+    queue_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.Queue:
     """
     Get info of an existing queue by Id
     """
-    return handlers.get_queue_by_id(queue_id)
+    return handlers.get_queue_by_id(session, queue_id)
 
 
 @router.post(
@@ -75,11 +80,12 @@ def get_queue_by_id(queue_id: int) -> base_api_models.Queue:
 )
 def add_queue(
     payload: queue_api_models.CreateQueuePayload,
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Add a new queue
     """
-    return handlers.add_queue(payload)
+    return handlers.add_queue(session, payload)
 
 
 @router.put(
@@ -94,12 +100,14 @@ def add_queue(
     responses=api_responses.responses_descriptions,
 )
 def update_queue(
-    queue_id: int, payload: queue_api_models.UpdateQueuePayload
+    queue_id: int,
+    payload: queue_api_models.UpdateQueuePayload,
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Update an existing queue by Id
     """
-    return handlers.update_queue(queue_id, payload)
+    return handlers.update_queue(session, queue_id, payload)
 
 
 @router.patch(
@@ -114,12 +122,14 @@ def update_queue(
     responses=api_responses.responses_descriptions,
 )
 def patch_queue(
-    queue_id: int, payload: queue_api_models.PatchQueuePayload
+    queue_id: int,
+    payload: queue_api_models.PatchQueuePayload,
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Update partially an existing queue by Id
     """
-    return handlers.partially_update_queue(queue_id, payload)
+    return handlers.partially_update_queue(session, queue_id, payload)
 
 
 @router.delete(
@@ -133,8 +143,10 @@ def patch_queue(
     response_model=base_api_models.APIResponse,
     responses=api_responses.responses_descriptions,
 )
-def delete_queue_by_id(queue_id: int) -> base_api_models.APIResponse:
+def delete_queue_by_id(
+    queue_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.APIResponse:
     """
     Delete an existing queue by Id
     """
-    return handlers.delete_queue_by_id(queue_id)
+    return handlers.delete_queue_by_id(session, queue_id)

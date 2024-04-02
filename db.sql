@@ -22,6 +22,18 @@ CREATE TABLE priorities (
     CONSTRAINT `priority_code_unique` UNIQUE (`code`)
 );
 
+CREATE TABLE locations (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    `code` varchar(50) NOT NULL,
+    `address` varchar(500) NOT NULL,
+    `description` varchar(500) NOT NULL,
+    `is_active` tinyint(1) NOT NULL DEFAULT '1',
+    PRIMARY KEY (`id`),
+    CONSTRAINT `location_name_unique` UNIQUE (`name`),
+    CONSTRAINT `location_code_unique` UNIQUE (`code`)
+);
+
 CREATE TABLE categories (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(50) NOT NULL,

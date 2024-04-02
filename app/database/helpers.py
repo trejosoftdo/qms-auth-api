@@ -5,7 +5,6 @@ from typing import Callable
 import re
 from sqlalchemy.exc import IntegrityError
 from app import constants, exceptions
-from . import main
 
 
 def is_a_duplicate_exception(exc: Exception) -> bool:
@@ -58,7 +57,8 @@ def handle_session_rollback(func: Callable):
         try:
             return func(*args, **kwargs)
         except:
-            main.session.rollback()
+            print(args[0])
+            # main.session.rollback()
             raise
 
     return handled
