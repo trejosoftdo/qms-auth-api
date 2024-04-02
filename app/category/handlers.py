@@ -9,13 +9,11 @@ from .. import mappers
 from . import models as category_api_models
 from . import service
 
+# pylint: disable=R0913
+
 
 def get_categories(
-    session: Session,
-    application: str,
-    active: bool,
-    offset: int,
-    limit: int
+    session: Session, application: str, active: bool, offset: int, limit: int
 ) -> category_api_models.CategoriesListResponse:
     """Get list of categories
 
@@ -79,7 +77,9 @@ def get_category_by_id(session: Session, category_id: int) -> base_api_models.Ca
     return mappers.map_category(item)
 
 
-def delete_category_by_id(session: Session, category_id: int) -> base_api_models.APIResponse:
+def delete_category_by_id(
+    session: Session, category_id: int
+) -> base_api_models.APIResponse:
     """Delete an existing category by Id
 
     Args:
@@ -93,7 +93,9 @@ def delete_category_by_id(session: Session, category_id: int) -> base_api_models
     return api_responses.ITEM_DELETED_RESPONSE
 
 
-def add_category(session: Session, payload: category_api_models.CreateCategoryPayload) -> base_api_models.APIResponse:
+def add_category(
+    session: Session, payload: category_api_models.CreateCategoryPayload
+) -> base_api_models.APIResponse:
     """Add a new category
 
     Args:
@@ -103,7 +105,9 @@ def add_category(session: Session, payload: category_api_models.CreateCategoryPa
     Returns:
         APIResponse: The result of the addition
     """
-    db_models.Status.validate_status_type(session, payload.statusId, enums.StatusType.CATEGORY)
+    db_models.Status.validate_status_type(
+        session, payload.statusId, enums.StatusType.CATEGORY
+    )
     db_models.Category.create_from_data(session, payload.dict())
     return api_responses.ITEM_ADDED_RESPONSE
 
@@ -111,7 +115,7 @@ def add_category(session: Session, payload: category_api_models.CreateCategoryPa
 def update_category(
     session: Session,
     category_id: int,
-    payload: category_api_models.UpdateCategoryPayload
+    payload: category_api_models.UpdateCategoryPayload,
 ) -> base_api_models.APIResponse:
     """Update an existing category by Id
 
@@ -123,7 +127,9 @@ def update_category(
     Returns:
         APIResponse: The result of the update
     """
-    db_models.Status.validate_status_type(session, payload.statusId, enums.StatusType.CATEGORY)
+    db_models.Status.validate_status_type(
+        session, payload.statusId, enums.StatusType.CATEGORY
+    )
     db_models.Category.update_by_id(session, category_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
 
@@ -131,7 +137,7 @@ def update_category(
 def partially_update_category(
     session: Session,
     category_id: int,
-    payload: category_api_models.PatchCategoryPayload
+    payload: category_api_models.PatchCategoryPayload,
 ) -> base_api_models.APIResponse:
     """Partially updates an existing category by Id
 
@@ -144,7 +150,9 @@ def partially_update_category(
         APIResponse: The result of the update
     """
     if not payload.statusId is None:
-        db_models.Status.validate_status_type(session, payload.statusId, enums.StatusType.CATEGORY)
+        db_models.Status.validate_status_type(
+            session, payload.statusId, enums.StatusType.CATEGORY
+        )
 
     db_models.Category.update_by_id(session, category_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE

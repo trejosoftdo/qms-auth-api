@@ -10,9 +10,7 @@ from . import models as service_turn_api_models
 
 
 def get_service_turns(
-    session: Session,
-    offset: int,
-    limit: int
+    session: Session, offset: int, limit: int
 ) -> service_turn_api_models.ServiceTurnsListResponse:
     """Get list of service_turns
 
@@ -29,7 +27,9 @@ def get_service_turns(
     return list(map(mappers.map_service_turn, items))
 
 
-def get_service_turn_by_id(session: Session, service_turn_id: int) -> base_api_models.ServiceTurn:
+def get_service_turn_by_id(
+    session: Session, service_turn_id: int
+) -> base_api_models.ServiceTurn:
     """Get info of an existing service_turn by Id
 
     Args:
@@ -43,7 +43,9 @@ def get_service_turn_by_id(session: Session, service_turn_id: int) -> base_api_m
     return mappers.map_service_turn(item)
 
 
-def delete_service_turn_by_id(session: Session, service_turn_id: int) -> base_api_models.APIResponse:
+def delete_service_turn_by_id(
+    session: Session, service_turn_id: int
+) -> base_api_models.APIResponse:
     """Delete an existing service_turn by Id
 
     Args:
@@ -70,7 +72,9 @@ def add_service_turn(
     Returns:
         APIResponse: The result of the addition
     """
-    db_models.Status.validate_status_type(session, payload.statusId, enums.StatusType.TURN)
+    db_models.Status.validate_status_type(
+        session, payload.statusId, enums.StatusType.TURN
+    )
     db_models.ServiceTurn.create_from_data(session, payload.dict())
     return api_responses.ITEM_ADDED_RESPONSE
 
@@ -78,7 +82,7 @@ def add_service_turn(
 def update_service_turn(
     session: Session,
     service_turn_id: int,
-    payload: service_turn_api_models.UpdateServiceTurnPayload
+    payload: service_turn_api_models.UpdateServiceTurnPayload,
 ) -> base_api_models.APIResponse:
     """Update an existing service_turn by Id
 
@@ -90,7 +94,9 @@ def update_service_turn(
     Returns:
         APIResponse: The result of the update
     """
-    db_models.Status.validate_status_type(session, payload.statusId, enums.StatusType.TURN)
+    db_models.Status.validate_status_type(
+        session, payload.statusId, enums.StatusType.TURN
+    )
     db_models.ServiceTurn.update_by_id(session, service_turn_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
 
@@ -98,7 +104,7 @@ def update_service_turn(
 def partially_update_service_turn(
     session: Session,
     service_turn_id: int,
-    payload: service_turn_api_models.PatchServiceTurnPayload
+    payload: service_turn_api_models.PatchServiceTurnPayload,
 ) -> base_api_models.APIResponse:
     """Partially updates an existing service_turn by Id
 
@@ -111,13 +117,17 @@ def partially_update_service_turn(
         APIResponse: The result of the update
     """
     if not payload.statusId is None:
-        db_models.Status.validate_status_type(session, payload.statusId, enums.StatusType.TURN)
+        db_models.Status.validate_status_type(
+            session, payload.statusId, enums.StatusType.TURN
+        )
 
     db_models.ServiceTurn.update_by_id(session, service_turn_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
 
 
-def get_turns_status_table(session: Session) -> service_turn_api_models.ServiceTurnsStatusTableResponse:
+def get_turns_status_table(
+    session: Session,
+) -> service_turn_api_models.ServiceTurnsStatusTableResponse:
     """Gets turns status table for the application in context
 
     Args:
@@ -128,13 +138,12 @@ def get_turns_status_table(session: Session) -> service_turn_api_models.ServiceT
     """
     statuses = db_models.Status.find_many(
         session,
-        lambda x: x.where(db_models.Status.code.in_(["BEING_ATTENDED", "TO_BE_ATTENDED"])).where(
-            db_models.Status.type == enums.StatusType.TURN
-        )
+        lambda x: x.where(
+            db_models.Status.code.in_(["BEING_ATTENDED", "TO_BE_ATTENDED"])
+        ).where(db_models.Status.type == enums.StatusType.TURN),
     )
     statuses_ids = [status.id for status in statuses]
     items = db_models.ServiceTurn.find_many(
-        session,
-        lambda x: x.where(db_models.ServiceTurn.status_id.in_(statuses_ids))
+        session, lambda x: x.where(db_models.ServiceTurn.status_id.in_(statuses_ids))
     )
     return list(map(mappers.map_turn_status_item, items))

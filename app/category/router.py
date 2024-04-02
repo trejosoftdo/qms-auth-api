@@ -20,6 +20,7 @@ from .constants import (
 from . import handlers
 from . import models as category_api_models
 
+# pylint: disable=R0913
 
 router = APIRouter()
 
@@ -40,7 +41,7 @@ def get_categories(
     offset: int = Query(default=constants.DEFAULT_PAGE_OFFSET, ge=0),
     limit: int = Query(default=constants.DEFAULT_PAGE_LIMIT, ge=1),
     application: str = Header(..., convert_underscores=False),
-    session: Session = Depends(main.get_session)
+    session: Session = Depends(main.get_session),
 ) -> category_api_models.CategoriesListResponse:
     """Gets a list of categories for the application in context"""
     return handlers.get_categories(session, application, active, offset, limit)
@@ -63,7 +64,7 @@ def get_category_services(
     offset: int = 0,
     limit: int = 10,
     application: str = Header(..., convert_underscores=False),
-    session: Session = Depends(main.get_session)
+    session: Session = Depends(main.get_session),
 ) -> category_api_models.CategoryServicesListResponse:
     """Gets the list of services asociated to a category for an application in context"""
     return handlers.get_category_services(
@@ -82,7 +83,9 @@ def get_category_services(
     response_model=base_api_models.Category,
     responses=api_responses.responses_descriptions,
 )
-def get_category_by_id(category_id: int, session: Session = Depends(main.get_session)) -> base_api_models.Category:
+def get_category_by_id(
+    category_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.Category:
     """
     Get info of an existing category by Id
     """
@@ -102,7 +105,7 @@ def get_category_by_id(category_id: int, session: Session = Depends(main.get_ses
 )
 def add_category(
     payload: category_api_models.CreateCategoryPayload,
-    session: Session = Depends(main.get_session)
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Add a new category
@@ -124,7 +127,7 @@ def add_category(
 def update_category(
     category_id: int,
     payload: category_api_models.UpdateCategoryPayload,
-    session: Session = Depends(main.get_session)
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Update an existing category by Id
@@ -146,7 +149,7 @@ def update_category(
 def patch_category(
     category_id: int,
     payload: category_api_models.PatchCategoryPayload,
-    session: Session = Depends(main.get_session)
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Update partially an existing category by Id
@@ -165,7 +168,9 @@ def patch_category(
     response_model=base_api_models.APIResponse,
     responses=api_responses.responses_descriptions,
 )
-def delete_category_by_id(category_id: int, session: Session = Depends(main.get_session)) -> base_api_models.APIResponse:
+def delete_category_by_id(
+    category_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.APIResponse:
     """
     Delete an existing category by Id
     """

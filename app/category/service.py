@@ -3,9 +3,10 @@
 from typing import List
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from ..database import models as db_models, main
+from ..database import models as db_models
 
 # pylint: disable=W0613
+# pylint: disable=R0913
 
 def get_categories(
     session: Session,

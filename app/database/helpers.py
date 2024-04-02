@@ -5,7 +5,6 @@ from typing import Callable
 import re
 from sqlalchemy.exc import IntegrityError
 from app import constants, exceptions
-from . import main
 
 
 def is_a_duplicate_exception(exc: Exception) -> bool:

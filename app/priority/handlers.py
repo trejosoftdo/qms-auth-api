@@ -9,10 +9,7 @@ from . import models as priority_api_models
 
 
 def get_priorities(
-    session: Session,
-    active: bool,
-    offset: int,
-    limit: int
+    session: Session, active: bool, offset: int, limit: int
 ) -> priority_api_models.PrioritiesListResponse:
     """Get list of priorities
 
@@ -29,7 +26,7 @@ def get_priorities(
         session,
         limit,
         offset,
-        lambda x: x.where(db_models.Priority.is_active == active)
+        lambda x: x.where(db_models.Priority.is_active == active),
     )
     return list(map(mappers.map_priority, items))
 
@@ -48,7 +45,9 @@ def get_priority_by_id(session: Session, priority_id: int) -> base_api_models.Pr
     return mappers.map_priority(item)
 
 
-def delete_priority_by_id(session: Session, priority_id: int) -> base_api_models.APIResponse:
+def delete_priority_by_id(
+    session: Session, priority_id: int
+) -> base_api_models.APIResponse:
     """Delete an existing priority by Id
 
     Args:
@@ -62,7 +61,9 @@ def delete_priority_by_id(session: Session, priority_id: int) -> base_api_models
     return api_responses.ITEM_DELETED_RESPONSE
 
 
-def add_priority(session: Session, payload: priority_api_models.CreatePriorityPayload) -> base_api_models.APIResponse:
+def add_priority(
+    session: Session, payload: priority_api_models.CreatePriorityPayload
+) -> base_api_models.APIResponse:
     """Add a new priority
 
     Args:
@@ -79,7 +80,7 @@ def add_priority(session: Session, payload: priority_api_models.CreatePriorityPa
 def update_priority(
     session: Session,
     priority_id: int,
-    payload: priority_api_models.UpdatePriorityPayload
+    payload: priority_api_models.UpdatePriorityPayload,
 ) -> base_api_models.APIResponse:
     """Update an existing priority by Id
 
@@ -98,7 +99,7 @@ def update_priority(
 def partially_update_priority(
     session: Session,
     priority_id: int,
-    payload: priority_api_models.PatchPriorityPayload
+    payload: priority_api_models.PatchPriorityPayload,
 ) -> base_api_models.APIResponse:
     """Partially updates an existing priority by Id
 

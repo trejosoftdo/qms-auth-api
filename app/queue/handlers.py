@@ -10,10 +10,7 @@ from . import models as queue_api_models
 
 
 def get_queues(
-    session: Session,
-    active: bool,
-    offset: int,
-    limit: int
+    session: Session, active: bool, offset: int, limit: int
 ) -> queue_api_models.QueuesListResponse:
     """Get list of queues
 
@@ -27,10 +24,7 @@ def get_queues(
         QueuesListResponse: List of queues
     """
     items = db_models.Queue.find_paginated(
-        session,
-        limit,
-        offset,
-        lambda x: x.where(db_models.Queue.is_active == active)
+        session, limit, offset, lambda x: x.where(db_models.Queue.is_active == active)
     )
     return list(map(mappers.map_queue, items))
 
@@ -63,7 +57,9 @@ def delete_queue_by_id(session: Session, queue_id: int) -> base_api_models.APIRe
     return api_responses.ITEM_DELETED_RESPONSE
 
 
-def add_queue(session: Session, payload: queue_api_models.CreateQueuePayload) -> base_api_models.APIResponse:
+def add_queue(
+    session: Session, payload: queue_api_models.CreateQueuePayload
+) -> base_api_models.APIResponse:
     """Add a new queue
 
     Args:
@@ -73,15 +69,15 @@ def add_queue(session: Session, payload: queue_api_models.CreateQueuePayload) ->
     Returns:
         APIResponse: The result of the addition
     """
-    db_models.Status.validate_status_type(session, payload.statusId, enums.StatusType.QUEUE)
+    db_models.Status.validate_status_type(
+        session, payload.statusId, enums.StatusType.QUEUE
+    )
     db_models.Queue.create_from_data(session, payload.dict())
     return api_responses.ITEM_ADDED_RESPONSE
 
 
 def update_queue(
-    session: Session,
-    queue_id: int,
-    payload: queue_api_models.UpdateQueuePayload
+    session: Session, queue_id: int, payload: queue_api_models.UpdateQueuePayload
 ) -> base_api_models.APIResponse:
     """Update an existing queue by Id
 
@@ -93,15 +89,15 @@ def update_queue(
     Returns:
         APIResponse: The result of the update
     """
-    db_models.Status.validate_status_type(session, payload.statusId, enums.StatusType.QUEUE)
+    db_models.Status.validate_status_type(
+        session, payload.statusId, enums.StatusType.QUEUE
+    )
     db_models.Queue.update_by_id(session, queue_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
 
 
 def partially_update_queue(
-    session: Session,
-    queue_id: int,
-    payload: queue_api_models.PatchQueuePayload
+    session: Session, queue_id: int, payload: queue_api_models.PatchQueuePayload
 ) -> base_api_models.APIResponse:
     """Partially updates an existing queue by Id
 
@@ -114,7 +110,9 @@ def partially_update_queue(
         APIResponse: The result of the update
     """
     if not payload.statusId is None:
-        db_models.Status.validate_status_type(session, payload.statusId, enums.StatusType.QUEUE)
+        db_models.Status.validate_status_type(
+            session, payload.statusId, enums.StatusType.QUEUE
+        )
 
     db_models.Queue.update_by_id(session, queue_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE

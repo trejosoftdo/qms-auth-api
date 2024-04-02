@@ -57,7 +57,9 @@ def get_statuses(
     response_model=base_api_models.Status,
     responses=api_responses.responses_descriptions,
 )
-def get_status_by_id(status_id: int, session: Session = Depends(main.get_session)) -> base_api_models.Status:
+def get_status_by_id(
+    status_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.Status:
     """
     Get info of an existing status by Id
     """
@@ -141,7 +143,9 @@ def patch_status(
     response_model=base_api_models.APIResponse,
     responses=api_responses.responses_descriptions,
 )
-def delete_status_by_id(status_id: int, session: Session = Depends(main.get_session)) -> base_api_models.APIResponse:
+def delete_status_by_id(
+    status_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.APIResponse:
     """
     Delete an existing status by Id
     """

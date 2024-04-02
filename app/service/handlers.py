@@ -13,11 +13,9 @@ from . import service
 
 # pylint: disable=W0613
 
+
 def get_services(
-    session: Session,
-    active: bool,
-    offset: int,
-    limit: int
+    session: Session, active: bool, offset: int, limit: int
 ) -> service_api_models.ServicesListResponse:
     """Get list of services
 
@@ -31,10 +29,7 @@ def get_services(
         ServicesListResponse: List of services
     """
     items = db_models.Service.find_paginated(
-        session,
-        limit,
-        offset,
-        lambda x: x.where(db_models.Service.is_active == active)
+        session, limit, offset, lambda x: x.where(db_models.Service.is_active == active)
     )
     return list(map(general_mappers.map_service, items))
 
@@ -53,7 +48,9 @@ def get_service_by_id(session: Session, service_id: int) -> base_api_models.Serv
     return general_mappers.map_service(item)
 
 
-def delete_service_by_id(session: Session, service_id: int) -> base_api_models.APIResponse:
+def delete_service_by_id(
+    session: Session, service_id: int
+) -> base_api_models.APIResponse:
     """Delete an existing service by Id
 
     Args:
@@ -67,7 +64,9 @@ def delete_service_by_id(session: Session, service_id: int) -> base_api_models.A
     return api_responses.ITEM_DELETED_RESPONSE
 
 
-def add_service(session: Session, payload: service_api_models.CreateServicePayload) -> base_api_models.APIResponse:
+def add_service(
+    session: Session, payload: service_api_models.CreateServicePayload
+) -> base_api_models.APIResponse:
     """Add a new service
 
     Args:
@@ -77,15 +76,15 @@ def add_service(session: Session, payload: service_api_models.CreateServicePaylo
     Returns:
         APIResponse: The result of the addition
     """
-    db_models.Status.validate_status_type(session, payload.statusId, enums.StatusType.SERVICE)
+    db_models.Status.validate_status_type(
+        session, payload.statusId, enums.StatusType.SERVICE
+    )
     db_models.Service.create_from_data(session, payload.dict())
     return api_responses.ITEM_ADDED_RESPONSE
 
 
 def update_service(
-    session: Session,
-    service_id: int,
-    payload: service_api_models.UpdateServicePayload
+    session: Session, service_id: int, payload: service_api_models.UpdateServicePayload
 ) -> base_api_models.APIResponse:
     """Update an existing service by Id
 
@@ -97,15 +96,15 @@ def update_service(
     Returns:
         APIResponse: The result of the update
     """
-    db_models.Status.validate_status_type(session, payload.statusId, enums.StatusType.SERVICE)
+    db_models.Status.validate_status_type(
+        session, payload.statusId, enums.StatusType.SERVICE
+    )
     db_models.Service.update_by_id(session, service_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
 
 
 def partially_update_service(
-    session: Session,
-    service_id: int,
-    payload: service_api_models.PatchServicePayload
+    session: Session, service_id: int, payload: service_api_models.PatchServicePayload
 ) -> base_api_models.APIResponse:
     """Partially updates an existing service by Id
 
@@ -118,7 +117,9 @@ def partially_update_service(
         APIResponse: The result of the update
     """
     if not payload.statusId is None:
-        db_models.Status.validate_status_type(session, payload.statusId, enums.StatusType.SERVICE)
+        db_models.Status.validate_status_type(
+            session, payload.statusId, enums.StatusType.SERVICE
+        )
 
     db_models.Service.update_by_id(session, service_id, payload.dict())
     return api_responses.ITEM_UPDATED_RESPONSE
@@ -128,7 +129,7 @@ def create_service_turn(
     session: Session,
     application: str,
     service_id: int,
-    item: service_api_models.CreateServiceTurnPayload
+    item: service_api_models.CreateServiceTurnPayload,
 ) -> service_api_models.CreateServiceTurnResponse:
     """Creates a service turn for the given service
 
