@@ -241,6 +241,27 @@
     ]
   },
   {
+    "model": "database.models.Location",
+    "data": [
+      {
+        "id": 1,
+        "name": "Localidad 1",
+        "code": "LOCATION_1",
+        "address": "Cerca",
+        "description": "Localidad 1",
+        "is_active": true
+      },
+      {
+        "id": 2,
+        "name": "Localidad 2",
+        "code": "LOCATION_2",
+        "address": "Lejos",
+        "description": "Localidad 2",
+        "is_active": true
+      }
+    ]
+  },
+  {
     "model": "database.models.Category",
     "data": [
       {

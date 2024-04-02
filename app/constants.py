@@ -104,6 +104,7 @@ QUEUES_ROUTE_PREFIX = "/api/v1/queues"
 SERVICES_ROUTE_PREFIX = "/api/v1/services"
 SERVICE_TURNS_ROUTE_PREFIX = "/api/v1/serviceturns"
 STATUSES_ROUTE_PREFIX = "/api/v1/statuses"
+LOCATIONS_ROUTE_PREFIX = "/api/v1/locations"
 
 # Environment names
 AUTH_API_BASE_URL_ENV_NAME = "AUTH_API_BASE_URL"

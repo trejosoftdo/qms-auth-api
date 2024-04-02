@@ -58,7 +58,8 @@ def handle_session_rollback(func: Callable):
         try:
             return func(*args, **kwargs)
         except:
-            main.session.rollback()
+            print(args[0])
+            # main.session.rollback()
             raise
 
     return handled

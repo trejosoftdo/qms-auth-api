@@ -8,4 +8,4 @@ from app.environment import database_connection_string
 
 engine = create_engine(database_connection_string)
 Base = declarative_base()
-Session = sessionmaker(bind=engine)
+Session = sessionmaker(bind=engine, autocommit=False, autoflush=False)

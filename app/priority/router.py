@@ -1,10 +1,12 @@
 """Priority API router"""
 
 from fastapi import APIRouter, Depends, Query, status
+from sqlalchemy.orm import Session
 from .. import api_responses
 from .. import base_api_models
 from .. import constants
 from .. import helpers
+from ..database import main
 from .constants import (
     TAGS,
     ADD_PRIORITY_OPERATION_ID,
@@ -36,11 +38,12 @@ def get_priorities(
     active: bool = True,
     offset: int = Query(default=constants.DEFAULT_PAGE_OFFSET, ge=0),
     limit: int = Query(default=constants.DEFAULT_PAGE_LIMIT, ge=1),
+    session: Session = Depends(main.get_session),
 ) -> priority_api_models.PrioritiesListResponse:
     """
     Gets a list of priorities
     """
-    return handlers.get_priorities(active, offset, limit)
+    return handlers.get_priorities(session, active, offset, limit)
 
 
 @router.get(
@@ -54,11 +57,13 @@ def get_priorities(
     response_model=base_api_models.Priority,
     responses=api_responses.responses_descriptions,
 )
-def get_priority_by_id(priority_id: int) -> base_api_models.Priority:
+def get_priority_by_id(
+    priority_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.Priority:
     """
     Get info of an existing priority by Id
     """
-    return handlers.get_priority_by_id(priority_id)
+    return handlers.get_priority_by_id(session, priority_id)
 
 
 @router.post(
@@ -75,11 +80,12 @@ def get_priority_by_id(priority_id: int) -> base_api_models.Priority:
 )
 def add_priority(
     payload: priority_api_models.CreatePriorityPayload,
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Add a new priority
     """
-    return handlers.add_priority(payload)
+    return handlers.add_priority(session, payload)
 
 
 @router.put(
@@ -94,12 +100,14 @@ def add_priority(
     responses=api_responses.responses_descriptions,
 )
 def update_priority(
-    priority_id: int, payload: priority_api_models.UpdatePriorityPayload
+    priority_id: int,
+    payload: priority_api_models.UpdatePriorityPayload,
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Update an existing priority by Id
     """
-    return handlers.update_priority(priority_id, payload)
+    return handlers.update_priority(session, priority_id, payload)
 
 
 @router.patch(
@@ -114,12 +122,14 @@ def update_priority(
     responses=api_responses.responses_descriptions,
 )
 def patch_priority(
-    priority_id: int, payload: priority_api_models.PatchPriorityPayload
+    priority_id: int,
+    payload: priority_api_models.PatchPriorityPayload,
+    session: Session = Depends(main.get_session),
 ) -> base_api_models.APIResponse:
     """
     Update partially an existing priority by Id
     """
-    return handlers.partially_update_priority(priority_id, payload)
+    return handlers.partially_update_priority(session, priority_id, payload)
 
 
 @router.delete(
@@ -133,8 +143,10 @@ def patch_priority(
     response_model=base_api_models.APIResponse,
     responses=api_responses.responses_descriptions,
 )
-def delete_priority_by_id(priority_id: int) -> base_api_models.APIResponse:
+def delete_priority_by_id(
+    priority_id: int, session: Session = Depends(main.get_session)
+) -> base_api_models.APIResponse:
     """
     Delete an existing priority by Id
     """
-    return handlers.delete_priority_by_id(priority_id)
+    return handlers.delete_priority_by_id(session, priority_id)

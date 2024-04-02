@@ -42,6 +42,24 @@ def map_priority(priority: db_models.Priority) -> base_api_models.Priority:
         isActive=priority.is_active,
     )
 
+def map_location(location: db_models.Location) -> base_api_models.Location:
+    """Maps a database location to a API location
+
+    Args:
+        location (db_models.Location): database location item
+
+    Returns:
+        base_api_models.Location: API location item
+    """
+    return base_api_models.Location(
+        id=location.id,
+        name=location.name,
+        code=location.code,
+        description=location.description,
+        address=location.address,
+        isActive=location.is_active,
+    )
+
 
 def map_queue(queue: db_models.Queue) -> base_api_models.Queue:
     """Maps a database queue to a API queue
