@@ -13,6 +13,7 @@ from .constants import (
     DELETE_CUSTOMER_BY_ID_OPERATION_ID,
     GET_CUSTOMERS_OPERATION_ID,
     GET_OWN_APPOINTMENTS_OPERATION_ID,
+    CREATE_OWN_APPOINTMENT_OPERATION_ID,
     GET_CUSTOMER_BY_ID_OPERATION_ID,
     GET_CURRENT_CUSTOMER_OPERATION_ID,
     GET_CUSTOMER_APPOINTMENTS_OPERATION_ID,
@@ -75,7 +76,6 @@ def get_current_customer(
     dependencies=[
         Depends(helpers.validate_api_access),
         Depends(helpers.validate_token(constants.READ_OWN_APPOINTMENTS_SCOPE)),
-        Depends(helpers.validate_token(constants.READ_OWN_APPOINTMENTS_SCOPE)),
     ],
     tags=TAGS,
     operation_id=GET_OWN_APPOINTMENTS_OPERATION_ID,
@@ -91,6 +91,28 @@ def get_own_appointments(
     Get list of appointments of the current user
     """
     return handlers.get_own_appointments(session, application, authorization)
+
+@router.post(
+    "/current/appointments",
+    dependencies=[
+        Depends(helpers.validate_api_access),
+        Depends(helpers.validate_token(constants.CREATE_OWN_APPOINTMENTS_SCOPE)),
+    ],
+    tags=TAGS,
+    operation_id=CREATE_OWN_APPOINTMENT_OPERATION_ID,
+    response_model=base_api_models.Appointment,
+    responses=api_responses.responses_descriptions,
+)
+def create_own_appointment(
+    payload: customer_api_models.CreateOwnAppointmentPayload,
+    application: str = Header(..., convert_underscores=False),
+    authorization: str = Header(..., convert_underscores=False),
+    session: Session = Depends(main.get_session)
+) -> base_api_models.Appointment:
+    """
+    Creates a new appointment for the current user
+    """
+    return handlers.create_own_appointment(session, payload, application, authorization)
 
 
 @router.get(

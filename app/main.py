@@ -39,6 +39,7 @@ def http_exception_handler(request: Request, exc: HTTPException):
     Returns:
         JSONResponse: Error response
     """
+    print(exc)
     return JSONResponse(
         status_code=exc.status_code,
         content=api_responses.get_response_from_exception(exc).__dict__,
@@ -55,6 +56,7 @@ def integrity_error_handler(request: Request, exc: IntegrityError):
     Returns:
         JSONResponse: Error response
     """
+    print(exc)
     return JSONResponse(
         status_code=status_codes.HTTP_400_BAD_REQUEST,
         content=api_responses.get_validation_error_response(
@@ -75,6 +77,7 @@ def request_validation_error_handler(request: Request, exc: RequestValidationErr
     """
     errors = [f"{err['msg']} ({'.'.join(err['loc'])})" for err in exc.errors()]
     message = ". ".join(errors)
+    print(exc)
     return JSONResponse(
         status_code=status_codes.HTTP_400_BAD_REQUEST,
         content=api_responses.get_validation_error_response(message).__dict__,

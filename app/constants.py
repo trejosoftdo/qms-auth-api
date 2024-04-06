@@ -13,6 +13,7 @@ EMPTY_VALUE = ""
 TIMEOUT = 10
 SYSTEM_CREATOR = "SYSTEM"
 DEFAULT_TURN_STATUS = "PENDING"
+DEFAULT_APPOINTMENT_STATUS = "PENDING"
 DEFAULT_TURN_PRIORITY = "NORMAL_PRIORITY"
 
 DEFAULT_PAGE_OFFSET = 0
@@ -68,6 +69,8 @@ READ_OWN_CUSTOMER_SCOPE = "read_own_profile"
 READ_APPOINTMENTS_SCOPE = "read_appointments"
 # Read own appointments information
 READ_OWN_APPOINTMENTS_SCOPE = "read_own_appointments"
+# Create own appointments information
+CREATE_OWN_APPOINTMENTS_SCOPE = "create_own_appointments"
 # Create, modify and delete customers' appointments information
 WRITE_APPOINTMENTS_SCOPE = "write_appointments"
 # Administrate customers' appointments information

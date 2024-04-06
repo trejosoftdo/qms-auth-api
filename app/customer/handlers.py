@@ -1,19 +1,43 @@
 """Customer API handlers"""
 
+from datetime import datetime
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 from .. import base_api_models
 from .. import api_responses
+from ..enums import StatusType
 from ..database import models as db_models
 from ..auth import api as auth_api
 from .. import enums
 from .. import mappers as general_mappers
+from .. import constants
 from . import models as customer_api_models
 
 
+def get_status_by_code_and_type(
+    session: Session, code: str, status_type: StatusType
+) -> db_models.Status:
+    """Gets a status by code and type
+
+    Args:
+        session (Session):  Database session
+        code (str): Code of the status item
+        status_type (StatusType): type of the status
+
+    Returns:
+        db_models.Status: The matched status
+    """
+    statement = (
+        select(db_models.Status)
+        .where(db_models.Status.code == code)
+        .where(db_models.Status.type == status_type)
+        .limit(1)
+    )
+    return session.scalars(statement).one()
+
+
 def get_customers(
-    session: Session,
-    offset: int,
-    limit: int
+    session: Session, offset: int, limit: int
 ) -> customer_api_models.CustomersListResponse:
     """Get list of customers
 
@@ -44,9 +68,7 @@ def get_customer_by_id(session: Session, customer_id: int) -> base_api_models.Cu
 
 
 def get_current_customer(
-    session: Session,
-    application: str,
-    authorization: str
+    session: Session, application: str, authorization: str
 ) -> base_api_models.Customer:
     """Get info of the current user
 
@@ -69,9 +91,7 @@ def get_current_customer(
 
 
 def get_own_appointments(
-    session: Session,
-    application: str,
-    authorization: str
+    session: Session, application: str, authorization: str
 ) -> customer_api_models.CustomersAppointmentsResponse:
     """Gets current user appointments
 
@@ -92,6 +112,45 @@ def get_own_appointments(
         customer=customer,
         appointments=appointments,
     )
+
+
+def create_own_appointment(
+    session: Session,
+    payload: customer_api_models.CreateOwnAppointmentPayload,
+    application: str,
+    authorization: str,
+) -> base_api_models.Appointment:
+    """Creates a new appointment for the current user
+
+    Args:
+        session (Session): Database session
+        payload (CreateOwnAppointmentPayload): Payload
+        application (str): Application id
+        authorization (str): Current user authorization
+
+    Returns:
+        base_api_models.Appointment: The created appointment
+    """
+    customer = get_current_customer(session, application, authorization)
+    status = get_status_by_code_and_type(
+        session, constants.DEFAULT_APPOINTMENT_STATUS, StatusType.APPOINTMENT
+    )
+    date = datetime.strptime(payload.date, "%Y-%m-%dT%H:%M:%S.%fZ")
+    data = {
+        "customerId": customer.id,
+        "statusId": status.id,
+        "serviceId": payload.serviceId,
+        "serviceEndingExpected": date.strftime("%Y-%m-%d %H:%M:%S"),
+        "lastModified": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "created": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "createdBy": customer.firstName,
+        "lastModifiedBy": customer.firstName,
+        # locationId: payload.locationId,
+    }
+
+    created_item = db_models.Appointment.create_from_data(session, data)
+    item = db_models.Appointment.find_by_id(session, created_item.id)
+    return general_mappers.map_appointment(item)
 
 
 def get_customer_serviceturns(
@@ -133,8 +192,7 @@ def get_customer_appointments(
 
 
 def delete_customer_by_id(
-    session: Session,
-    customer_id: int
+    session: Session, customer_id: int
 ) -> base_api_models.APIResponse:
     """Delete an existing customer by Id
 
@@ -163,9 +221,7 @@ def add_customer(
         APIResponse: The result of the addition
     """
     db_models.Status.validate_status_type(
-        session,
-        payload.statusId,
-        enums.StatusType.CUSTOMER
+        session, payload.statusId, enums.StatusType.CUSTOMER
     )
     db_models.Customer.create_from_data(session, payload.dict())
     return api_responses.ITEM_ADDED_RESPONSE

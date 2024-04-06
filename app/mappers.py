@@ -158,8 +158,8 @@ def map_appointment(appointment: db_models.Appointment) -> base_api_models.Appoi
     """
     return base_api_models.Appointment(
         id=appointment.id,
-        createdBy=appointment.created_by,
-        lastModifiedBy=appointment.last_modified_by,
+        createdBy=appointment.created_by or '',
+        lastModifiedBy=appointment.last_modified_by or '',
         serviceEndingExpected=str(appointment.service_ending_expected),
         serviceStarted=str(appointment.service_started),
         serviceEnded=str(appointment.service_ended),
