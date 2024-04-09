@@ -54,3 +54,11 @@ class CustomersAppointmentsResponse(BaseModel):
 
     appointments: Appointments
     customer: base_api_models.Customer
+
+
+class CreateOwnAppointmentPayload(BaseModel):
+    """Payload to create own appointment
+    """
+    serviceId: int
+    locationId: int
+    date: str
