@@ -29,8 +29,8 @@ def get_status_by_code_and_type(
     """
     statement = (
         select(db_models.Status)
-        .where(db_models.Status.code == code)
         .where(db_models.Status.type == status_type)
+        .where(db_models.Status.code == code)
         .limit(1)
     )
     return session.scalars(statement).one()
