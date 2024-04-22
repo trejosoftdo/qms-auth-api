@@ -3,6 +3,7 @@
 from . import base_api_models
 from .database import models as db_models
 from .enums import Gender
+from .constants import NOT_AVAILABLE
 
 
 def map_status(status: db_models.Status) -> base_api_models.Status:
@@ -140,9 +141,9 @@ def map_customer(customer: db_models.Customer) -> base_api_models.Customer:
         gender=Gender.from_val(customer.gender),
         yearOfBirth=customer.year_of_birth,
         created=str(customer.created),
-        createdBy=customer.created_by,
+        createdBy=customer.created_by or NOT_AVAILABLE,
         lastModified=str(customer.last_modified),
-        lastModifiedBy=customer.last_modified_by,
+        lastModifiedBy=customer.last_modified_by or NOT_AVAILABLE,
         status=map_status(customer.status),
     )
 
@@ -158,8 +159,8 @@ def map_appointment(appointment: db_models.Appointment) -> base_api_models.Appoi
     """
     return base_api_models.Appointment(
         id=appointment.id,
-        createdBy=appointment.created_by or '',
-        lastModifiedBy=appointment.last_modified_by or '',
+        createdBy=appointment.created_by or NOT_AVAILABLE,
+        lastModifiedBy=appointment.last_modified_by or NOT_AVAILABLE,
         serviceEndingExpected=str(appointment.service_ending_expected),
         serviceStarted=str(appointment.service_started),
         serviceEnded=str(appointment.service_ended),
@@ -168,6 +169,7 @@ def map_appointment(appointment: db_models.Appointment) -> base_api_models.Appoi
         status=map_status(appointment.status),
         service=map_service(appointment.service),
         customer=map_customer(appointment.customer),
+        location=map_location(appointment.location),
     )
 
 
@@ -184,8 +186,8 @@ def map_service_turn(turn: db_models.ServiceTurn) -> base_api_models.ServiceTurn
         id=turn.id,
         ticketNumber=turn.ticket_number,
         customerName=turn.customer_name,
-        createdBy=turn.created_by,
-        lastModifiedBy=turn.last_modified_by,
+        createdBy=turn.created_by or NOT_AVAILABLE,
+        lastModifiedBy=turn.last_modified_by or NOT_AVAILABLE,
         serviceEndingExpected=str(turn.service_ending_expected),
         serviceStarted=str(turn.service_started),
         serviceEnded=str(turn.service_ended),

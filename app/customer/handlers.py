@@ -140,12 +140,12 @@ def create_own_appointment(
         "customerId": customer.id,
         "statusId": status.id,
         "serviceId": payload.serviceId,
+        "locationId": payload.locationId,
         "serviceEndingExpected": date.strftime("%Y-%m-%d %H:%M:%S"),
         "lastModified": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "created": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "createdBy": customer.firstName,
         "lastModifiedBy": customer.firstName,
-        # locationId: payload.locationId,
     }
 
     created_item = db_models.Appointment.create_from_data(session, data)
@@ -223,7 +223,12 @@ def add_customer(
     db_models.Status.validate_status_type(
         session, payload.statusId, enums.StatusType.CUSTOMER
     )
-    db_models.Customer.create_from_data(session, payload.dict())
+    data = payload.dict()
+
+    if data['gender']:
+        data['gender'] = data['gender'].value
+
+    db_models.Customer.create_from_data(session, data)
     return api_responses.ITEM_ADDED_RESPONSE
 
 
@@ -245,7 +250,13 @@ def update_customer(
     db_models.Status.validate_status_type(
         session, payload.statusId, enums.StatusType.CUSTOMER
     )
-    db_models.Customer.update_by_id(session, customer_id, payload.dict())
+
+    data = payload.dict()
+
+    if data['gender']:
+        data['gender'] = data['gender'].value
+
+    db_models.Customer.update_by_id(session, customer_id, data)
     return api_responses.ITEM_UPDATED_RESPONSE
 
 
@@ -269,5 +280,10 @@ def partially_update_customer(
             session, payload.statusId, enums.StatusType.CUSTOMER
         )
 
-    db_models.Customer.update_by_id(session, customer_id, payload.dict())
+    data = payload.dict()
+
+    if data['gender']:
+        data['gender'] = data['gender'].value
+
+    db_models.Customer.update_by_id(session, customer_id, data)
     return api_responses.ITEM_UPDATED_RESPONSE

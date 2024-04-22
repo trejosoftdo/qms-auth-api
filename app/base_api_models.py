@@ -194,6 +194,7 @@ class Appointment(AppointmentBasicData):
     customer: Customer
     status: Status
     service: Service
+    location: Location
 
 
 class ServiceTurnBasicData(BaseModel):
