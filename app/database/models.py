@@ -188,6 +188,8 @@ class Appointment(ModelMethodsMixin, setup.Base):
     service = relationship("Service")
     customer_id = mapped_column(ForeignKey("customers.id"))
     customer = relationship("Customer")
+    location_id = mapped_column(ForeignKey("locations.id"))
+    location = relationship("Location")
 
 
 class ServiceTurn(ModelMethodsMixin, setup.Base):

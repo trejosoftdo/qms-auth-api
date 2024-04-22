@@ -13,6 +13,7 @@ class CreateAppointmentPayload(base_api_models.AppointmentBasicData):
 
     id: Optional[int] = None
     customerId: int
+    locationId: int
     statusId: int
     serviceId: int
 
@@ -26,6 +27,7 @@ class UpdateAppointmentPayload(base_api_models.AppointmentBasicData):
 
     id: Optional[int] = None
     customerId: int
+    locationId: int
     statusId: int
     serviceId: int
 
@@ -43,6 +45,7 @@ class PatchAppointmentPayload(base_api_models.AppointmentBasicData):
     lastModified: Optional[str] = None
     lastModifiedBy: Optional[str] = None
     customerId: Optional[int] = None
+    locationId: Optional[int] = None
     statusId: Optional[int] = None
     serviceId: Optional[int] = None
 

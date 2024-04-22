@@ -140,12 +140,12 @@ def create_own_appointment(
         "customerId": customer.id,
         "statusId": status.id,
         "serviceId": payload.serviceId,
+        "locationId": payload.locationId,
         "serviceEndingExpected": date.strftime("%Y-%m-%d %H:%M:%S"),
         "lastModified": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "created": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "createdBy": customer.firstName,
         "lastModifiedBy": customer.firstName,
-        # locationId: payload.locationId,
     }
 
     created_item = db_models.Appointment.create_from_data(session, data)

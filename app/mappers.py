@@ -169,6 +169,7 @@ def map_appointment(appointment: db_models.Appointment) -> base_api_models.Appoi
         status=map_status(appointment.status),
         service=map_service(appointment.service),
         customer=map_customer(appointment.customer),
+        location=map_location(appointment.location),
     )
 
 
